@@ -1,0 +1,50 @@
+.dark-theme {
+   background: #232729!important;
+   color: #d9d9d9!important;
+}
+.dark-theme .sidebar {
+   background: #232729!important;
+   color: #d9d9d9!important;
+}
+.dark-theme .sidebar-toggle {
+   background: #232729!important;
+   color: #d9d9d9!important;
+}
+.dark-theme em, strong {
+   color: #d9d9d9!important;
+}
+.dark-theme a:link, .dark-theme a:visited, .dark-theme a:hover {
+   color: #e75a2b!important;
+}
+.dark-theme a>.active {
+   color: #e75a2b!important;
+}
+.dark-theme .anchor>span {
+   color: #f2f2f2!important;
+}
+
+.dark-theme .sidebar, .dark-theme .sidebar-toggle {
+   background: #171a1c!important;
+}
+.dark-theme .sidemenu-title {
+   color: #bac0c4;
+}
+.dark-theme .sidebar-nav a {
+   color: #ffffff!important;
+}
+.dark-theme .sidebar-nav a:hover {
+   padding-left: 10px;
+   text-decoration: none!important;
+   background: #394146;
+}
+.dark-theme .search a:link, .dark-theme .search a:visited{
+   color: #d9d9d9!important;
+}
+.dark-theme .search a p .search-keyword{
+   color: #e75a2b!important;
+}
+
+.dark-theme .search input {
+   background: #22272a!important;
+   color: #d9d9d9!important;
+}
