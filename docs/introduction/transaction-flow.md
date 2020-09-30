@@ -4,13 +4,13 @@
 
 Marta is based in Madrid, and has one burning wish right now, to send some crypto-dollars (DAI) to her best friend, Jessica, living on the other side of the world in Argentina. While Jessica already has a Hermez account, it's Marta's first time.
 
-1\. Marta creates a Hermez account by calling the `register` function of our on-chain Solidity contract (this links her ethereum address to a zk-friendly BabyJubJub address).
+1\. Marta creates a Hermez account by calling the `register` function of our on-chain Solidity contract (this links her Ethereum address to a zk-friendly BabyJubJub address).
 
 2\. Since this is her first time sending DAI, she calls the contract’s on-chain `deposit` function specifying both the token (DAI) and the amount (100) she wishes to deposit.
 
 3\. She’s now ready to send the transaction — containing Jessica’s address and the the amount she wishes to send — off-chain to a rollup block producer (what we call a **coordinator**).
 
-4\. Once the coordinator receives the transaction, he applies the transaction locally, builds the new state tree, and computes the new state root (Merkle root).
+4\. Once the transaction is received, the coordinator applies the transaction locally, builds the new state tree, and computes the new state root (Merkle root).
 
 > Note: in this flow, we’re assuming Jessica already has a hermez account (in the tree below we’ll refer to her as **user1**)
 
@@ -22,7 +22,7 @@ Marta is based in Madrid, and has one burning wish right now, to send some crypt
 
 > **New state tree**. The data block in the bottom right now stores Marta’s data. As a result, the hashes stored in blocks 3, 5, and root, have changed.
 
-5\. The coordinator then submits an Ethereum transaction which contains the sender id (in this case Marta's ethereum address), receiver id (Jessica's ethereum address), the amount sent (these are the state deltas saved in callData), and the fee (a 4-bit field which allows the user to determine what % of the amount sent should go to the coordinator), as well as the old state root, the new state root, and a short cryptographic proof (zk-SNARK) that the new state root is correct.
+5\. The coordinator then submits an Ethereum transaction which contains the sender id (in this case Marta's Ethereum address), receiver id (Jessica's Ethereum address), the amount sent (these are the state deltas saved in callData), and the fee (a 4-bit field which allows the user to determine what % of the amount sent should go to the coordinator), as well as the old state root, the new state root, and a short cryptographic proof (zk-SNARK) that the new state root is correct.
 
 ![](block-table.jpg)
 

@@ -1,14 +1,13 @@
-# Coordinators
+#  Coordinators
 
 A coordinator is our term for rollup block producer. At any one time there is one coordinator responsible for creating blocks on the rollup chain.
-
 > Hermez is currently under development. Some of the details in the answers can be modified before network launch.
 
 ## How many coordinators will there be?
 
 There is no limit to the number of coordinators. Becoming a coordinator is entirely permissionless and it will be enabled since the launch.
 
-Although the first coordinator will be the Hermez Boot coordinator which will forge blocks when there's no alternative bids in the auction, it’s important for us that the market for coordinators becomes more open over time.
+Although the first coordinator will be the Hermez Boot coordinator which will forge blocks when there's no alternative bids in the auction, it’s important for us that the market for coordinators becomes open over time.
 
 ## Will there be a competitive market for coordinators?
 
@@ -24,7 +23,7 @@ Slots will be 40 Ethereum blocks long (10 minutes).
 
 ## What happens if the coordinator goes offline?
 
-If the coordinator has not done anything in the first part a slot (it will be defined), then anyone can jump in and replace them by forging blocks (first come first served).
+If the coordinator has not done anything in the first part a slot (TBD), then anyone can jump in and replace it by forging blocks (first come first served).
 
 The information stored on-chain (as part of [calldata](https://ethereum.stackexchange.com/a/52992)) is enough to allow anyone to independently build the full state tree (and become a coordinator themselves).
 
