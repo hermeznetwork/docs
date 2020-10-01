@@ -3,11 +3,6 @@
 http://18.223.28.208
 
 
-## Specification in Notion
-https://www.notion.so/iden3/Rollup-UI-b7fa15f2c537474f87b78012c31655dc
-
-*TODO: Migrate all specs here.*
-
 ## Description
 - Use metamask
 - Key management: 

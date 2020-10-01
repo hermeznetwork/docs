@@ -13,7 +13,7 @@
     - [SDK](integration/hermez-library.md)
     - [Examples](integration/examples.md)
     - [REST API](integration/api.md)
-    - [Smart Contract Addresses](integration/addresses.md)
+    - [Testnet](integration/testnet.md)
 - Tools
     - [Wallet](user/wallet.md)
     - [Block Explorer](user/block-explorer.md)

@@ -12,6 +12,7 @@ A batch is a rollup block. It is formed by a set of transactions that determines
 A coordinator is our term for rollup block producer. At any one time there is one coordinator responsible for collecting transactions and creating blocks on the rollup chain.
 
 ## Data Availability
+Hermez approach determines that anyone can reconstruct the full tree state by just collecting data from the L1 chain. This is done by not having any dependency of third parties holding essential data to reconstruct the full state. This feature ensures liveness of the system, meaning that no third party needs to be active in order to provide data to rebuild the state tree.
 
 ##  Forging
 Forging refers to the creation of a batch of layer 2 transactions (off-chain), creation of the proof and the subsequent (on-chain) verification of the attached zk-SNARK.
@@ -20,8 +21,6 @@ Forging refers to the creation of a batch of layer 2 transactions (off-chain), c
 The Hermez network community intends to follow a strategy of “Governance minimization”. This model is intended to be a initially a bootstrap governance mechanism to adjust and manage some network parameters mainly for security and stability purposes until the network reaches enough a degree of maturity to become fully decentralized; at that stage the initial bootstrap Governance model will no longer be necessary and will eventually disappear.
 
 The network will start with a governance based on a Community Council formed by some distributed and known Ethereum community members. This council will delegate some specific network parameters adjustments into a reduced Bootstrap Council, which is non custodial,  in order to be more operationally effective in the initial phase.
-
-In case that the protocol or the network needs for further and continued specific parameters governance after the initial bootstrap period (est. 1-2 years), a HermezDAO based on Aragon will be deployed and the weight of the voting will be based on HEZ staking calculated from snapshots.
 
 Some decisions that the initial Community Council will be able to make will be:
 
@@ -36,8 +35,11 @@ The bootstrap Council will be enabled to change some of the initial parameters o
 - Boot Coordinator maximum cap reward reduction.
 
 ## HEZ
+Hermez has its own network token: HEZ.
 
-## Proof of donation
+HEZ is an ERC-777 utility token used to place bids in the Coordinators auction. Every time a rollup batch is created, a fraction of HEZ tokens placed during the proof-of-donation auction will be burned, and therefore permanently removed.
+
+## Proof of Donation
 Bidding mechanism to select the coordinator for upcoming batches. A fraction of the winning bid goes back to be reinvested in the protocols and services that run on top of Ethereum. 
 
 ## Transactions
@@ -69,8 +71,8 @@ User will need to prove that it owns a leaf in the exit tree in order to perform
 Thee root node is called the exit root, and it summarizes the state of the Exit Tree.
 
 
-## zk-rollup
-A zk-rollup is a layer 2 construction  which uses the Ethereum blockchain for data storage instead of computation. 
+## zk-Rollup
+A zk-Rollup is a layer 2 construction  which uses the Ethereum blockchain for data storage instead of computation. 
 All funds are held by a smart contract on the main-chain. For every batch, a zk-snark is generated off-chain and verified by this contract.
 This snark proves the validity of every transaction in the batch.
 
