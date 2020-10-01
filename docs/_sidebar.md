@@ -4,6 +4,23 @@
     - [Proof of donation](introduction/pod.md)
     - [Transaction flow](introduction/transaction-flow.md)
     - [Glossary](introduction/glossary.md)
+- Protocol
+    - [Overview](protocol/overview.md)
+    - [Transactions](protocol/transactions.md)
+    - [Forging](protocol/forging.md)
+    - [Utility-functions](protocol/utility.md)
+- Integration
+    - [SDK](integration/hermez-library.md)
+    - [Examples](integration/examples.md)
+    - [REST API](integration/api.md)
+    - [Smart Contract Addresses](integration/addresses.md)
+- Tools
+    - [Wallet](user/wallet.md)
+    - [Block Explorer](user/block-explorer.md)
+- Coordinator
+    - [Deployment](coordinator/deployment.md)
+    - [Bidding](coordinator/bidding.md)
+    - [Proof-Server](coordinator/proof-server.md)
 - FAQ
     - [End users](faq/end-users.md)
     - [Coordinators](faq/coordinators.md)
