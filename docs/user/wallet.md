@@ -1,6 +1,7 @@
 # WebApp Wallet
 
-> Under development
+> TODO
+>  Screen captures of wallet and description of how to use it
 
 ## Features
 - Single page webapp

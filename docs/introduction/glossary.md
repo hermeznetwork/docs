@@ -46,7 +46,9 @@ Bidding mechanism to select the coordinator for upcoming batches. A fraction of 
 Transactions is the generic name given to every operation in the Hermez network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen at L1 or L2. The coordinator node is in charge to collecting and processing transactions in batches generating a zk-SNARK to proofs that transactions have been carried out according to some rules.
 
 ### L1 Transactions
-L1 transactions are those that are executed through the smart contract and affect the L2 state tree. These transactions may be started by the user or by the coordinator.
+L1 transactions are those that are executed through the smart contract and affect the L2 state tree. These transactions may be started by the user or by the coordinator. 
+User L1 transactions include CreateAccount, Deposit, DepositTransfer, ...
+Coordinator L1 transactions include CreateAccountEth (to operate in L1) or CreateAccountBjj (to operate in L2).
 
 ### L2 Transactions
 L2 transactions are those that are executed exclusively on L2 and affect the L2 state tree.

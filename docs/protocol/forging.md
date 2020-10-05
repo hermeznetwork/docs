@@ -20,7 +20,7 @@ Hermez reaches a consensus on who will play the role of coordinator by running a
 Hermez zkRollup is divided into slots of a certain duration:
   - Block ethereum = ~ 15s
   - Slot = 40 Ethereum Blocks = 40 \* 15s = 600s = 10 min
-  - [Slot deadline](#free-coordinator-override) = _Pending to be defined_
+  - [Slot deadline](#free-coordinator-override) = Defines the amount of time that any coordinator must wait to start forging without bidding, provided that the coordinator that won the current slot action hasn't forged anything during that time.
 
 ![](consensus-1.png)
 
@@ -30,9 +30,9 @@ Auction bids are placed only in [`HEZ`](../introduction/glossary?id=hez). The au
 
 Bids placed during the auction should be at least greater than the minimal bidding price if it's the first bid in a slot, or 10% higher than the previous bid. Both the minimum bidding price and the premium factor of future slots can be modified by the network governance. Bids not meeting these conditions will not be valid and bidders will receive their HEZ when the slot is forged.
 
-Auction is structured in groups of **6 slots**, with **10 HEZ** as initial minimal bidding price for all the slots. The governance can change this grouping value independently at any time and **affecting open auctions**. 
+Auction is structured in groups of **6 slots** (i.e, slots are sequentially indexed 0,1,2,3,4,5,0,1,...), with **10 HEZ** as initial minimun bidding price for all the slots. Each slot index has an independent minimum bidding price.The governance can change this grouping value or minimum bidding price independently at any time and **affecting open auctions**. 
 
-When the minimum bidding price is set to **0 HEZ value**, the value will be locked and governance will not be able to modify it anymore. At this point, **Hermez will become decentralized**.
+When the minimum bidding price is set to **0 HEZ value** for a given slot index, the value will be locked and governance will not be able to modify it anymore for that slot. 
 
 ![](consensus-2.png)
 

@@ -10,8 +10,8 @@
     - [Forging](protocol/forging.md)
     - [Utility-functions](protocol/utility.md)
 - Integration
-    - [SDK](integration/hermez-library.md)
-    - [Examples](integration/examples.md)
+    - [Developer Guide](integration/dev-guide.md)
+    - [SDK](integration/sdk.md)
     - [REST API](integration/api.md)
     - [Testnet](integration/testnet.md)
 - Tools
