@@ -50,7 +50,7 @@ export class BabyJubWallet {
 With the wallet create, user can now interact with the coordinator or send transactions to the smart contracts.
 
 ## Interaction with Coordinator via REST API
-The coordinator can be reached via a [REST API](../integration/api). The SDK exports serveral methods to interact with the coordinator via REST API.
+The coordinator can be reached via a [REST API](../integration/api). The SDK exports serveral methods to interact with the coordinator via REST API. Below you can find some examples on how to access some of the API endpoints. 
 
 
 ``` 
@@ -59,7 +59,10 @@ import { extractJSON } from '../utils/http'
 
 const baseApiUrl = '167.71.59.190:8001'
 
-/** GET /accounts
+/**
+ * GET /accounts
+ * @param {String} (hermezEthereumAddress) - 
+ * @returns {String} - 
  */
 async function getAccounts (hermezEthereumAddress) {
    ...
@@ -111,12 +114,58 @@ async function getFees () {
 ```
 ## L1 Transactions
 
+```
+export const deposit = async (addressSC, loadAmount, tokenId, walletRollup, abi, gasLimit = 5000000, gasMultiplier = 1) => {
+  ...
+}
 
+export const depositOnTop = async (addressSC, loadAmount, tokenId, babyjubTo, abi, gasLimit = 5000000, gasMultiplier = 1) => {
+  ...
+}
+
+export const withdraw = async (addressSC, tokenId, walletRollup, abi, urlOperator,
+  numExitRoot, gasLimit = 5000000, gasMultiplier = 1) => {
+  ...
+}
+
+export const forceWithdraw = async (addressSC, tokenId, amount, walletRollup, abi,
+  gasLimit = 5000000, gasMultiplier = 1) => {
+  ...
+}
+
+```
 
 ## L2 Transactions
+
+```
+/**
+ * send off-chain transaction
+ * @param {String} urlOperator - url from operator
+ * @param {String[2]} babyjubTo - babyjub public key receiver
+ * @param {String} amount - amount to transfer
+ * @param {Object} walletRollup - ethAddress and babyPubKey together
+ * @param {Number} tokenId - token type identifier, the sender and the receive must use the same token
+ * @param {String} fee - % of th amount that the user is willing to pay in fees
+ * @param {String} nonce - hardcoded from user
+ * @param {Object} nonceObject - stored object wich keep tracking of the last transaction nonce sent by the client
+ * @param {String} ethAddress - Ethereum address enconded as hexadecimal string to be used in deposit off-chains
+ * @returns {Object} - return a object with the response status, current batch, current nonce and nonceObject
+*/
+export async function send (urlOperator, babyjubTo, amount, walletRollup, tokenId, fee, nonce, nonceObject, ethAddress) {
+...
+}
+
+```
 
 
 ## Other Utility Functions
 
 
+/**
+ * Get current average gas price from the last ethereum blocks and multiply it
+ * @param {Number} multiplier - multiply the average gas price by this parameter
+ * @param {Object} provider - ethereum provider object
+ * @returns {Promise} - promise will return the gas price obtained.
+*/
+export async function getGasPrice (multiplier, provider) {
 

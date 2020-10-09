@@ -42,6 +42,9 @@ HEZ is an ERC-777 utility token used to place bids in the Coordinators auction. 
 ## Proof of Donation
 Bidding mechanism to select the coordinator for upcoming batches. A fraction of the winning bid goes back to be reinvested in the protocols and services that run on top of Ethereum. 
 
+## System Parameters
+Set of parameters defined in the system that allow certain configuration from governance in order to modify the behavior of the network. 
+
 ## Transactions
 Transactions is the generic name given to every operation in the Hermez network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen at L1 or L2. The coordinator node is in charge to collecting and processing transactions in batches generating a zk-SNARK to proofs that transactions have been carried out according to some rules.
 
@@ -72,6 +75,8 @@ Each batch has an associated exit tree with all the exits performed by the user,
 User will need to prove that it owns a leaf in the exit tree in order to perform its withdrawal and get back the tokens from the contract. This verification could be done either by submitting a merkle tree proof or by submitting a zkProof.
 Thee root node is called the exit root, and it summarizes the state of the Exit Tree.
 
+## Exit & Withdrawal
+In order to tranfer funds from L2 account to ethereum account two separate transactions are invoked. The first transaction is Exit, where funds are transferred to a smart contract. The second transaction is Withdrawal. If conditions are met, Withdrawal can be instant. If funds to be withdrawn exceed certain limits, the Withdrawal is delayed until transaction is cleared.
 
 ## zk-Rollup
 A zk-Rollup is a layer 2 construction  which uses the Ethereum blockchain for data storage instead of computation. 

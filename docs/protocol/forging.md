@@ -6,7 +6,7 @@ During a `ForgeBatch` call in the rollup smart contract, the consensus smart con
 If the coordinator is granted permission to a forge a batch, then the coordinator adds the selected transactions and generates a zk_SNARK proof.
 
 There are 2 kind of batches:
-- **L2-batch**: Forge only L2 transactions. (Neither the users' or the coordinator's L1 transactions are mined).
+- **L2-batch**: Forge only L2 transactions. (Neither the users' nor the coordinator's L1 transactions are mined).
 - **L1-L2-batch**: Forge both L1 and L2 transactions. The coordinator must forge all pending L1 user transactions. Optionally the coordinator may include L1-coordinator-transactions.
 
 In order to force the coordinator to forge L1 transactions, the smart contract establishes a deadline for the L1-L2-batches. Every L1-L2-batches forged resets this deadline. This mechanism is summarized in the diagram below.

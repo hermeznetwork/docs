@@ -3,8 +3,8 @@ Utility functions include addititional functionalities provided by the Hermez ne
 
 ## Add New Tokens
 Hermez contains a list with all tokens supported. The following list includes some requirements on the token lising:
-- Tokens must be ERC20.
-- Anyone can add a new token using these utility functions by paying some fee in HEZ to prevent flooding attacks. This fee can be modified by the governance.
+- Tokens must be ERC20/ERC777.
+- Only the governance can add new tokens.
 - There can be up to 2^{32} different tokens
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it.
 - There cannot be two tokens with the same ethereum address
@@ -23,7 +23,6 @@ For every user, withdrawals will be classified in one of several buckets dependi
 The amount above the `withdrawal limit` set by the available credits wont be withdrawn instantly. In this case, tokens will be sent to the `WithdrawalDelayer` smart contract. Funds in this smart contract will be available after a time `D` during which Hermez governance can decide if there has been an attack. The two scenarios are:
 
 - When governance decides that no attack has taken place or governance doesn't decide before a given time period, funds will be available for the user as soon as enough credits are available in the selected bucket.
-- when governance decides that an attack has taken place, all the credits in all buckes will be set to 0, and all available funds in the account will be sent to the `WithdrawalDelayer' smart contract. These funds will be locked in the smart contract until the governance changes the bucket credits.
+- When governance decides that an attack has taken place, all the credits in all buckets will be set to 0, and all available funds in the account will be sent to the `WithdrawalDelayer' smart contract. These funds will be locked in the smart contract until the governance changes the bucket credits.
 
 
-L
