@@ -1,13 +1,13 @@
 # Utility Functions
-Utility functions include addititional functionalities provided by the Hermez network.
+Utility functions include additional functionalities provided by the Hermez network.
 
 ## Add New Tokens
-Hermez contains a list with all tokens supported. The following list includes some requirements on the token lising:
+Hermez contains a list with all tokens supported. The following list includes some requirements on the token listing:
 - Tokens must be ERC20/ERC777.
 - Only the governance can add new tokens.
-- There can be up to 2^{32} different tokens
+- There can be up to 2^{32} different tokens.
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it.
-- There cannot be two tokens with the same ethereum address
+- There cannot be two tokens with the same ethereum address.
 
 ## Withdrawal
 Funds are held on Hermez smart contract after the user has performed an exit transaction. Withdrawal is the transaction to get these funds from smart contract to the ethereum address. It is done by proving the existence of a leaf in the exit tree. 
