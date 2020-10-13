@@ -1,27 +1,22 @@
-- Introduction
-    - [Overview](introduction/overview.md)
-    - [Scalable token transfers](introduction/scalable-token-transfers.md)
-    - [Proof of donation](introduction/pod.md)
-    - [Transaction flow](introduction/transaction-flow.md)
-    - [Glossary](introduction/glossary.md)
-- Protocol
-    - [Overview](protocol/overview.md)
-    - [Transactions](protocol/transactions.md)
-    - [Forging](protocol/forging.md)
-    - [Utility-functions](protocol/utility.md)
-- Integration
-    - [Developer Guide](integration/dev-guide.md)
-    - [SDK](integration/sdk.md)
-    - [REST API](integration/api.md)
-    - [Testnet](integration/testnet.md)
-- Tools
-    - [Wallet](user/wallet.md)
-    - [Block Explorer](user/block-explorer.md)
-- Coordinator
-    - [Deployment](coordinator/deployment.md)
-    - [Bidding](coordinator/bidding.md)
-    - [Proof-Server](coordinator/proof-server.md)
-- FAQ
-    - [End users](faq/end-users.md)
-    - [Coordinators](faq/coordinators.md)
-    - [Proof-of-donation](faq/pod.md)
+- About Hermez
+    - [Ethereum Scalability and zk-Rollups](about/scalability.md)
+    - [Hermez Value Proposition](about/value-proposition.md)
+    - [Hermez Network Model](about/model.md)
+    - [Security](about/security.md)
+    - [FAQ](about/faq.md)
+- Developers
+    - [Developer Guide](developers/dev-guide.md)
+    - [SDK](develpers/sdk.md)
+    - [API](developers/api.md)
+    - [Getting Started](developers/getting-started.md)
+    - [FAQ](developers/faq.md)
+- Hermez Users
+    - [Why Hermez](users/why-hermez.md)
+    - [User Interface](users/user-interface.md)
+    - [Explorer](users/explorer.md)
+    - [FAQ](users/faq.md)
+- Becomre a Coordinator
+    - [Decentralization and Coordinators](coordinator/decentralization.md)
+    - [Economic Model](coordinator/economic-model.md)
+    - [Setup](coordinator/setup.md)
+    - [FAQ](coordinator/faq.md)
