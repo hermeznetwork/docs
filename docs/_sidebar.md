@@ -5,18 +5,19 @@
     - [Security](about/security.md)
     - [FAQ](about/faq.md)
 - Developers
+    - [Glossary](developers/glossary.md)
     - [Developer Guide](developers/dev-guide.md)
-    - [SDK](develpers/sdk.md)
+    - [SDK](developers/sdk.md)
     - [API](developers/api.md)
-    - [Getting Started](developers/getting-started.md)
     - [FAQ](developers/faq.md)
 - Hermez Users
     - [Why Hermez](users/why-hermez.md)
     - [User Interface](users/user-interface.md)
     - [Explorer](users/explorer.md)
     - [FAQ](users/faq.md)
-- Becomre a Coordinator
+- Become a Coordinator
     - [Decentralization and Coordinators](coordinator/decentralization.md)
     - [Economic Model](coordinator/economic-model.md)
     - [Setup](coordinator/setup.md)
+    - [Tools](coordinator/tools.ms)
     - [FAQ](coordinator/faq.md)
