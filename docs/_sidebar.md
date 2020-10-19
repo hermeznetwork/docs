@@ -5,10 +5,10 @@
     - [Security](about/security.md)
     - [FAQ](about/faq.md)
 - Developers
-    - [Glossary](developers/glossary.md)
     - [Developer Guide](developers/dev-guide.md)
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
+    - [Glossary](developers/glossary.md)
     - [FAQ](developers/faq.md)
 - Hermez Users
     - [Why Hermez](users/why-hermez.md)

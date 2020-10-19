@@ -1,5 +1,8 @@
 # Glossary
 
+## Auction
+Selection of coordinator is done via an auction process managed by a smart contract. The node with the highest bid in an open slot will earn the right to forge new batches an collect the fees from the transactions included in the batch. This auction is the process by which Hermez network reaches a consensus on which node shall play the role of coordinator in an upcoming slot.
+
 ## BabyJubJub
 BabyJubJub is an elliptic curve defined over a large prime field. It's useful in zk-SNARKs proofs.
 
@@ -12,7 +15,7 @@ A batch is a rollup block. It is formed by a set of transactions that determines
 A coordinator is our term for rollup block producer. At any one time there is one coordinator responsible for collecting transactions and creating blocks on the rollup chain.
 
 ## Data Availability
-Hermez approach determines that anyone can reconstruct the full tree state by just collecting data from the L1 chain. This is done by not having any dependency of third parties holding essential data to reconstruct the full state. This feature ensures liveness of the system, meaning that no third party needs to be active in order to provide data to rebuild the state tree.
+Hermez approach determines that anyone can reconstruct the full tree state by just collecting data from the mainnet. This is done by not having any dependency of third parties holding essential data to reconstruct the full state. This feature ensures liveness of the system, meaning that no third party needs to be active in order to provide data to rebuild the state tree.
 
 ##  Forging
 Forging refers to the creation of a batch of layer 2 transactions (off-chain), creation of the proof and the subsequent (on-chain) verification of the attached zk-SNARK.
@@ -37,7 +40,7 @@ The bootstrap Council will be enabled to change some of the initial parameters o
 ## HEZ
 Hermez has its own network token: HEZ.
 
-HEZ is an ERC-777 utility token used to place bids in the Coordinators auction. Every time a rollup batch is created, a fraction of HEZ tokens placed during the proof-of-donation auction will be burned, and therefore permanently removed.
+HEZ is an ERC-20 utility token used to place bids in the Coordinators auction. Every time a rollup batch is created, a fraction of HEZ tokens placed during the proof-of-donation auction will be burned, and therefore permanently removed.
 
 ## Proof of Donation
 Bidding mechanism to select the coordinator for upcoming batches. A fraction of the winning bid goes back to be reinvested in the protocols and services that run on top of Ethereum. 
@@ -48,16 +51,8 @@ Set of parameters defined in the system that allow certain configuration from go
 ## Transactions
 Transactions is the generic name given to every operation in the Hermez network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen at L1 or L2. The coordinator node is in charge to collecting and processing transactions in batches generating a zk-SNARK to proofs that transactions have been carried out according to some rules.
 
-### L1 Transactions
-L1 transactions are those that are executed through the smart contract and affect the L2 state tree. These transactions may be started by the user or by the coordinator. 
-User L1 transactions include CreateAccount, Deposit, DepositTransfer, ...
-Coordinator L1 transactions include CreateAccountEth (to operate in L1) or CreateAccountBjj (to operate in L2).
-
-### L2 Transactions
-L2 transactions are those that are executed exclusively on L2 and affect the L2 state tree.
-
 ### Atomic Transactions
-Hermez provides the capability to for that some transaction are processed together. This feature is called Atomic Transctions.
+Hermez provides the capability that some transactions to bea processed together. This feature is called Atomic Transctions.
 
 ## Trees
 Hermez uses Sparse Merkle Trees to store the state of the Hermez network. There are two main tree structures:
