@@ -42,6 +42,12 @@ Hermez has its own network token: HEZ.
 
 HEZ is an ERC-20 utility token used to place bids in the Coordinators auction. Every time a rollup batch is created, a fraction of HEZ tokens placed during the proof-of-donation auction will be burned, and therefore permanently removed.
 
+## L1
+Ethereum Layer-1 blockchain
+
+## L2
+Hermez Layer-2 blockchain 
+
 ## Proof of Donation
 Bidding mechanism to select the coordinator for upcoming batches. A fraction of the winning bid goes back to be reinvested in the protocols and services that run on top of Ethereum. 
 

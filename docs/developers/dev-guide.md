@@ -150,8 +150,9 @@ The amount above the `withdrawal limit` set by the available credits wont be wit
 
 The WithdrawalDelayer smart contract can be in one of two states:
 1. **Normal Mode**: Amount above withdrawal limit is available for withdrawal, but with a delay D. This is the standard state.
-2. **Emergency Mode**: If governance detects an attack, the WithdrawalDelayer mode is changed to Emergency Mode. In this scenario, funds can only be withdrawn by governance, and if governance doesn't recover the funds in a given period, then funds can be withdrawn by a white hack group.
-
+2. **Emergency Mode**: The Hermez Foundation is the only body that may change the 
+WithdrawalDelayer mode to Emergency in case of an attack. In this scenario, funds can only be 
+withdrawn by the governance under the tutelage of Aragon court. 
 
 ## Adding New Tokens
 Hermez contains a list with all tokens supported. The following list includes some requirements on the token listing:
