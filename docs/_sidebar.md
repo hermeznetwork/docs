@@ -4,6 +4,12 @@
     - [Proof of donation](introduction/pod.md)
     - [Transaction flow](introduction/transaction-flow.md)
     - [Glossary](introduction/glossary.md)
+- Developers
+    - [Hermez zkRollup protocol](developers/protocol/protocol.md)
+        - [Hermez smart contract](developers/protocol/hermez-sc.md)
+        - [Circuits](developers/protocol/circuits.md)
+    - [Forging consensus protocol](developers/consensus/consensus.md)
+    - [Withdrawal delayer protocol](developers/withdrawal-delayer/withdrawal-delayer.md)   
 - FAQ
     - [End users](faq/end-users.md)
     - [Coordinators](faq/coordinators.md)
