@@ -37,7 +37,7 @@ There will be a delay time `D` to decide if there has been an attack or not:
     - Aragon court will have the option to reject proposals on how the `GovernanceDAO` will distribute the funds
     - If after `MAX_EMERGENCY_MODE_TIME` the funds are still stopped, the `whiteHackGroupAddress` can withdraw the funds if they think it's necessary to avoid a permanent block
 
-![](../protocol/emergency-mechanism.png)
+![](../hermez-protocol/contracts/emergency-mechanism.png)
 
 ## Parameters
 

@@ -1,4 +1,4 @@
-# Hermez smart contract
+# Hermez smart contracts
 
 ## Glossary
 
