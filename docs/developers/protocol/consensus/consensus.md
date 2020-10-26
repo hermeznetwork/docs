@@ -15,7 +15,7 @@ The general porpouse of this protocol is to describe the rules to coordinate thi
 - zkRollup is divided into slots of a certain duration:
   - Block ethereum = ~ 15s
   - Slot = 40 Ethereum Blocks = 40 \* 15s = 600s = 10 min
-  - [Slot deadline](#free-coordinator-override) = _Pending to be defined_
+  - [Slot deadline](#free-coordinator-override) = 20
 
 ![](consensus-1.png)
 
@@ -43,7 +43,7 @@ In the moment of placement, all bids in form of HEZ token placed in the auction 
 
 Once the slot is forged, the tokens are assigned to **three** different accounts:
 
-- A part of the tokens will be **burnt** using the ERC-777 Burn function. So they will not be at 0x0 address, but reduced from the total token amount.
+- A part of the tokens will be **burnt**. So they will not be at 0x0 address, but reduced from the total token amount.
 - A part will be assigned to the **donations account**. Governance process will decide how to allocate this funds into different projects.
 - The rest will be sent to the **Security Token Holders** (HGT). Governance process will also decide how to distribute and send this value to the HGT. We will start with one which will be send periodically the proportional part of the HEZ collected into this account to the same accounts that hold the HGT.
 

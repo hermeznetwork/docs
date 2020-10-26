@@ -43,4 +43,4 @@ There will be a delay time `D` to decide if there has been an attack or not:
 
 - `D`: delay to withdraw from `WithdrawalDelayer` measured in seconds
 - `MAX_WITHDRAWAL_DELAY`: maximum delay time to decide if it was an attack or not mesured in weeks --> 2 weeks
-- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract mesured in weeks --> 1 year (~ 52 weeks)
+- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract mesured in weeks --> 6 months (~ 26 weeks)
