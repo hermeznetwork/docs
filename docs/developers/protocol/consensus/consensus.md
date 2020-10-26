@@ -45,7 +45,7 @@ Once the slot is forged, the tokens are assigned to **three** different accounts
 
 - A part of the tokens will be **burnt**. So they will not be at 0x0 address, but reduced from the total token amount.
 - A part will be assigned to the **donations account**. Governance process will decide how to allocate this funds into different projects.
-- The rest will be sent to the **Security Token Holders** (HGT). Governance process will also decide how to distribute and send this value to the HGT. We will start with one which will be send periodically the proportional part of the HEZ collected into this account to the same accounts that hold the HGT.
+- The rest will will be allocated as Hermez Network usage incentives, compensating active engagement and network adoption, e.g. rewarding transaction and rewarding the holding of specific tokens in Hermez L2 addresses, instead of on L1 Ethereum addresses. 
 
 ## Boot coordinator
 
