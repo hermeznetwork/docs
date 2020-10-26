@@ -295,7 +295,7 @@ Next circuit aims to check the past and future data transactions to match the re
 
 Data to be signed in order to link transactions can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-fields)
 
->Note that setting `rqTxOffset` to 0 means that no transaction is linked 
+> Note that setting `rqTxOffset` to 0 means that no transaction is linked 
 
 - Steps:
   - get data of future/past transactions
@@ -451,7 +451,7 @@ This circuit is a subset of the `rollup-tx` circuit. It has been splitted for cl
 
 Transaction states are computed depending on transactions type. All transaction types can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-types)
 
->Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user o by coordinator.
+> Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user o by coordinator.
 
 Sender and receiver accounts have their own merkle tree processors inside the circuit in order to perform actions on their leafs:
   - sender: processor 1
@@ -480,7 +480,7 @@ Therefore, given the transaction type, it is needed to specify certain signals t
   - `checkToBjj`: enable `toBjjAy` and `toBjjSign` check
 
 Following truth table determines how to set the above signals depending on transaction inputs:
->Note that italics make reference to outputs, regular makes reference to inputs
+> Note that italics make reference to outputs, regular makes reference to inputs
 
 |    **Transaction type**     |   fromIdx   | auxFromIdx | toIdx | auxToIdx |       toEthAddr        | onChain | newAccount | loadAmount | amount |       newExit       | *s1* |         *s2*         | *processor 1* |    *processor 2*     | *isExit* | *verifySignEnable* | *nop* | *checkToEthAddr* | *checkToBjj* |
 |:---------------------------:|:-----------:|:----------:|:-----:|:----------:|:----------------------:|:-------:|:----------:|:----------:|:------:|:--------------------:|:----:|:--------------------:|:-------------:|:--------------------:|:--------:|:------------------:|:-----:|:----------------:|:------------:|
@@ -500,7 +500,7 @@ Following truth table determines how to set the above signals depending on trans
 L1 invalid transactions should not be allowed but the circuit needs to process them even if they are not valid. In order to do so, the circuit performs a zero `loadAmount` \ `amount` update if L1 transaction is not valid. Therefore, circuit nullifies `loadAmount` \ `amount` if L1 invalid transaction is detected.
 Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1 transaction type:
 
->Note that `nullifyLoadAmount` \ `nullifyAmount` fileds are set to 1 only if `checks` are not succesfull
+> Note that `nullifyLoadAmount` \ `nullifyAmount` fileds are set to 1 only if `checks` are not succesfull
 
 |     **Transaction type**     | newAccount | isLoadAmount | isAmount | checkEthAddr | checkTokenID1 |  checkTokenID2   | *nullifyLoadAmount* | *nullifyAmount* |
 |:----------------------------:|:----------:|:------------:|:--------:|:------------:|:-------------:|:----------------:|:-------------------:|:---------------:|
@@ -756,7 +756,7 @@ All pretended public inputs are hashed together as described [here](developers/p
   - verify state exist in the exit tree root given the siblings
   - compute `hashGlobalInputs`
 
->It should be noted that this circuit is heavily attach with the [hermez smart contract](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-smart-contracts) 
+> It should be noted that this circuit is heavily attach with the [hermez smart contract](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-smart-contracts) 
 
 - Global variables
   - `nLevels` 

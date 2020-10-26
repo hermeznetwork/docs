@@ -9,16 +9,12 @@
 ## Hermez general goals
 
 - Handle L1-user transactions
-
   - Ensure that these transactions are forged
-
 - Forge batches
-
   - Ask consensus algorithm for coordinator approval
   - Add L1 Coordinator Transactions
   - Ensures that state transitions are valid through a validity proof which will assure that certain rules has been fulfilled.
   - Set a new state merkle root and exit merkle root
-
 - Utility actions
   - Withdraw funds or add new tokens to the rollup
 
@@ -64,13 +60,7 @@ Transaction to get funds back from smart contract to ethereum address. This is d
 
 ### Forging
 
-The `forgeBatch` functionality depends on a consensus mechanism to decide who
-can be the coordinator of a given batch. Separate from the rollup smart
-contract, there is an external smart contract that implements the consensus
-mechanism and maintains its own state. During a forge call in the rollup smart
-contract, a call is made to the consensus smart contract to validate if the
-caller coordinator is allowed to forge and also to allow the consensus smart
-contract to update its own state and perform consensus actions if necessary.
+The `forgeBatch` functionality depends on a consensus mechanism to decide who can be the coordinator of a given batch. Separate from the rollup smart contract, there is an external smart contract that implements the consensus mechanism and maintains its own state. During a forge call in the rollup smart contract, a call is made to the consensus smart contract to validate if the caller coordinator is allowed to forge and also to allow the consensus smart contract to update its own state and perform consensus actions if necessary.
 
 Then, the coordinator will add his [L1-coordinator-transactions](developers/protocol/hermez-protocol/contracts/contracts?id=l1-coordinator-transactions) and will verify the circuit proof against the verifier smart contract as we can see in the previous [diagram](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-general-goals)
 
@@ -131,14 +121,12 @@ The core mechanism is to set a withdrawal limit in order to avoid infinite withd
 #### Hermez withdraw limit
 
 There will be a histogram of maximum amount of withdrawals in a value range:
-
 - Limits the maximum amount to withdraw
 - Value range is set in USD
 - Buckets are filled in a blockRatio
 - If a withdraw reaches the histogram limit, an instant withdraw cannot be performed
 
 Every time a user tries to perform an instant withdraw:
-
 - Updates the counter of the histogram
 - If the counter is above the capacity of that range, instant withdraw is reverted
 
@@ -154,20 +142,14 @@ The number of withdraws above the `withdraw limit` can not be withdrawn instantl
 Users will be able to perform instant withdrawals as long as `Hermez Contract` does not reach the `withdrawal limit`, that is, it runs out of withdraws available in the bucket (in the bucket with that price range).
 
 Actions that will be taken if the `withdrawal limit` is reached are the following ones:
-
 - If a user does an `instantWithdraw`, `Hermez Contract` will return `revert`.
 - If a user does a `delayWithdraw`, it will be accepted and the tokens will be sent to `WithdrawalDelayer`. The user can withdraw their tokens but with a delay.
 
 There will be a delay time `withdrawalDelay` (parameter of the `WithdrawalDelayer` contract) during which the Hermez foundation can decide if there has been an attack or not:
-
 - Not attack:
-
   - When enough blocks have passed for the bucket to refill, `Hermez Contract` will accept `instantWithdraw` again, while withdrawals are available in the bucket.
-
 - Attack:
-
   - The histogram values will all be set to 0 (change to `safe mode`) so that all tokens are sent to `WithdrawalDelayer` until the histogram values are changed again.
-
 - If a decision is not made in the defined period:
   - When enough blocks have passed for the bucket to refill, `Hermez Contract` will accept `instantWithdraw` again.
 
