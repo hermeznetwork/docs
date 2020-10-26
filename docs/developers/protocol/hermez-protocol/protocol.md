@@ -51,7 +51,7 @@ contract to update its own state and perform consensus actions if necessary.
 - `H`: is the poseidon hash function
 - elements are always encoded in big endian
 
->Big endian enconding is used since it fits better with EVM encoding
+> Big endian enconding is used since it fits better with EVM encoding
 
 ### Field element
 - the value encoded in a field element must be smaller than the field order
@@ -62,14 +62,14 @@ dataField:  [16 bits] tokenID
             [1 bit  ] sign
 ```
 
->Example:
->```
->dataFieldExample: [16 bits] tokenID = 5
+> Example:
+> ```
+> dataFieldExample: [16 bits] tokenID = 5
                   [16 bits] nonce = 4
                   [1 bit  ] sign = 1
->dataFieldExample (large integer) = 4295229445;
->dataFieldExample (hexadecimal padded 32 bytes) = 0x0000000000000000000000000000000000000000000000000000000100040005;
->```
+> dataFieldExample (large integer) = 4295229445;
+> dataFieldExample (hexadecimal padded 32 bytes) = 0x0000000000000000000000000000000000000000000000000000000100040005;
+> ```
 
 ### Buffer bytes
 - first value corresponds to the first byte of the array
@@ -79,13 +79,13 @@ dataBuffer: [48 bits] fromIdx
             [16 bit ] amountFloat  
 ```
 
->Example:
->```
->dataBufferExample:  [48 bits] fromIdx = 5 
+> Example:
+> ```
+> dataBufferExample:  [48 bits] fromIdx = 5 
                     [32 bits] tokenID = 4
                     [16 bit ] amountFloat = 20
->dataBufferExample (hexadecimal) = 0x000000000005000000040014;
->```
+> dataBufferExample (hexadecimal) = 0x000000000005000000040014;
+> ```
 
 ## Global Settings
 
@@ -195,7 +195,6 @@ Sparse merkle tree is used to represent the whole zkRollup state which is identi
 Each leaf of the state tree (account) contains the following data:
 
 - Key: merkle tree index (`idx`)
- 
 - Value: `Hash(state)`
     ```
     **field element notation**
@@ -208,6 +207,7 @@ Each leaf of the state tree (account) contains the following data:
     e_2: [ 253 bits ] ay
     e_3: [ 160 bits ] ethAddr
     ```
+
 All data is hashed with Poseidon hash function and inserted into the sparse merkle tree as a key-value pair.
 
 This approach implies a balanced merkle tree: path is traversed from the root starting with the least significant bit out of the NLevels bits.
@@ -323,7 +323,6 @@ CreateAccount actions must be authorized by the `fromEthAddr`.  To allow other p
 Internal rollup accounts do not have an ethereum address.  For this case, the `CreateAccountDepositFromRelayer` function can be called with a `AccountCreationAuthMsg = 0xffff..` and the account will be created with an `EthAddr = 0xffff..`.
 
 #### CreateAccountDepositFromRelayer
-
 - Inputs:
   - `AccountCreationAuthSig`: user parameter
   - `fromBjj-compressed`: user parameter
@@ -332,7 +331,6 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
-
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
   - deposit `loadAmountFloat16` into the sender `auxFromIdx`
@@ -343,7 +341,6 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
         - `tokenID`: `tokenId`
         - `balance`: `loadAmount`
         - `nonce`: 0
-
 - Requirements:
 
 #### CreateAccountDeposit
@@ -355,7 +352,6 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
-
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
   - deposit `loadAmountFloat16` into the sender `auxFromIdx`
@@ -366,7 +362,6 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
         - `tokenID`: `tokenId`
         - `balance`: `loadAmount`
         - `nonce`: 0
-
 - Requirements:
 
 #### CreateAccountDepositTransfer
@@ -378,7 +373,6 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
-
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
   - deposit `loadAmountFloat16` into the sender `auxFromIdx`
@@ -391,10 +385,8 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
         - `nonce`: 0
   - subtract `amountFloat16` from sender `auxFromIdx`
   - add `amountFloat16` to recipient `toIdx`
-
 - Requirements:
   - receiver `toIdx` account must exist
-
 - Checks NULL:
   - sender `fromIdx` and receiver should have the same `tokenID`
   - `tokenID` should match state1 update account
@@ -410,13 +402,10 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
-
 - Actions:
   - deposit `loadAmountFloat16` into the account
-
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
-
 - Checks NULL: 
   - `tokenID` should match state1 update account
 
@@ -429,16 +418,13 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: user parameter
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
-
 - Actions:
   - deposit `loadAmountFloat16` into the account
   - subtract `amountFloat16` from sender `fromIdx`
   - add `amountFloat16` to recipient `toIdx`
-
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
   - receiver `toIdx` account must exist
-
 - Checks NULL: 
   - `tokenID` should match state1 update account
   - `tokenID` should match state2 update account
@@ -454,22 +440,18 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
-
 - Actions:
   - subtract `amountFloat16` from sender `fromIdx`
   - add `amountFloat16` to recipient `toIdx`
-
 - Requirements:
   - sender `fromIdx` must exist
   - receiver `toIdx` account must exist
-
 - Checks NULL: 
   - sender `fromIdx` and receiver should have the same `tokenID`
   - `tokenID` should match state1 update account
   - `tokenID` should match state2 update account
   - sender `fromIdx` should have enough balance
   - `fromEthAddr` should match state1 update account
-
 
 #### ForceExit
 - Inputs: 
@@ -480,16 +462,13 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `amountFloat16`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: 1
-
 - Actions:
   - subtract `amountFloat16` from sender `fromIdx`
   - If does not exit `fromIdx` account on the exit tree:
     - new account `fromIdx` inserted into the exit tree 
   - add `amountFloat16` to the exit tree recipient `fromIdx`
-
 - Requirements:
   - sender `fromIdx` must exist
-
 - Checks NULL: 
   - `tokenID` should match state1 update account
   - sender should have enough balance
@@ -510,7 +489,6 @@ Account could be created for a given:
   - `amountFloat16`: 0 
   - `tokenId`: coordinator parameter 
   - `toIdx`: 0
-
 - Actions:
   - new account inserted into the state tree
     - account data:
@@ -520,7 +498,6 @@ Account could be created for a given:
         - `tokenID`: `tokenId`
         - `balance`: 0
         - `nonce`: 0
-
 - Requirements:
   - coordinator must submit:
     - `ecdsa signature`: R,S,V signature of [AccountCreationAuthMsg](#regular-rollup-account)
@@ -534,7 +511,6 @@ Account could be created for a given:
   - `amountFloat16`: 0 
   - `tokenId`: coordinator parameter 
   - `toIdx`: 0
-
 - Actions:
   - new account inserted into the state tree
     - account data:
@@ -598,7 +574,6 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
 - Actions:
   - subtract `amountFloat16` from sender `fromIdx`
   - add `amountFloat16` to recipient `toIdx`
-
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - recipient `toIdx` exist on the state tree
@@ -614,7 +589,6 @@ Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-pr
   - If does not exit `fromIdx` account on the exit tree:
     - new account `fromIdx` inserted into the exit tree
   - add `amountFloat16` to the exit tree recipient `fromIdx`
-
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - `tokenID` match with `fromIdx` token
@@ -630,14 +604,13 @@ It is assumed that the `toIdx` is set to the special index 0.
 `toEthAddr` would be used to choose a recipient to transfer the `amountFloat16`. 
 Hence, coordinator would select the recipient `idx` to add `amountFloat16` (called `auxToIdx`).
 
-> Note that this transaction encourages the coordinator to create new accounts through L1 coordinator transaction [CreateAccountEth](#createaccounteth)
+> Note that this transaction encourages the coordinator to create new accounts through L1 coordinator transaction [CreateAccountEth](#createaccounteth).
 > It is important to mention that this kind on transactions allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
 
 - Actions:
   - subtract `amountFloat16` from sender `fromIdx`
   - add `amountFloat16` to the recipient `auxToIdx`
     - it must match with `toEthAddr` and `tokenID` signed by sender
-
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - `tokenID` match with `fromIdx` and `auxToIdx` token
@@ -653,7 +626,7 @@ It is assumed that the `toIdx` is set to the special index 0.
 `toEthAddr` will be set to `0xff..fff` which is a special case of an ethereum address that no one can control and it will be check that the recipient account has its ethereum address set to `0xff..ff`.  This value allows account creation without ethereum address authorization.
 Hence, coordinator would select the recipient `idx` to add `amountFloat16` (called `auxToIdx`).
 
-> Note that this transaction encourage coordinador to create new accounts through L1 coordinator transaction [CreateAccountBjj](#createaccountbjj)
+> Note that this transaction encourage coordinador to create new accounts through L1 coordinator transaction [CreateAccountBjj](#createaccountbjj).
 > It is important to mention that this kind on transactions allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
 
 - Actions:
@@ -661,7 +634,6 @@ Hence, coordinator would select the recipient `idx` to add `amountFloat16` (call
   - add `amountFloat16` to the recipient `auxToIdx`
     - it must match with `toBjjAy` + `toBjjSign` and `tokenID` signed by sender
     - it must match `ethAddr` with `0xff..ff`
-
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - `tokenID` match with `fromIdx` and `auxToIdx` token
@@ -760,7 +732,6 @@ There two types of L1CoordinatorTx:
   - Ethereum address is recovered from the ecdsa signature
   - Coordinator should create an account with an ethereum address equal to the `toEthAddr` in the L2 transaction in order to process the L2 transaction
   - Contract will have to build the [`AccountCreationAuthMsg`](#regular-rollup-account), hash it and retrieve ethereum account from signed message and the signature (`r`, `s` and `v`).
-
 - CreateAccountBjj:
   - Coordinator should create an account with a babyjubjub key equal to the `toAx` and `toAy` in the L2 transaction in order to process the L2 transaction
   - ecdsa signature fields are set to 0
@@ -786,7 +757,7 @@ L2TxData: [ NLevels  bits ] fromIdx = 0
           [     8  bits   ] fee = 0
 ```
 
->Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 16 + 8 = 88 bits = 11 bytes
+> Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 16 + 8 = 88 bits = 11 bytes
 
 `L2TxsData` is the all the L2 transaction data concatenated:
 ```
