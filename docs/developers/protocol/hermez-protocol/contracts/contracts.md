@@ -40,7 +40,7 @@ When a user calls a function that adds an L1UserTx, the following happens:
     - L1UserTx data (68 bytes)
     - position
 
-In the global spec are specified all the [L1 user transactions](developers/protocol/protocol?id=l1-user-transactions)
+In the global spec are specified all the [L1 user transactions](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
 
 The `L1TxQueue` has a lenght of `MAX_L1_TXS`, L1UserTx can fulfill till `MAX_L1_USER_TXS`, therefore always are some slots reserved for the L1-coordinator-Tx: 
  `MAX_L1_TXS - len(L1_USER_TXS)`
@@ -71,7 +71,7 @@ contract, a call is made to the consensus smart contract to validate if the
 caller coordinator is allowed to forge and also to allow the consensus smart
 contract to update its own state and perform consensus actions if necessary.
 
-Then, the coordinator will add his [L1-coordinator-transactions](developers/protocol/hermez-sc?id=l1-coordinator-transactions) and will verify the circuit proof against the verifier smart contract as we can see in the previous [diagram](developers/protocol/hermez-sc?id=hermez-general-goals)
+Then, the coordinator will add his [L1-coordinator-transactions](developers/protocol/hermez-protocol/contracts/contracts?id=l1-coordinator-transactions) and will verify the circuit proof against the verifier smart contract as we can see in the previous [diagram](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-general-goals)
 
 
 There are 2 kind of `forgeBatch`, a flag in the function will distinguish between them
@@ -79,7 +79,7 @@ There are 2 kind of `forgeBatch`, a flag in the function will distinguish betwee
     - Forge only L2 transactions, L1 transactions are not mined, neither the users nor the coordinator
 - L1-L2-batch
     - Forge both L1 and L2 transactions. The coordinator must forge all the L1 transactions in the first queue, wich is frozen (once a queue is frozen means that L1 transactions can't be added anymore)
-    - Optionally coordinator can add [L1-coordinator-transactions](developers/protocol/hermez-sc?id=l1-coordinator-transactions)
+    - Optionally coordinator can add [L1-coordinator-transactions](developers/protocol/hermez-protocol/contracts/contracts?id=l1-coordinator-transactions)
     - Update state and set exit root
     - Delete current queue, freeze next one
 
@@ -90,7 +90,7 @@ In order to force the coordinator to forge the L1 transactions, but also allow h
 
 #### L1 coordinator transactions
 
-In the global spec are specified all the [L1 coordinator transactions](developers/protocol/protocol?id=l1-coordinator)
+In the global spec are specified all the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)
 
 #### Data availability
 

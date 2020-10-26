@@ -607,7 +607,7 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
   - sender `fromIdx` has the correct `nonce`
 
 #### Exit
-Transfer tokens from an acccunt to the [exit tree](developers/protocol/protocol?id=exit-tree), L2 --> L2
+Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
 
 - Actions:
   - subtract `amountFloat16` from sender `fromIdx`
@@ -669,7 +669,7 @@ Hence, coordinator would select the recipient `idx` to add `amountFloat16` (call
   - sender `fromIdx` has the correct `nonce`
 
 ### HermezWithdraw
-Funds are held on hermez contract once the user has perform an [exit transaction](developers/protocol/protocol?id=exit).
+Funds are held on hermez contract once the user has perform an [exit transaction](developers/protocol/hermez-protocol/protocol?id=exit).
 The withdrawal data will contain unique data (nullifier) which identifies the withdrawal. Hence, smart contract will store that data to avoid perform withdrawals multiple times.
 
 Each withdrawal could be identified uniquely by:
@@ -794,7 +794,7 @@ L2TxsData = zero[0] || ... || zero[len(L1Txs) - 1] || L2Tx[0] || L2Tx[1] || ... 
 ```
 
 ### Fee Tx
-All indexes that will receive the fees accumulated. Further information can be found in [this section](developers/protocol/protocol?id=coordinator).
+All indexes that will receive the fees accumulated. Further information can be found in [this section](developers/protocol/hermez-protocol/protocol?id=coordinator).
 
 `feeTxsData` is all the indexes that will receive the fees concatenated:
 ```
@@ -840,12 +840,12 @@ $TotalTxCost = amount + Fee_{amount}$
 
 Since there are 8 reserved bits for this field, there will be 256 different fee
 percentatges that the user could choose to perform its transaction.
-See the [table showing the 256 values for each fee index](developers/protocol/fee-table?id=transaction-fee-table)
+See the [table showing the 256 values for each fee index](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
 
 #### Compute fees
 Procedure to compute fees must remain equal across protocol implementations. Following procedure has been adopted:
 
-- given `feeUser` bits selects [feeFactor shifted](developers/protocol/fee-table?id=feefactor-left-shifted) large integer
+- given `feeUser` bits selects [feeFactor shifted](developers/protocol/hermez-protocol/fee-table?id=feefactor-left-shifted) large integer
   - 79 bits has been chosen in order to optimize precision at the time to compute fees. 79 bits is the minimum bits to achieve enough precision among all fee factor values
 - $Fee_{amount} = amount * feeFactor_{shifted}$
 - $Fee_{amount} = Fee_{amount} >> 79$
@@ -860,7 +860,7 @@ It does not mean that the coordinator could forge as many transactions with more
 In order to ensure that the coordinator receives the correct amount of fees, the zkSNARKs circuit will compute all the collected fees for all the L2 transactions processed. Then, the coordinator must submit in which leafs it wants to receive the fees collected.
 
 ## Token listing
-- ERC20 - ERC777 tokens are supported by the rollup and it could be added up to $2^{32}$ different tokens
+- ERC20 tokens are supported by the rollup and it could be added up to $2^{32}$ different tokens
 - Ether is supported by the rollup and it has an assigned `tokenID = 0`
 - Only the governance could add tokens
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it
@@ -888,5 +888,5 @@ This logic is implemented in a smart contract: `WithdrawalDelayer`. This contrac
 
 The purpose of this smart contract is to delay the withdraw. Hence, tokens will be held by the smart contract for a period of `D` and only afterwards tokens could be really withdrawn.
 
-- [Hermez emergency mechanism](developers/protocol/hermez-sc?id=emergency-mechanism)
-- [Withdrawal delayer mechanism](developers/withdrawal-delayer/withdrawal-delayer?id=withdrawal-delayer-protocol)
+- [Hermez emergency mechanism](developers/protocol/hermez-protocol/contracts/contracts?id=emergency-mechanism)
+- [Withdrawal delayer mechanism](developers/protocol/withdrawal-delayer/withdrawal-delayer?id=withdrawal-delayer-protocol)

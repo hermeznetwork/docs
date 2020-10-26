@@ -14,7 +14,7 @@ Circuits are built from the bottom up. Hence, small circuits are first introduce
 Circuits would be splitted in three modules:
 - library: basic hermez circuits and structs commonly used across the rest of the circuits
 - withdraw: specifc circuit to allow a user to withdraw funds from hermez contract
-- rollup-main: main circuit that contains all the logic described in [zkRollup protocol](developers/protocol/protocol)
+- rollup-main: main circuit that contains all the logic described in [zkRollup protocol](developers/protocol/hermez-protocol/protocol)
 
 > withdraw: user could perform a withdrawal by submitting a zkProof or a merkle tree proof. Boths methods are equivalent in terms of functionality. 
 
@@ -26,21 +26,21 @@ Circuits would be splitted in three modules:
 
 ### circuit organization
 - Library:
-  - [hash-state](developers/protocol/circuits?id=hash-state) 
-  - [decode-float](developers/protocol/circuits?id=decode-float)
-  - [fee-table-selector](developers/protocol/circuits?id=fee-table-selector)
-  - [utils-bjj](developers/protocol/circuits?id=utils-bjj)
+  - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state) 
+  - [decode-float](developers/protocol/hermez-protocol/circuits/circuits?id=decode-float)
+  - [fee-table-selector](developers/protocol/hermez-protocol/circuits/circuits?id=fee-table-selector)
+  - [utils-bjj](developers/protocol/hermez-protocol/circuits/circuits?id=utils-bjj)
 - Source:
-  - [decode-tx](developers/protocol/circuits?id=decode-tx)
-  - [fee-accumulator](developers/protocol/circuits?id=fee-accumulator)
-  - [rq-tx-verifier](developers/protocol/circuits?id=rq-tx-verifier)
-  - [hash-inputs](developers/protocol/circuits?id=hash-inputs)
-  - [fee-tx](developers/protocol/circuits?id=fee-tx)
-  - [balance-updater](developers/protocol/circuits?id=balance-updater)
-  - [rollup-tx-states](developers/protocol/circuits?id=rollup-tx-states)
-  - [rollup-tx](developers/protocol/circuits?id=rollup-tx)
-  - [rollup-main](developers/protocol/circuits?id=rollup-main)
-- [withdraw](developers/protocol/circuits?id=withdraw) 
+  - [decode-tx](developers/protocol/hermez-protocol/circuits/circuits?id=decode-tx)
+  - [fee-accumulator](developers/protocol/hermez-protocol/circuits/circuits?id=fee-accumulator)
+  - [rq-tx-verifier](developers/protocol/hermez-protocol/circuits/circuits?id=rq-tx-verifier)
+  - [hash-inputs](developers/protocol/hermez-protocol/circuits/circuits?id=hash-inputs)
+  - [fee-tx](developers/protocol/hermez-protocol/circuits/circuits?id=fee-tx)
+  - [balance-updater](developers/protocol/hermez-protocol/circuits/circuits?id=balance-updater)
+  - [rollup-tx-states](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx-states)
+  - [rollup-tx](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx)
+  - [rollup-main](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-main)
+- [withdraw](developers/protocol/hermez-protocol/circuits/circuits?id=withdraw) 
 
 #### Dependencies
 ![center](circuit-dependencies.png)
@@ -69,20 +69,20 @@ A summary is shown in the next table with all the L1 transactions assumptions:
 |        forceTransfer         | UP, ME | UP, ME  | UP < 2^192 |      0      | UP, ME  |         0          | msg.sender  |
 |          forceExit           |   1    | UP, ME  | UP < 2^192 |      0      | UP, ME  |         0          | msg.sender  |
 
->All L1 transactions are further explained [here](developers/protocol/protocol?id=l1-user-transactions)
+>All L1 transactions are further explained [here](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
 
 ## Legend
 ![center](legend.png)
 
 It should be note that `public` and `private` signals will be highlighted only in top layer circuits:
-- [withdraw](developers/protocol/circuits?id=withdraw)
-- [rollup-main](developers/protocol/circuits?id=rollup-main)
+- [withdraw](developers/protocol/hermez-protocol/circuits/circuits?id=withdraw)
+- [rollup-main](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-main)
 
 ## Library
 
 ### hash-state
 #### Description
-Gets the inputs of the state and computes its hash as described [here](developers/protocol/protocol?id=state-tree)
+Gets the inputs of the state and computes its hash as described [here](developers/protocol/hermez-protocol/protocol?id=state-tree)
 
 #### Schematic
 ![center](hash-state.png)
@@ -104,7 +104,7 @@ Gets the inputs of the state and computes its hash as described [here](developer
 
 ### decode-float
 #### Description
-Gets an input representing a `float16` format and decode it to a large integer value as described [here](developers/protocol/protocol?id=floating-point-format-float16)
+Gets an input representing a `float16` format and decode it to a large integer value as described [here](developers/protocol/hermez-protocol/protocol?id=floating-point-format-float16)
 
 - Steps:
   - get the 16 less significant bits
@@ -130,7 +130,7 @@ Gets an input representing a `float16` format and decode it to a large integer v
 #### Description
 Selects the fee to apply in a transaction given its selector index.
 
-> It should be noted that `fee X` are values hardcoded in the circuit that will match the [fee factor shifted](developers/protocol/fee-table?id=feefactor-left-shifted)
+> It should be noted that `fee X` are values hardcoded in the circuit that will match the [fee factor shifted](developers/protocol/hermez-protocol/fee-table?id=feefactor-left-shifted)
 
 - Steps:
   - get the fee selector
@@ -149,7 +149,7 @@ Selects the fee to apply in a transaction given its selector index.
 |:------:|:-----:|:----------------------:|
 | feeOut | field | feeSelected * $2^{79}$ |
 
->79 bits has been chosen in order to optimize precision at the time to compute fees. 79 bits is the minimum bits to achieve enough precision according [fee table values](developers/protocol/fee-table)
+>79 bits has been chosen in order to optimize precision at the time to compute fees. 79 bits is the minimum bits to achieve enough precision according [fee table values](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
 
 ### utils-bjj
 #### Description
@@ -199,11 +199,11 @@ Implements two functionalities to be used for further circuits:
 Take the transaction data, decodes it and build data strcuctures to be used in further circuits. Besides, it does checks on transactions fields. It is listed below all the built data and all the checks that this circuit performs.
 
 - Decoders/Build
-  - decodes `txCompressedData` as specified [here](developers/protocol/protocol?id=l2)
-  - builds `txCompressedDataV2` as specified [here](developers/protocol/protocol?id=l2)
-  - builds L2 data availability `L2TxData` as specificied [here](developers/protocol/protocol?id=l2-transactions)
-  - builds message to sign by L2 transactions `sigL2Hash` as specified [here](developers/protocol/protocol?id=l2)
-  - build L1 data `L1TxData` as specified [here](developers/protocol/protocol?id=l1-user-transactions)
+  - decodes `txCompressedData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
+  - builds `txCompressedDataV2` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
+  - builds L2 data availability `L2TxData` as specificied [here](developers/protocol/hermez-protocol/protocol?id=l2-transactions)
+  - builds message to sign by L2 transactions `sigL2Hash` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
+  - build L1 data `L1TxData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
 - Checks
   - L1 transactions must be processed before L2 transactions
     - only switching from L1 to L2 is allowed
@@ -253,7 +253,7 @@ Take the transaction data, decodes it and build data strcuctures to be used in f
 |     sigL2Hash      |     field     |             hash L2 data to sign             |
 
 ### fee-accumulator
-### Description
+#### Description
 Updates the fees accumulated by each transaction given its fee. 
 
 - Definitions:
@@ -279,7 +279,7 @@ Updates the fees accumulated by each transaction given its fee.
 |:------------------------:|:-------------:|:--------------------------------------:|
 |         tokenID          |    uint32     |          tokenID transaction           |
 |        fee2Charge        |    uint192    |              fee charged               |
-| feePlanTokenID[maxFeeTx] | uint40 array  | all tokens eligible to accumulate fees |
+| feePlanTokenID[maxFeeTx] | uint32 array  | all tokens eligible to accumulate fees |
 |    accFeeIn[maxFeeTx]    | uint192 array |        initial fees accumulated        |
 
 #### Outputs
@@ -293,7 +293,7 @@ Required transaction offset `rqTxOffset` is the relative index of the transactio
 
 Next circuit aims to check the past and future data transactions to match the required data signed.
 
-Data to be signed in order to link transactions can be found [here](developers/protocol/protocol?id=transaction-fields)
+Data to be signed in order to link transactions can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-fields)
 
 >Note that setting `rqTxOffset` to 0 means that no transaction is linked 
 
@@ -328,9 +328,9 @@ Take all the pretended public inputs and hash them all together to build a singl
 
 Note that this single input will be built by the smart contract. Therefore, proof must match all the data hashed in the `input hash` which is built inside the circuit from private signals.
 
-> checkout [here](developers/protocol/protocol?id=circuit) definition of global settings
+> checkout [here](developers/protocol/hermez-protocol/protocol?id=circuit) definition of global settings
 
-Specification for computing `hashInputs` can be found [here](developers/protocol/protocol?id=forging)
+Specification for computing `hashInputs` can be found [here](developers/protocol/hermez-protocol/protocol?id=forging)
 
 - Global variables:
   - `nLevels`
@@ -449,7 +449,7 @@ It should be noted that in L1 tx, no errors are allowed but the circuit needs to
 #### Description
 This circuit is a subset of the `rollup-tx` circuit. It has been splitted for clarity.
 
-Transaction states are computed depending on transactions type. All transaction types can be found [here](developers/protocol/protocol?id=transaction-types)
+Transaction states are computed depending on transactions type. All transaction types can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-types)
 
 >Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user o by coordinator.
 
@@ -684,10 +684,10 @@ Main circuit could be splitted in the following phases:
 |          oldLastIdx          |      uint48       |                         old last index assigned                         |
 |         oldStateRoot         |       field       |                           initial state root                            |
 |        globalChainID         |      uint16       |                         global chain identifier                         |
-|      feeIdxs[maxFeeTx]       |   uint40 array    |                   merkle tree indexes to receive fees                   |
+|      feeIdxs[maxFeeTx]       |   uint48 array    |                   merkle tree indexes to receive fees                   |
 |   feePlanTokens[maxFeeTx]    |   uint32 array    |                 tokens identifiers of fees accumulated                  |
 |       imOnChain[nTx-1]       |   boolean array   |      intermediary signals: decode transaction output onChain flag       |
-|       imOutIdx[nTx-1]        |   uint40 array    |      intermediary signals: decode transaction final index assigned      |
+|       imOutIdx[nTx-1]        |   uint48 array    |      intermediary signals: decode transaction final index assigned      |
 |      imStateRoot[nTx-1]      |    field array    |           intermediary signals: transaction final state root            |
 |      imExitRoot[nTx-1]       |    field array    |            intermediary signals: transaction final exit root            |
 | imAccFeeOut[nTx-1][maxFeeTx] |   uint192 array   |         intermediary signals: transaction final accumlate fees          |
@@ -739,7 +739,7 @@ Main circuit could be splitted in the following phases:
 |      balance3[maxFeeTx]      |   uint192 array   |                        balance of leafs feeIdxs                         |
 |        ay3[maxFeeTx]         |    field array    |                           ay of leafs feeIdxs                           |
 |      ethAddr3[maxFeeTx]      |   uint160 array   |                        ethAddr of leafs feeIdxs                         |
-|    siblings3[nLevels + 1]    | field array array |                   siblings merkle proof of leafs Idxs                   |
+|    siblings3[nLevels + 1]    | field array       |                   siblings merkle proof of leafs Idxs                   |
 
 #### Outputs
 |      Output      | type  |             Description             |
@@ -749,14 +749,14 @@ Main circuit could be splitted in the following phases:
 ## Withdraw
 #### Description
 This circuit is used to prove that a leaf exist on the exit tree. If its existence is proved, user will be able to withdraw funds from the hermez contract.
-All pretended public inputs are hashed together as described [here](developers/protocol/protocol?id=hermezwithdraw).
+All pretended public inputs are hashed together as described [here](developers/protocol/hermez-protocol/protocol?id=hermezwithdraw).
 
 - Steps:
   - compute hash-state
   - verify state exist in the exit tree root given the siblings
   - compute `hashGlobalInputs`
 
->It should be noted that this circuit is heavily attach with the [hermez smart contract](developers/protocol/hermez-sc?id=hermez-smart-contract) 
+>It should be noted that this circuit is heavily attach with the [hermez smart contract](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-smart-contracts) 
 
 - Global variables
   - `nLevels` 
