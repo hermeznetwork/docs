@@ -6,6 +6,12 @@
     - [FAQ](about/faq.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
+    - [Protocol](developers/protocol/README.md)
+        - [Hermez zkRollup protocol](developers/protocol/hermez-protocol/protocol.md)
+            - [Smart contracts](developers/protocol/hermez-protocol/contracts/contracts.md)
+            - [Circuits](developers/protocol/hermez-protocol/circuits/circuits.md)
+        - [Forging consensus protocol](developers/protocol/consensus/consensus.md)
+        - [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)   
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Glossary](developers/glossary.md)
