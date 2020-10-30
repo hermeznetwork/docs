@@ -10,7 +10,7 @@ $2^{-60 + i·(\frac{-8-(-60)}{32})} \quad \text{if} \quad 1 \leq i \leq 31$
 
 $2^{-8 + (i-32)·(\frac{0-(-8)}{160})} \quad \text{if} \quad 32 \leq i \leq 191$
 
-$2^{(i-192)·(\frac{0-63}{63})} \quad \text{if} \quad 192 \leq i \leq 255$
+$2^{(i-192)·(\frac{63-0}{63})} \quad \text{if} \quad 192 \leq i \leq 255$
 
 This is the complete table of the fees factors by fee index:
 

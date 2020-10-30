@@ -28,7 +28,7 @@ Circuits would be splitted in three modules:
 - Library:
   - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state) 
   - [decode-float](developers/protocol/hermez-protocol/circuits/circuits?id=decode-float)
-  - [fee-table-selector](developers/protocol/hermez-protocol/circuits/circuits?id=fee-table-selector)
+  - [mux256](developers/protocol/hermez-protocol/circuits/circuits?id=mux256)
   - [utils-bjj](developers/protocol/hermez-protocol/circuits/circuits?id=utils-bjj)
 - Source:
   - [decode-tx](developers/protocol/hermez-protocol/circuits/circuits?id=decode-tx)
@@ -36,6 +36,7 @@ Circuits would be splitted in three modules:
   - [rq-tx-verifier](developers/protocol/hermez-protocol/circuits/circuits?id=rq-tx-verifier)
   - [hash-inputs](developers/protocol/hermez-protocol/circuits/circuits?id=hash-inputs)
   - [fee-tx](developers/protocol/hermez-protocol/circuits/circuits?id=fee-tx)
+  - [compute-fee](developers/protocol/hermez-protocol/circuits/circuits?id=compute-fee)
   - [balance-updater](developers/protocol/hermez-protocol/circuits/circuits?id=balance-updater)
   - [rollup-tx-states](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx-states)
   - [rollup-tx](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx)
@@ -126,30 +127,23 @@ Gets an input representing a `float16` format and decode it to a large integer v
 |:------:|:-----:|:--------------:|
 |  out   | field | float16 decode |
 
-### fee-table-selector
+### mux256
 #### Description
-Selects the fee to apply in a transaction given its selector index.
-
-> It should be noted that `fee X` are values hardcoded in the circuit that will match the [fee factor shifted](developers/protocol/hermez-protocol/fee-table?id=feefactor-left-shifted)
-
-- Steps:
-  - get the fee selector
-  - selects the output fee
+Multiplexer with 256 inputs
 
 #### Schematic
-![center](fee-table-selector.png)
+![center](mux256.png)
 
 #### Inputs
-| Input  | type  | Description  |
-|:------:|:-----:|:------------:|
-| feeSel | uint8 | fee Selector |
+|  Input  |     type      |  Description  |
+|:-------:|:-------------:|:-------------:|
+|  s[8]   | boolean array | mux selectors |
+| in[256] |  field array  |  mux inputs   |
 
 #### Outputs
-| Output | type  |      Description       |
-|:------:|:-----:|:----------------------:|
-| feeOut | field | feeSelected * $2^{79}$ |
-
->79 bits has been chosen in order to optimize precision at the time to compute fees. 79 bits is the minimum bits to achieve enough precision according [fee table values](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
+| Output | type  |  Description   |
+|:------:|:-----:|:--------------:|
+|  out   | field | selected input |
 
 ### utils-bjj
 #### Description
@@ -400,6 +394,37 @@ Besides, if coordinator does not fulfill all the possible recipient to receive f
 |    Output    | type  |  Description   |
 |:------------:|:-----:|:--------------:|
 | newStateRoot | field | new state root |
+
+### compute-fee
+#### Description
+Computes the final amount of fee to apply given the fee selector
+
+- Steps:
+  - selects fee factor, `feeOut`, to apply given `feeSel` and `applyFee`
+  - compute `feeOutNotShifted = amount * feeOut` and convert it into bits in `feeOutBits[253]`
+  - compute `applyShift` to decide if shift has to be applied to `feeOutNotShifted`
+  - select bits on `feeOutBits[253]` depending on `applyShift` flag
+  - assert `feeOut` is $< 2^{128}$
+
+> It should be noted that `feeShiftTable[x]` are values hardcoded in the circuit that will match the [fee factor shifted](developers/protocol/hermez-protocol/fee-table?id=feefactor-left-shifted)
+
+> 60 bits has been chosen in order to optimize precision at the time to compute fees. 60 bits is the minimum bits to achieve enough precision according [fee table values](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
+
+
+#### Schematic
+![center](compute-fee.png)
+
+#### Inputs
+|  Input   |  type   |                     Description                      |
+|:--------:|:-------:|:----------------------------------------------------:|
+|  feeSel  |  Uint8  |                     fee selector                     |
+|  amount  | Uint128 |            amount to apply the fee factor            |
+| applyFee | boolean | determines if fee needs to be computed or if it is 0 |
+
+#### Outputs
+| Output |  type   |    Description     |
+|:------:|:-------:|:------------------:|
+| feeOut | Uint128 | amount * feeFactor |
 
 ### balance-updater
 #### Description
