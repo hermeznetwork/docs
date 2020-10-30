@@ -3,7 +3,6 @@
     - [Hermez Value Proposition](about/value-proposition.md)
     - [Hermez Network Model](about/model.md)
     - [Security](about/security.md)
-    - [FAQ](about/faq.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
@@ -15,15 +14,7 @@
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Glossary](developers/glossary.md)
-    - [FAQ](developers/faq.md)
-- Hermez Users
-    - [Why Hermez](users/why-hermez.md)
-    - [User Interface](users/user-interface.md)
-    - [Explorer](users/explorer.md)
-    - [FAQ](users/faq.md)
-- Become a Coordinator
-    - [Decentralization and Coordinators](coordinator/decentralization.md)
-    - [Economic Model](coordinator/economic-model.md)
-    - [Setup](coordinator/setup.md)
-    - [Tools](coordinator/tools.ms)
-    - [FAQ](coordinator/faq.md)
+- FAQ
+    - [Coordinators](faq/coordinators.md)
+    - [End-Users](faq/end-users.md)
+    - [Proof of Donation](faq/pod.md)
