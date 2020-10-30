@@ -1,6 +1,6 @@
 # REST API
 
-Hermez API documentation of the available endpoints and used schemas can be found [`here`](http://167.71.59.190:8001)
+> Please note that the REST API is still under development and hasn't been released yet. 
 
 The API end points are divided in three main groups:
 1. **Account**: Provides information about accounts.

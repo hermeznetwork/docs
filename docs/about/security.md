@@ -1,7 +1,7 @@
 # Security
 
 Hermez relies on certain assumptions that gurantee users can always recover their assets deposited on 
-the network. These assumptions are based on certain design and architectural decisions that we will review here.
+the network. These assumptions are based on several design and architectural decisions that we will review here.
 
 Hermez is a Layer2 solution running on top of Ethereum 1.0. This means that the security of Hermez depends
  on the security assumptions and guarantees provided by Ethereum. In addition, Hermez is a zk-rollup protocol:

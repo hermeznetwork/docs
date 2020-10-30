@@ -65,7 +65,7 @@ is impossible.
 The Hermez network does not provide in any way custodial or exchange services. Hermez only and exclusively provides a L2 scaling solution for faster 
 and cheaper Ethereum tokens transfers.
 
-## Third-Party Volume aggregators
+## Third-Party Volume Aggregators
 
 Third-Party Exchanges and other volume aggregators will use a SDK to connect to the network to access L1 smart contracts and coordinator REST API endpoints
 and thus exploit Hermez full potential.
