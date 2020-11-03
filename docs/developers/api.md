@@ -27,13 +27,13 @@ In order to use pagination, three query parameters are used:
     
 Responses for those endpoints will always include a `pagination` object. This object includes the total amount of items that the endpoint will return at a given time with the given filters. Apart from that, it also includes the `itemId` of the last and first items that will be returned (not in a single response but within the total items). These two properties can be used to know when to stop querying. 
 
-### Reorgs and safetyness
+### Reorgs and Safety
 
-Since all the items are ordered chronologicaly, there are no safety problems when fetching items in ascending order, except for reorgs (more on this later).
+Since all the items follow a chronological order, there are no safety problems when fetching items in ascending order (except for reorgs).
 
-On the other hand, when iterating in descending order, new items will be added at the beginning. This doesn't cause any safety problem, but to get those new items, it's necessary to start queryng without the `fromItem` set to `pagination.lastItem`.
+When fetching items descending order, new items will be added at the beginning. This doesn't cause any safety problems. In this case it is necessary to start queryng without the `fromItem` set to `pagination.lastItem`.
 
-To handle reorgs, the `itemId` can be used since it will change. This is important since other identifiers may be the same but with different content. As an example, if the batch 424 get's reorged, it will be deleted, but eventualy, a new batch 424 will appear with potentialy different content.
+`itemId` can be used during reorgs. This is important since other identifiers may be the same but with different content. As an example, if the batch 424 get's reorged, it will be deleted. Eventualy, a new batch 424 will appear with potentialy different content.
 
 ## Account Endpoints
 ### POST /account-creation-authorization
