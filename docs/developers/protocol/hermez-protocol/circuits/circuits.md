@@ -430,7 +430,7 @@ Computes the final amount of fee to apply given the fee selector
 #### Description
 This circuit checks if there is enough balance in the sender account to do the transfer to the receiver account.
 
-It computes the new balances for the sender and the receiver. Besides, returns the fee that will be charged and if the amount to transfer is 0 (`update2` signal). These signals will be used in further circuits.
+It computes the new balances for the sender and the receiver. Besides, returns the fee that will be charged and if the amount to transfer is 0 (`isP2Nop` signal). These signals will be used in further circuits.
 
 It should be noted that in L1 tx, no errors are allowed but the circuit needs to process them. Hence, in case it is not enough balance on the sender account, it will process the transaction as a 0 amount transfer. In case of an L2 tx, the protocol does not allow to do a transaction if there is not enough balance on the sender account.
 
@@ -467,7 +467,7 @@ It should be noted that in L1 tx, no errors are allowed but the circuit needs to
 |:--------------------:|:-------:|:----------------------------------------------------:|
 |  newStBalanceSender  | uint192 |                 final balance sender                 |
 | newStBalanceReceiver | uint192 |                final balance receiver                |
-|       update2        |  bool   | determines if processor 2 performs a NOP transaction |
+|       isP2Nop        |  bool   |   determines if processor 2 performs a NOP function  |
 |      fee2Charge      | uint192 |              effective transaction fee               |
 
 ### rollup-tx-states
@@ -492,8 +492,8 @@ The following table summarizes all the processor actions:
 |    1    |    1    |  DELETE  |
 
 Therefore, given the transaction type, it is needed to specify certain signals that would be used in `rollup-tx` circuit:
-  - `s1`: determine processor 1 functionality 
-  - `s2`: determine processor 2 functionality
+  - `isP1Insert`: determines if processor 1 performs an INSERT function (sender) 
+  - `isP2Insert`: determines if processor 2 performs an INSERT function (receiver)
   - `key1`: set key to be used in processor 1
   - `key2`: set key to be used in processor 2
   - `P1_fnc0` and `P1_fnc1`: selectors for processor 1
@@ -507,7 +507,7 @@ Therefore, given the transaction type, it is needed to specify certain signals t
 Following truth table determines how to set the above signals depending on transaction inputs:
 > Note that italics make reference to outputs, regular makes reference to inputs
 
-|    **Transaction type**     |   fromIdx   | auxFromIdx | toIdx | auxToIdx |       toEthAddr        | onChain | newAccount | loadAmount | amount |       newExit       | *s1* |         *s2*         | *processor 1* |    *processor 2*     | *isExit* | *verifySignEnable* | *nop* | *checkToEthAddr* | *checkToBjj* |
+|    **Transaction type**     |   fromIdx   | auxFromIdx | toIdx | auxToIdx |       toEthAddr        | onChain | newAccount | loadAmount | amount |       newExit       | *isP1Insert* |         *isP2Insert*         | *processor 1* |    *processor 2*     | *isExit* | *verifySignEnable* | *nop* | *checkToEthAddr* | *checkToBjj* |
 |:---------------------------:|:-----------:|:----------:|:-----:|:----------:|:----------------------:|:-------:|:----------:|:----------:|:------:|:--------------------:|:----:|:--------------------:|:-------------:|:--------------------:|:--------:|:------------------:|:-----:|:----------------:|:------------:|
 |         createAccount       |      0      |    key1    |   0   |     0      |           0            |    1    |     1      |     0      |   0    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
 |    createAccountDeposit     |      0      |    key1    |   0   |     0      |           0            |    1    |     1      |     X      |   0    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
@@ -562,8 +562,8 @@ Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1
 #### Outputs
 |      Output       |  type  |                               Description                               |
 |:-----------------:|:------:|:-----------------------------------------------------------------------:|
-|        s1         |  bool  |                            processor 1 state                            |
-|        s2         |  bool  |                            processor 2 state                            |
+|    isP1Insert     |  bool  |      determines if processor 1 performs an INSERT function (sender)     |
+|    isP2Insert     |  bool  |     determines if processor 2 performs an INSERT function (receiver)    |
 |       key1        | uint48 |                             processor 1 key                             |
 |       key2        | uint48 |                             processor 2 key                             |
 |      P1_fnc0      |  bool  |                     processor 1 bit 0 functionality                     |
