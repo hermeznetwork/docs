@@ -65,7 +65,7 @@ Hermez makes use of two main cryptographic primitives inside circuits: a signatu
 function.
 1. The signature schema is the [`Edwards Digital Signature Algorithm (EdDSA)`](https://tools.ietf.org/html/rfc8419)
  on Baby Jubjub (after the migration, it will use EdDSA on Jubjub). This protocol was implemented making use of
- the circuit language [`circom`](docs.circom.io) and following the circuit design of Zcash.
+ the circuit language [`circom`](https://docs.circom.io) and following the circuit design of Zcash.
 2. The hash function used is [`Poseidon`](https://eprint.iacr.org/2019/458.pdf),
 a similar hash to [`MiMC`](https://eprint.iacr.org/2016/492.pdf) but with a mixing layer. These hashinh functions
  have been used in projects such as [`TornadoCash`](https://tornado.cash/) (MiMC) and
