@@ -2,7 +2,7 @@
 
 ## What is a zk-rollup?
 
-In a nutshell, a zk-rollup is a layer 2 construction — similar to Plasma — which uses the Ethereum blockchain for data storage instead of computation. In other words, zk-rollups do computation off-chain and handles data availability on-chain.
+In a nutshell, a zk-rollup is a layer 2 construction — similar to Plasma — which uses the Ethereum blockchain for data storage instead of computation. In other words, zk-rollups do computation off-chain and handle data availability on-chain.
 
 All funds are held by a smart contract on the main-chain. For every batch, a zk-snark is generated off-chain and verified by this contract.
 

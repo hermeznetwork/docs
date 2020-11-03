@@ -1,17 +1,20 @@
-- Introduction
-    - [Overview](introduction/overview.md)
-    - [Scalable token transfers](introduction/scalable-token-transfers.md)
-    - [Proof of donation](introduction/pod.md)
-    - [Transaction flow](introduction/transaction-flow.md)
-    - [Glossary](introduction/glossary.md)
+- About Hermez
+    - [Ethereum Scalability and zk-Rollups](about/scalability.md)
+    - [Hermez Value Proposition](about/value-proposition.md)
+    - [Hermez Network Model](about/model.md)
+    - [Security](about/security.md)
 - Developers
+    - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
         - [Hermez zkRollup protocol](developers/protocol/hermez-protocol/protocol.md)
             - [Smart contracts](developers/protocol/hermez-protocol/contracts/contracts.md)
             - [Circuits](developers/protocol/hermez-protocol/circuits/circuits.md)
         - [Forging consensus protocol](developers/protocol/consensus/consensus.md)
         - [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)   
+    - [SDK](developers/sdk.md)
+    - [API](developers/api.md)
+    - [Glossary](developers/glossary.md)
 - FAQ
-    - [End users](faq/end-users.md)
     - [Coordinators](faq/coordinators.md)
-    - [Proof-of-donation](faq/pod.md)
+    - [End-Users](faq/end-users.md)
+    - [Proof of Donation](faq/pod.md)
