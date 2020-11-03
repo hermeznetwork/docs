@@ -817,10 +817,14 @@ See the [table showing the 256 values for each fee index](developers/protocol/he
 Procedure to compute fees must remain equal across protocol implementations. Following procedure has been adopted:
 
 - given `feeUser` bits selects [feeFactor shifted](developers/protocol/hermez-protocol/fee-table?id=feefactor-left-shifted) large integer
-  - 79 bits has been chosen in order to optimize precision at the time to compute fees. 79 bits is the minimum bits to achieve enough precision among all fee factor values
-- $Fee_{amount} = amount * feeFactor_{shifted}$
-- $Fee_{amount} = Fee_{amount} >> 79$
+  - 60 bits has been chosen in order to optimize precision at the time to compute fees. 60 bits is the minimum bits to achieve enough precision among all fee factor values
+  - $\text{bitsShiftPrecision} = 60$
 
+
+- $Fee_{amount} = amount * feeFactor_{shifted}$
+  - $Fee_{amount} = Fee_{amount} >> \text{bitsShiftPrecision} \quad \text{if} \quad i < 192$
+  - $Fee_{amount} = Fee_{amount} \quad \text{if} \quad i \geq 192$
+  - $assert(Fee_{amount} < 2^{128})$
 
 ### Coordinator
 L2 transactions are collected by the coordinator and it will receive all the fees collected by the L2 transactions.
