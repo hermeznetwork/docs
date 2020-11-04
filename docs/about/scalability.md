@@ -38,6 +38,6 @@ Blockchain scalability is improved by compressing each transaction to ~10 bytes:
 
 Since signatures make up a large percentage of transaction costs (gas), in practice zk-rollup has the effect of significantly reducing the average cost per transaction. This allows Hermez to fit more transactions per batch, which results in a greater overall throughput.
 
-![](imgs/rollup_graph.png)
+![](docs/imgs/rollup_graph.png)
 
 > Bytes breakdown: vanilla Eth transaction (109+ bytes) vs zk-rollup transaction (8 bytes)
