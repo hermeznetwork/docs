@@ -37,3 +37,7 @@ the Ethereum network’s maximum tps by two orders of magnitude, making it compa
 Blockchain scalability is improved by compressing each transaction to ~10 bytes: instead of including signatures on-chain, we send a zk-SNARK which proves that 1000’s of signature verifications and other transaction validation checks have been correctly carried out off-chain.
 
 Since signatures make up a large percentage of transaction costs (gas), in practice zk-rollup has the effect of significantly reducing the average cost per transaction. This allows Hermez to fit more transactions per batch, which results in a greater overall throughput.
+
+![](imgs/rollup_graph.png)
+
+> Bytes breakdown: vanilla Eth transaction (109+ bytes) vs zk-rollup transaction (8 bytes)
