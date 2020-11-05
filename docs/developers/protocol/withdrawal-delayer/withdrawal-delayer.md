@@ -2,7 +2,12 @@
 
 ## Goal
 
-The purpose of this smart contract is to delay the withdraw. Hence, tokens will be held by the smart contract for a period of `D` and only afterwards tokens could be really withdrawn.
+As announced in the project whitepaper and in the documentation, Hermez will be covering an initial phase of network bootstrapping where some additional security measures are deployed as a good practice for risk management.
+An automated limitation on withdrawals will be implemented as an additional checkpoint to identify anomalous behaviour of the network. In such condition, an additional time for the developers team to verify the system is required and to identify if the behaviour has evolved and a change of security parameters is needed.
+
+The purpose of this smart contract is to delay the withdraw in case of anomalous behaviour of the network.
+Users will be prompted to try again after some time or they can decide to use this delayed withdraw alternative with a guaranteed delay time.
+Hence, tokens will be held by the smart contract for a period of `D` and only afterwards tokens could be really withdrawn.
 
 ## Actors
 
