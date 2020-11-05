@@ -3,6 +3,7 @@
 ## Goal
 
 As announced in the project whitepaper and in the documentation, Hermez will be covering an initial phase of network bootstrapping where some additional security measures are deployed as a good practice for risk management.
+
 An automated limitation on withdrawals will be implemented as an additional checkpoint to identify anomalous behaviour of the network. In such condition, an additional time for the developers team to verify the system is required and to identify if the behaviour has evolved and a change of security parameters is needed.
 
 The purpose of this smart contract is to delay the withdraw in case of anomalous behaviour of the network.
