@@ -94,3 +94,6 @@ BVI 2043757 in Wickhams Cay II, Road Town, Tortola, VG1110, British Virgin Islan
 Smart contracts and  circuits designed for zk-proof system are being audited by different entities. The results
  will be published here as soon as they are available.
 
+Results from the first audit performed by [`Solidified`](https://solidified.io/) can be found
+[`here`](https://github.com/solidified-platform/audits/blob/master/Audit%20Report%20-%20Hermez%20%5B31.10.2020%5D.pdf)
+
