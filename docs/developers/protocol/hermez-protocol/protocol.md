@@ -161,28 +161,24 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `onChain`: mark transaction as L1 transaction (1 bit) 
 - `newAccount`: mark transaction to create new account (1 bit)
 - `fromIdx`: sender account index (NLevels bits)
-- `fromBjjCompressed`: sender babyjubjub public key compressed (253 bits)
+- `fromBjjCompressed`: sender babyjubjub public key compressed (256 bits)
 - `fromEthAddr`: sender ethereum address (160 bits)
 - `toIdx`: recipient account index (NLevels bits)
 - `toEthAddr`: recipient ethereum address (160 bits)
-- `toBjjSign`: recipient babyjubjub sign (253 bits)
+- `toBjjSign`: recipient babyjubjub sign (1 bits)
 - `toAy`: recipient babyjubjub public key Y coordinate (253 bits)
 - `loadAmountFloat16`: L1 amount transfered to L2 (16 bits)
 - `txCompressedData`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
 - `rqOffset`: relative transaction position to be linked. Used to perform atomic transactions (3 bits)
+- `rqTxCompressedDataV2`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
+- `rqToEthAddr`: requested `toEthAddr`
+- `rqToBjjAy`: requested `toBjj` 
 
 Fields to perform atomic transactions:
-- `rqTxCompressedDataV2`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
-  - `fromIdx`
-  - `toIdx `
-  - `amountFloat16`
-  - `tokenID`
-  - `nonce`
-  - `userFee`
-  - `toBjjSign`
-- `rqToEthAddr`: requested `toEthAddr`
-- `rqToBjjAy`: requested `toBjj`
-- `rqTxOffset`: relative transaction position to be linked
+- `rqTxCompressedDataV2`
+- `rqToEthAddr`
+- `rqToBjjAy`
+- `rqOffset`
 
 ## Trees
 - It is assured by protocol a unique `idx` for each account. Therefore, a given `idx` identifies uniquely a zkRollup account

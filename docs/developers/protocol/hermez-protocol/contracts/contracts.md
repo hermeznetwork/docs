@@ -25,7 +25,7 @@
 All L1UserTx are encoded and added to a queue, when the queue is full or frozen, a new queue is created.
 Once a queue is frozen means that L1 transactions can't be added anymore.
 Each queue is identified by a index that grows incrementally.
-The queue index of the next L1-L2-batch is always frozen witch is identified by `nextL1ToForgeQueue`
+The queue index of the next L1-L2-batch is always frozen which is identified by `nextL1ToForgeQueue`
 
 When a user calls a function that adds an L1UserTx, the following happens:
 
