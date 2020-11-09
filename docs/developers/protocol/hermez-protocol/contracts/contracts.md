@@ -114,9 +114,9 @@ The governance will be able to set the following parameters:
 
 #### Goal
 
-This logic is implemented in order to mitigate attacks that could potentially steal funds from hermez network. The aim of this method is to mitigate funds stolen while preserving decentralization.
+This logic is implemented during the bootstrapping phase of the network as an additional security measure in order to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez network. The objective is to temporary enable this last resort measure while preserving decentralization.
 
-The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of funds stolen. Therefore, it is assured that the attacker can only steal a certain amount of tokens.
+The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of illegitimate funds access. Therefore, it is assured that the attacker can only withdraw a certain amount of tokens.
 
 #### Hermez withdraw limit
 
@@ -132,7 +132,7 @@ Every time a user tries to perform an instant withdraw:
 
 ![](buckets.png)
 
-> Note that `withdraw limit` would be the maximum amount of tokens that an attacker can steal since the contract will return `revert` when the instant withdraw is called again and there are no tokens left to send.
+> Note that `withdraw limit` would be the maximum amount of tokens that an attacker can withdraw since the contract will return `revert` when the instant withdraw is called again and there are no tokens left to send.
 > The histogram is understood as buckets.
 
 #### Mechanism
@@ -155,7 +155,7 @@ There will be a delay time `withdrawalDelay` (parameter of the `WithdrawalDelaye
 
 ![](emergency-mechanism.png)
 
-> Hermez network foundation will be monitoring constantly the system in order to detect possible anomalies and to be able to decide as soon as possible if they are an attack.
+> During the bootstrapping phase, Hermez devs team will be monitoring constantly the system in order to detect possible anomalies and to be able to decide as soon as possible if the network is under an attack.
 
 #### Parameters
 
