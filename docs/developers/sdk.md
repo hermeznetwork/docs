@@ -250,7 +250,7 @@ At this point, the transactions is still in the coordinator's transaction pool a
   L1orL2: 'L2',
   id: '0x00000000000001e240004700',
   itemId: 0,
-  type: 'Transsfer',
+  type: 'Transfer',
   position: 5,
   fromAccountIndex: 'hez:DAI:4444',
   toAccountIndex: 'hez:DAI:672',
