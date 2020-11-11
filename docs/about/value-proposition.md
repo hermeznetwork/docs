@@ -22,7 +22,7 @@ Hermez implements a zk-rollup based on zk-SNARKs proofs, the most efficient in t
 Since the batches of transactions are a maximum of 2,000 in size, users will benefit from the scale and the underlying technology for nominal maximum savings up to 97% compared to the Ethereum cost for a single token transfer.
 
 ## Security in mind
-Scalability can be achieved in different ways. Hermez is a layer 2 contruction because it leverages Ethereum not only by using its native tokens, but it also borrows its security as a strong public blockchain.
+Scalability can be achieved in different ways. Hermez is a layer 2 construction because it leverages Ethereum not only by using its native tokens, but it also borrows its security as a strong public blockchain.
 
 The implementation of Hermez is based in iden3's own technology (Circom and SnarkJS libraries) and the cryptographic technology which has been proven as the most robust so far, as used in the ZCash blockchain.
 

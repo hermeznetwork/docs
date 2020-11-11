@@ -13,10 +13,10 @@ Circuits are built from the bottom up. Hence, small circuits are first introduce
 
 Circuits would be splitted in three modules:
 - library: basic hermez circuits and structs commonly used across the rest of the circuits
-- withdraw: specifc circuit to allow a user to withdraw funds from hermez contract
+- withdraw: specific circuit to allow a user to withdraw funds from hermez contract
 - rollup-main: main circuit that contains all the logic described in [zkRollup protocol](developers/protocol/hermez-protocol/protocol)
 
-> withdraw: user could perform a withdrawal by submitting a zkProof or a merkle tree proof. Boths methods are equivalent in terms of functionality. 
+> withdraw: user could perform a withdrawal by submitting a zkProof or a merkle tree proof. Both methods are equivalent in terms of functionality. 
 
 - Global variables:
   - `nTx`: absolute maximum of L1 or L2 transactions allowed
@@ -258,7 +258,7 @@ Updates the fees accumulated by each transaction given its fee.
   - `accFeeOut[numTokens]`: final array of all fees accumulated
 - Steps:
   - find the position on the array `feePlanTokenID[numTokens]` where its element matches the current transaction `tokenID`  
-    - if no match found, no fee would be accumuated and `accFeeIn[0..numTokens] == accFeeOut[0..numTokens]`
+    - if no match found, no fee would be accumulated and `accFeeIn[0..numTokens] == accFeeOut[0..numTokens]`
   - if a match is found:
     - accumulate the fee `fee2Charge` inside its position `i` on `accFeeOut[i]`
     - avoid accumulate fees once the match is found
@@ -457,7 +457,7 @@ It should be noted that in L1 tx, no errors are allowed but the circuit needs to
 |        amount        | uint192 |              amount to transfer from L2 to L2               |
 |      loadAmount      | uint192 |               amount to deposit from L1 to L2               |
 |     feeSelector      |  uint8  |                      user selector fee                      |
-|       onChain        |  bool   |          determines if the transacion is L1 or L2           |
+|       onChain        |  bool   |          determines if the transaction is L1 or L2           |
 |         nop          |  bool   | determines if the transfer amount and fees are considered 0 |
 |  nullifyLoadAmount   |  bool   |       determines if loadAmount is considered to be 0        |
 |    nullifyAmount     |  bool   |         determines if amount is considered to be 0          |
@@ -511,7 +511,7 @@ Following truth table determines how to set the above signals depending on trans
 |:---------------------------:|:-----------:|:----------:|:-----:|:----------:|:----------------------:|:-------:|:----------:|:----------:|:------:|:--------------------:|:----:|:--------------------:|:-------------:|:--------------------:|:--------:|:------------------:|:-----:|:----------------:|:------------:|
 |         createAccount       |      0      |    key1    |   0   |     0      |           0            |    1    |     1      |     0      |   0    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
 |    createAccountDeposit     |      0      |    key1    |   0   |     0      |           0            |    1    |     1      |     X      |   0    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
-| createAccountDepositTranfer |      0      |    key1    | key2  |     0      |           0            |    1    |     1      |     X      |   X    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
+| createAccountDepositTransfer |      0      |    key1    | key2  |     0      |           0            |    1    |     1      |     X      |   X    |          0           |  1   |          0           |    INSERT     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
 |           deposit           |    key1     |     0      |   0   |     0      |           0            |    1    |     0      |     X      |   0    |          0           |  0   |          0           |    UPDATE     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
 |       depositTransfer       |    key1     |     0      | key2  |     0      |           0            |    1    |     0      |     X      |   X    |          0           |  0   |          0           |    UPDATE     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
 |        forceTransfer        |    key1     |     0      | key2  |     0      |           0            |    1    |     0      |     0      |   X    |          0           |  0   |          0           |    UPDATE     |        UPDATE        |    0     |         0          |   0   |        0         |      0       |
@@ -525,7 +525,7 @@ Following truth table determines how to set the above signals depending on trans
 L1 invalid transactions should not be allowed but the circuit needs to process them even if they are not valid. In order to do so, the circuit performs a zero `loadAmount` \ `amount` update if L1 transaction is not valid. Therefore, circuit nullifies `loadAmount` \ `amount` if L1 invalid transaction is detected.
 Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1 transaction type:
 
-> Note that `nullifyLoadAmount` \ `nullifyAmount` fileds are set to 1 only if `checks` are not succesfull
+> Note that `nullifyLoadAmount` \ `nullifyAmount` fields are set to 1 only if `checks` are not successful
 
 |     **Transaction type**     | newAccount | isLoadAmount | isAmount | checkEthAddr | checkTokenID1 |  checkTokenID2   | *nullifyLoadAmount* | *nullifyAmount* |
 |:----------------------------:|:----------:|:------------:|:--------:|:------------:|:-------------:|:----------------:|:-------------------:|:---------------:|
@@ -552,7 +552,7 @@ Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1
 |   newExit   |  bool   | determines if the transaction create a new account in the exit tree |
 | loadAmount  | uint192 |                   amount to deposit from L1 to L2                   |
 | newAccount  |  bool   |           determines if transaction creates a new account           |
-|   onChain   |  bool   |              determines if the transacion is L1 or L2               |
+|   onChain   |  bool   |              determines if the transaction is L1 or L2               |
 | fromEthAddr | uint160 |                       ethereum address sender                       |
 |  ethAddr1   | uint160 |                   ethereum address of sender leaf                   |
 |   tokenID   | uint32  |                  tokenID signed in the transaction                  |
@@ -676,13 +676,13 @@ For the sake of clarity, this circuit could be splitted internally into phases:
 ### rollup-main
 #### Description
 
-Join all transactions and process them. This includes decode all possible transactions, process them and distribute all the fees trhough fee transactions.
+Join all transactions and process them. This includes decode all possible transactions, process them and distribute all the fees through fee transactions.
 
 It is important to note that the templates included in this main circuit are pretended to be computed in parallel. Meaning that the output of the very first transaction could be computed as its output it is not necessary to compute the next transaction. Then, all transactions could be computed in parallel. In order to achieve that, it is needed to supply intermediate signals to allow modules parallelization. 
 
 All signals prefixed with `im` are intermediary signals. Note that in circuit phases, there are specific phases to check integrity of intermediary signals. This adds constraints to the circuit, since it is needed to provided transactions output in advance, but it allows high parallelization at the time to compute the witness.
 
-Note that there is only one piblic input, `hashGlobalInputs`, which is a sha256 hash of all the pretended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input. 
+Note that there is only one public input, `hashGlobalInputs`, which is a sha256 hash of all the pretended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input. 
 
 - Global variables:
   - `nTx`

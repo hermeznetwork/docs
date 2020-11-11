@@ -1,8 +1,8 @@
 # Forging consensus protocol
 
-Hermez will run an auction to incentivise efficiency in coordinators, meaning that they need to be very effective and include as many transactions as they can in the slots in order to compensate for their bidding costs, gas costs and operations costs.
+Hermez will run an auction to incentivize efficiency in coordinators, meaning that they need to be very effective and include as many transactions as they can in the slots in order to compensate for their bidding costs, gas costs and operations costs.
 
-The general porpouse of this protocol is to describe the rules to coordinate this auction where the bids will be placed only in HEZ utility token.
+The general purpose of this protocol is to describe the rules to coordinate this auction where the bids will be placed only in HEZ utility token.
 
 ## General goals
 
@@ -90,4 +90,4 @@ It also provides a guarantee to users that all funds will be recoverable from th
   - How the HEZ tokens deposited by the slot winner are distributed
   - **Default values:** Burn: 40.00% - Donation: 40.00% - HGT: 20.00%
 
-_**Note:** All this parameteres are managed by the governance, this means that they can change it at any time without any delay_
+_**Note:** All this parameters are managed by the governance, this means that they can change it at any time without any delay_

@@ -34,7 +34,7 @@ Some of the operations in Hermez network, such as sending L1 transactions, requi
 ```
 
 ### Create a Wallet 
-We can create a new Hermez wallet by providing the Ethereum account index associated with the procider initialized. This wallet will store the Ethereum and Babyjubjub keys for the Hermez account. As discussed in the [`developer-guide`](../developers/dev-guide?id=Accounts), the Ethereum address is used to authorize L1 transactions, and the Babyjubjub key is used to authorize L2 transactions.
+We can create a new Hermez wallet by providing the Ethereum account index associated with the provider initialized. This wallet will store the Ethereum and Babyjubjub keys for the Hermez account. As discussed in the [`developer-guide`](../developers/dev-guide?id=Accounts), the Ethereum address is used to authorize L1 transactions, and the Babyjubjub key is used to authorize L2 transactions.
 
 ```js
   const {hermezWallet, hermezEthereumAddress } = await hermez.BabyJubWallet.createWalletFromEtherAccount(0)
@@ -86,7 +86,7 @@ Creating an Hermez account and depositing tokens are done simultaneously as a L1
                        tokenDAI, 
                        hermezWallet.publicKeyCompressedHex)
 ```
-Internally, the deposit funcion calls Hermez smart contract to add the L1 transaction.
+Internally, the deposit function calls Hermez smart contract to add the L1 transaction.
 
 ### Verify Balance
 A token balance can be obtained by querying a Hermez node and passing the hermezEthereumAddress of the Hermez account.
@@ -140,7 +140,7 @@ Next step we compute the fees for the transaction. For this we consult the recom
 
 The returned fees are the suggested feeds for different transactions:
 - existingAccount : Make a transfer to an existing account
-- createAccount   : Make a transfer to a inexistent account, and create a Reguler account
+- createAccount   : Make a transfer to a inexistent account, and create a Regular account
 - createAccountInternal : Make a transfer to a non-existent account and create internal account
 
 The fee amounts are given in USD. However, fees are payed in the token of the transaction. So, we need to do a conversion.

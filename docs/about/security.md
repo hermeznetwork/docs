@@ -14,7 +14,7 @@ As a summary, Hermez makes the following security assumptions:
 1. Security assumptions of Ethereum.
 2. Groth16 assumptions (knowledge of exponent assumption).
 3. Certain cryptographic assumptions from  primitives such as signatures and hashes
-4. Software security assumptiions to rely that design and implementation is correct.
+4. Software security assumptions to rely that design and implementation is correct.
 
 
 ## Ethereum
@@ -91,6 +91,6 @@ BVI 2043757 in Wickhams Cay II, Road Town, Tortola, VG1110, British Virgin Islan
  increase the chances that transactions are forged by Boot coordinator.
 
 ### Security Audits
-Smart contracts and  circtuis designed for zk-proof system are being audited by different entities. The results
+Smart contracts and  circuits designed for zk-proof system are being audited by different entities. The results
  will be published here as soon as they are available.
 

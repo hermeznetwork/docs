@@ -57,7 +57,7 @@ Coordinator L1 transactions include CreateAccountEth (to operate in L1) or Creat
 L2 transactions are those that are executed exclusively on L2 and affect the L2 state tree.
 
 ### Atomic Transactions
-Hermez provides the capability to for that some transaction are processed together. This feature is called Atomic Transctions.
+Hermez provides the capability to for that some transaction are processed together. This feature is called Atomic Transactions.
 
 ## Trees
 Hermez uses Sparse Merkle Trees to store the state of the Hermez network. There are two main tree structures:
@@ -76,7 +76,7 @@ User will need to prove that it owns a leaf in the exit tree in order to perform
 Thee root node is called the exit root, and it summarizes the state of the Exit Tree.
 
 ## Exit & Withdrawal
-In order to tranfer funds from L2 account to ethereum account two separate transactions are invoked. The first transaction is Exit, where funds are transferred to a smart contract. The second transaction is Withdrawal. If conditions are met, Withdrawal can be instant. If funds to be withdrawn exceed certain limits, the Withdrawal is delayed until transaction is cleared.
+In order to transfer funds from L2 account to ethereum account two separate transactions are invoked. The first transaction is Exit, where funds are transferred to a smart contract. The second transaction is Withdrawal. If conditions are met, Withdrawal can be instant. If funds to be withdrawn exceed certain limits, the Withdrawal is delayed until transaction is cleared.
 
 ## zk-Rollup
 A zk-Rollup is a layer 2 construction  which uses the Ethereum blockchain for data storage instead of computation. 

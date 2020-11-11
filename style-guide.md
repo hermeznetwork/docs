@@ -69,7 +69,7 @@ How to add an img with different size:
 
 ## Lib methods
 As we are using *Go* as language, we define the structs and methods directly with Go, so the *types* and the *parameters* are well specified.
-The idea of this, is that a person who needs to integrate another module with this one, will be able to know all the interfice details directly from the spec, without needing to wait until the module is coded.
+The idea of this, is that a person who needs to integrate another module with this one, will be able to know all the interface details directly from the spec, without needing to wait until the module is coded.
 
 ### Structs
 ```go
