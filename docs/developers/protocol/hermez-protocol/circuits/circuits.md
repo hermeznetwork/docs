@@ -190,7 +190,7 @@ Implements two functionalities to be used for further circuits:
 
 ### decode-tx
 #### Description
-Take the transaction data, decodes it and build data strcuctures to be used in further circuits. Besides, it does checks on transactions fields. It is listed below all the built data and all the checks that this circuit performs.
+Take the transaction data, decodes it and build data structures to be used in further circuits. Besides, it does checks on transactions fields. It is listed below all the built data and all the checks that this circuit performs.
 
 - Decoders/Build
   - decodes `txCompressedData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
