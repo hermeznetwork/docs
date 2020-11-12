@@ -41,7 +41,7 @@ When a user calls a function that adds an L1UserTx, the following happens:
 
 In the global spec are specified all the [L1 user transactions](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
 
-The `L1TxQueue` has a lenght of `MAX_L1_TX`, L1UserTx can fulfill till `MAX_L1_USER_TX`, therefore always are some slots reserved for the L1-coordinator-Tx:
+The `L1TxQueue` has a length of `MAX_L1_TX`, L1UserTx can fulfill till `MAX_L1_USER_TX`, therefore always are some slots reserved for the L1-coordinator-Tx:
 `MAX_L1_TX - len(L1_USER_TXS)`
 
 ### Utility actions
@@ -50,7 +50,7 @@ The `L1TxQueue` has a lenght of `MAX_L1_TX`, L1UserTx can fulfill till `MAX_L1_U
 
 Hermez has a list of all the tokens that rollup supports.
 Tokens must be an ERC20, and everyone can add a new token with this method.
-A fee in HEZ must be payed to the governance address.
+A fee in HEZ must be paid to the governance address.
 
 #### Withdraw
 
@@ -102,7 +102,7 @@ The governance will be able to set the following parameters:
 - forgeL1L2BatchTimeout
   - Number of ethereum blocks after the last L1-L2-batch after which only an L1-L2-batch can be forged
 - feeAddToken
-  - Fee in HEZ tokens that must be payed to the governance to add a new token into the rollup
+  - Fee in HEZ tokens that must be paid to the governance to add a new token into the rollup
 - tokenExchange
   - Update the tokenUSD value for the instant Withdraw purposes
 - withdrawalDelay

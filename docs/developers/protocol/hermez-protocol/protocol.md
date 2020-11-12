@@ -167,7 +167,7 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `toEthAddr`: recipient ethereum address (160 bits)
 - `toBjjSign`: recipient babyjubjub sign (253 bits)
 - `toAy`: recipient babyjubjub public key Y coordinate (253 bits)
-- `loadAmountFloat16`: L1 amount transfered to L2 (16 bits)
+- `loadAmountFloat16`: L1 amount transferred to L2 (16 bits)
 - `txCompressedData`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
 - `rqOffset`: relative transaction position to be linked. Used to perform atomic transactions (3 bits)
 
@@ -701,7 +701,7 @@ $len(l1\_user\_txs) \leq MAX\_L1\_USER\_TXS < MAX\_L1\_TXS$
 ### L1 user transactions
 All transaction data triggered by a smart contract function can be directly retrieved since it will be stored on the blockchain, but it's harder when this data happens in internal transactions, not all nodes support that functionality. That's why all the L1 user transactions emit an L1UserTx event to facilitate the data retrieval.
 
-When a user calls a function that adds an L1UserTx, the folowing happens:
+When a user calls a function that adds an L1UserTx, the following happens:
 - Storage
     - Add the L1UserTx data at the end of the last non-frozen non-full queue of L1UserTxs (`L1UserTxs[lastL1UserTxs]`).
         - Each queue is identified by a toForgeL1TxsNumber that grows incrementally
@@ -713,7 +713,7 @@ When a user calls a function that adds an L1UserTx, the folowing happens:
     - position
 
 ### L1 coordinator transactions
-Coordinator could perform some special transactions to trigger L1 transactions. This transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the ethereum transaction.
+Coordinator could perform some special transactions to trigger L1 transactions. This transactions are processed in the `forgeBatch` smart contract method, and all the necessary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the ethereum transaction.
 
 Data needed to perform this transactions will be encoded as:
 ```

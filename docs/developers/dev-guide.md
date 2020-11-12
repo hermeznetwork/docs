@@ -74,7 +74,7 @@ L1 Coordinator Transactions allow the coordinator to create internal [`accounts`
 ### L2 Transactions
 L2 transactions are executed exclusively on L2. Examples of L2 transactions include `Transfer` of funds between rollup accounts or `Exit` to transfer funds to the exit tree. All L2 transactions are initiated by the user, who sends the transactions directly to the coordinator via a [`REST API`](../developers/api?id=api). Depending on the UI capabilities, the user may be able to select among different number of coordinators (the one currently forging, the ones that already have won the right to forge in upcoming slots,...).
 
-Fees are payed on L2 transactions in the same token used in the transaction. The coordinator collects these fees from up to 64 different tokens per batch. If more than 64 tokens are used in the same batch, no fees will be collected for the excess number of tokens. 
+Fees are paid on L2 transactions in the same token used in the transaction. The coordinator collects these fees from up to 64 different tokens per batch. If more than 64 tokens are used in the same batch, no fees will be collected for the excess number of tokens. 
 
 ## Forging
 In this section we will describe how consensus to select a coordinator with the permission to forge batches and collect fees from the processed transactions is reached. We will also describe some of the embedded security mechanisms that discourage these coordinators from acting maliciously.
@@ -150,7 +150,7 @@ Figure below depicts how the different buckets are structured depending on the a
 ![](buckets.png)
 
 ### Withdrawal Resolution
-The amount above the `withdrawal limit` set by the available credits wont be withdrawn instantly. In this case, excess tokens will be sent to the `WithdrawalDelayer` smart contract. 
+The amount above the `withdrawal limit` set by the available credits won't be withdrawn instantly. In this case, excess tokens will be sent to the `WithdrawalDelayer` smart contract. 
 
 The WithdrawalDelayer smart contract can be in one of two states:
 1. **Normal Mode**: Amount above withdrawal limit is available for withdrawal, but with a delay D. This is the standard state.

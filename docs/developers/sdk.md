@@ -143,7 +143,7 @@ The returned fees are the suggested feeds for different transactions:
 - createAccount   : Make a transfer to a inexistent account, and create a Regular account
 - createAccountInternal : Make a transfer to a non-existent account and create internal account
 
-The fee amounts are given in USD. However, fees are payed in the token of the transaction. So, we need to do a conversion.
+The fee amounts are given in USD. However, fees are paid in the token of the transaction. So, we need to do a conversion.
 
 ```js
   const usdTokenExchangeRate = tokenDAI.USD
