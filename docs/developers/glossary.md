@@ -58,7 +58,7 @@ Set of parameters defined in the system that allow certain configuration from go
 Transactions is the generic name given to every operation in the Hermez network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen at L1 or L2. The coordinator node is in charge to collecting and processing transactions in batches generating a zk-SNARK to proofs that transactions have been carried out according to some rules.
 
 ### Atomic Transactions
-Hermez provides the capability that some transactions to bea processed together. This feature is called Atomic Transctions.
+Hermez provides the capability that some transactions to bea processed together. This feature is called Atomic Transactions.
 
 ## Trees
 Hermez uses Sparse Merkle Trees to store the state of the Hermez network. There are two main tree structures:

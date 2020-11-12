@@ -773,7 +773,7 @@ feeTxsData = idx[0] || ... || ... || L2Tx[MAX_FEE_TX - 1]
 ```
 
 ### Forging
-When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retreived by querying the arguments of the function call.  To allow this data retrieval from a regular ethereum node, we must force that the call is not made from a smart contract:
+When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retrieved by querying the arguments of the function call.  To allow this data retrieval from a regular ethereum node, we must force that the call is not made from a smart contract:
 ```
 assert(msg.sender == tx.origin)
 ```
@@ -803,14 +803,14 @@ hashGlobalInputs = SHA256(hashGlobalData) % rField
 ## Fee model
 ### User
 Fees are paid on L2 transactions in the same token that they are done. So, if user send a token A, the fees will be paid in token A.
-Fee is represented as a percentatge of the total amount sent:
+Fee is represented as a percentage of the total amount sent:
 
-$Fee_{amount} = amount * Fee_{percentatge}$
+$Fee_{amount} = amount * Fee_{percentage}$
 
 $TotalTxCost = amount + Fee_{amount}$  
 
 Since there are 8 reserved bits for this field, there will be 256 different fee
-percentatges that the user could choose to perform its transaction.
+percentages that the user could choose to perform its transaction.
 See the [table showing the 256 values for each fee index](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
 
 #### Compute fees
