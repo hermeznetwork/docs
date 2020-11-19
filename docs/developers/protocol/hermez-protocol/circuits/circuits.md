@@ -24,7 +24,7 @@ Circuits would be splitted in three modules:
   - `maxL1Tx`: absolute maximum of L1 transaction allowed
   - `maxFeeTx`: absolute maximum of fee transactions allowed
 
-### circuit organization
+### Circuits organization
 - Library:
   - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state) 
   - [decode-float](developers/protocol/hermez-protocol/circuits/circuits?id=decode-float)
