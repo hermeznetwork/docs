@@ -3,7 +3,7 @@
 Hermez network project has some properties that will provide value to the users and the community:
 
 ## Production ready solution
-Hermez will launch in mainnet a project which is intended to be a usable token transfers network from day one. This product will have support, maintenance and technological evolution to provide users with the most updated functionalities with the right risk management.
+Hermez will launch in mainnet a project which is intended to be a usable token transfers network from day one. This product will have support, maintenance, and technological evolution to provide users with the most updated functionalities with the right risk management.
 
 The first release starts with the specific scope of token transfers implemented with a technological stack and cryptography setup considered the most tested so far.
 
@@ -24,7 +24,7 @@ Since the batches of transactions are a maximum of 2,000 in size, users will ben
 ## Security in mind
 Scalability can be achieved in different ways. Hermez is a layer 2 construction because it leverages Ethereum not only by using its native tokens, but it also borrows its security as a strong public blockchain.
 
-The implementation of Hermez is based in iden3's own technology (Circom and SnarkJS libraries) and the cryptographic technology which has been proven as the most robust so far, as used in the ZCash blockchain.
+The implementation of Hermez is based on iden3's own technology (Circom and SnarkJS libraries) and the cryptographic technology which has been proven as the most robust so far, as used in the ZCash blockchain.
 
 As a new network with a bootstrap period, Hermez has transitory security measures to protect the system with the objective to remove them and leave it fully decentralized.
 
@@ -46,6 +46,6 @@ Layer 2 solutions increase complexity for the users, but the Hermez project focu
 ## With a vision
 Hermez project derives from the iden3 initiative, where a highly qualified team work to implement the vision of a universal and private by default self-sovereign identity. Scalability was required for the identity protocol to be universal and individuals could issue claims on other identities for (almost) free.
 
-Symbiotically, Hermez network is expected to benefit from the advancements in identity infrastructure such as validation, private credentials and reputation for an improved usability and extend the range of potential use cases of a high throughput transaction network.
+Symbiotically, Hermez network is expected to benefit from the advancements in identity infrastructure such as validation, private credentials and reputation for improved usability and extend the range of potential use cases of a high throughput transaction network.
 
 Hermez will guide its efforts in becoming an infrastructure which can serve the maximum number of users.
