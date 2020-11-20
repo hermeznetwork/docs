@@ -14,21 +14,21 @@ As a summary, Hermez makes the following security assumptions:
 1. Security assumptions of Ethereum.
 2. Groth16 assumptions (knowledge of exponent assumption).
 3. Certain cryptographic assumptions from  primitives such as signatures and hashes
-4. Software security assumptiions to rely that design and implementation is correct.
+4. Software security assumptions that rely on correct design and implementation.
 
 
 ## Ethereum
 Hermez runs on top of Ethereum. All Hermez data is available on Ethereum and borrows layer 1 security too.
 
 ## zk-Proofs
-User transactions are always verified by a Ethereum smart contract by verifying the zk-Proof supplied by the coordinator.
+User transactions are always verified by an Ethereum smart contract by verifying the zk-Proof supplied by the coordinator.
 The specific zk-SNARK that is used in these zk-Proofs is [`Groth16`](https://eprint.iacr.org/2016/260.pdf).
-This protocol has been widely used and tested by Zcash team of researchers and it is currently
+This protocol has been widely used and tested by the Zcash team of researchers and it is currently
 considered mature enough to be used in production.
 
 At this time, Ethereum precompiled smart contracts only support BN254 elliptic curve operations for zk-SNARK proofs validation. For this reason, Hermez uses this curve for generating and validating proofs and Baby Jubjub [`here`](https://iden3-docs.readthedocs.io/en/latest/_downloads/33717d75ab84e11313cc0d8a090b636f/Baby-Jubjub.pdf) and [`here`](https://github.com/ethereum/EIPs/pull/2494) for implementing elliptic curve cryptography inside circuits.
 
-In place of BN254, that offers 100 bits of security, Zcash uses [`BLS12-381`](https://tools.ietf.org/id/draft-yonezawa-pairing-friendly-curves-00.html#rfc.section.4.3), with 128 bits of security [`see here`](https://tools.ietf.org/id/draft-yonezawa-pairing-friendly-curves-00.html#rfc.section.4.3).
+In place of BN254, which offers 100 bits of security, Zcash uses [`BLS12-381`](https://tools.ietf.org/id/draft-yonezawa-pairing-friendly-curves-00.html#rfc.section.4.3), with 128 bits of security [`see here`](https://tools.ietf.org/id/draft-yonezawa-pairing-friendly-curves-00.html#rfc.section.4.3).
 Hermez will likely migrate to [`BLS12-381`] curve as soon as it is available for Ethereum.
 
 Among other benefits, BLS12-381 provides [`128 bits`](https://electriccoin.co/blog/new-snark-curve/) of security instead of the 100 bits provided by BN256.  The [`EIP`](https://github.com/ethereum/EIPs/pull/2537) that implements BLS12-381 curve was already approved and the migration is very likely to happen by the next planned Berlin Hard Fork. This change will improve the security level.
@@ -37,7 +37,7 @@ At this point Baby Jubjub will be substituted by [`Jubjub curve`](https://z.cash
 Baby Jubjub curve satisfies security standards as shown [`here`](https://safecurves.cr.yp.to/) and [`here`](https://github.com/barryWhiteHat/baby_jubjub).
 
 ### Multi-party Computation for the Trusted Setup
-The proving and verification keys of the zk-SNARK protocol requires the generation
+The proving and verification keys of the zk-SNARK protocol require the generation
 of some random values that need to be eliminated. This elimination process is a
 crucial step: if these values are ever exposed, the security of the whole scheme is
 compromised.
@@ -57,7 +57,7 @@ To contribute to the robustness of the setup, Hermez implemented an independent
  [`snarkjs`](https://github.com/iden3/snarkjs) module for computing and validating the MPC ceremonies.
  The software is compatible with current [`powers of tau`](https://github.com/kobigurk/phase2-bn254), and it
 allows one to see the list of contributions of a given setup, to import a response, export a challenge of the
-ceremony or to verify if the whole process has been correctly computed. Hermez’ contribution can be
+ceremony, or to verify if the whole process has been correctly computed. Hermez’ contribution can be
  found [`here`](https://github.com/weijiekoh/perpetualpowersoftau/blob/master/0049_jordi_response/README.md)).
 
 ## Cryptography
@@ -81,7 +81,7 @@ guidelines on the coordinators to ensure user transactions cannot be blocked. So
 Since L1 transactions are concatenated together, a coordinator must process all pending L1 transactions, thus preventing
  it from blocking specific users or L1 operations. Note that withdrawal of funds is a L1 transaction so it cannot be
 blocked by a coordinator.
-2. If a coordinator doesn't process (or forge) transactions during its alloted time, any online coordinator can forge
+2. If a coordinator doesn't process (or forge) transactions during its allotted time, any online coordinator can forge
  transactions. This mechanism is known as Coordinator override.
 3. HermezDAO foundation controls a last resort coordinator called Boot coordinator. If there are no coordinators
 available to forge any batches, the boot coordinator will forge transactions. The HermezDAO foundation is a
@@ -91,6 +91,6 @@ BVI 2043757 in Wickhams Cay II, Road Town, Tortola, VG1110, British Virgin Islan
  increase the chances that transactions are forged by Boot coordinator.
 
 ### Security Audits
-Smart contracts and  circtuis designed for zk-proof system are being audited by different entities. The results
+Smart contracts and circuits designed for zk-proof system are being audited by different entities. The results
  will be published here as soon as they are available.
 
