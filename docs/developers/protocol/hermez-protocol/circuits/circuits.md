@@ -195,16 +195,17 @@ Take the transaction data, decodes it and build data structures to be used in fu
 - Decoders/Build
   - decodes `txCompressedData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
   - builds `txCompressedDataV2` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
-  - builds L2 data availability `L2TxData` as specificied [here](developers/protocol/hermez-protocol/protocol?id=l2-transactions)
+  - builds L1-L2 data availability `L1L2TxData` as specificied [here](developers/protocol/hermez-protocol/protocol?id=l1-l2-transactions)
   - builds message to sign by L2 transactions `sigL2Hash` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
-  - build L1 data `L1TxData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
+  - build L1 full data `L1TxFullData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
 - Checks
   - L1 transactions must be processed before L2 transactions
     - only switching from L1 to L2 is allowed
   - checks `newAccount` is set to true only when it is an L1 transaction and `fromIdx` is 0  
   - `idx` to be assigned to a new account creation is incremented and checked only if the transaction involves an account creation
   - checks `chainID` transaction field matches `globalChainID` forced by the smart contract
-  - checks `signatureConstant` transaction field matches the hardcoded value `CONST_SIG` set in the circuit     
+  - checks `signatureConstant` transaction field matches the hardcoded value `CONST_SIG` set in the circuit
+  - checks `maxNumBatch` signed in the transaction is greater or equal to `currentNumBatch` only if `maxNumBatch != 0`
 - Global variables:
   - `nLevels`
 
@@ -212,30 +213,32 @@ Take the transaction data, decodes it and build data structures to be used in fu
 ![center](decode-tx.png)
 
 #### Inputs
-|         Input          |     type      |                      Description                       |
-|:----------------------:|:-------------:|:------------------------------------------------------:|
-|    previousOnChain     |     bool      |        dtermines if previous transaction is L1         |
-|    txCompressedData    |    uint241    |           encode transaction fields together           |
-|       toEthAddr        |    uint160    |               ethereum address receiver                |
-|        toBjjAy         |     field     |            bayjubjub y coordinate receiver             |
-|  rqTxCompressedDataV2  |    uint193    | requested encode transaction fields together version 2 |
-|      rqToEthAddr       |    uint160    |          requested ethereum address receiver           |
-|       rqToBjjAy        |     field     |           requested babyjubjub y coordinate            |
-|      fromEthAddr       |    uint160    |                ethereum address sender                 |
-| fromBjjCompressed[256] | boolean array |              babyjubjub compressed sender              |
-|      loadAmountF       |    uint16     |   amount to deposit from L1 to L2 encoded as float16   |
-|     globalChainID      |    uint16     |                global chain identifier                 |
-|        onChain         |     bool      |        determines if the transacion is L1 or L2        |
-|       newAccount       |     bool      |    determines if transaction creates a new account     |
-|       auxFromIdx       |    uint48     |           auxiliary index to create accounts           |
-|         inIdx          |    uint48     |                old last index assigned                 |
+|         Input          |     type      |                            Description                             |
+|:----------------------:|:-------------:|:------------------------------------------------------------------:|
+|    previousOnChain     |     bool      |             determines if previous transaction is L1               |
+|    txCompressedData    |    uint241    |                 encode transaction fields together                 |
+|      maxNumBatch       |    uint32     | maximum allowed batch number when the transaction can be processed |
+|       toEthAddr        |    uint160    |                     ethereum address receiver                      |
+|        toBjjAy         |     field     |                 babyjubjub y coordinate receiver                   |
+|  rqTxCompressedDataV2  |    uint193    |       requested encode transaction fields together version 2       |
+|      rqToEthAddr       |    uint160    |                requested ethereum address receiver                 |
+|       rqToBjjAy        |     field     |                 requested babyjubjub y coordinate                  |
+|      fromEthAddr       |    uint160    |                      ethereum address sender                       |
+| fromBjjCompressed[256] | boolean array |                    babyjubjub compressed sender                    |
+|      loadAmountF       |    uint16     |         amount to deposit from L1 to L2 encoded as float16         |
+|     globalChainID      |    uint16     |                      global chain identifier                       |
+|    currentNumBatch     |    uint32     |                        current batch number                        |
+|        onChain         |     bool      |             determines if the transaction is L1 or L2              |
+|       newAccount       |     bool      |          determines if transaction creates a new account           |
+|       auxFromIdx       |    uint48     |                 auxiliary index to create accounts                 |
+|         inIdx          |    uint48     |                      old last index assigned                       |
 
 #### Outputs
 |       Output       |     type      |                 Description                  |
 |:------------------:|:-------------:|:--------------------------------------------:|
-|      L2TxData      | array boolean |             L2 data availability             |
+|     L1L2TxData     | array boolean |           L1-L2 data availability            |
 | txCompressedDataV2 |    uint193    | encode transaction fields together version 2 |
-|      L1TxData      | array boolean |                   L1 data                    |
+|    L1TxFullData    | array boolean |                 L1 full data                 |
 |       outIdx       |    uint48     |           old last index assigned            |
 |      fromIdx       |    uint48     |                 index sender                 |
 |       toIdx        |    uint48     |                index receiver                |
@@ -336,17 +339,18 @@ Specification for computing `hashInputs` can be found [here](developers/protocol
 ![center](hash-inputs.png)
 
 #### Inputs
-|                            Input                            |     type      |                   Description                   |
-|:-----------------------------------------------------------:|:-------------:|:-----------------------------------------------:|
-|                         oldLastIdx                          |    uint48     |       old last merkle tree index created        |
-|                         newLastIdx                          |    uint48     |       new last merkle tree index created        |
-|                        oldStateRoot                         |     field     |                 old state root                  |
-|                        newStateRoot                         |     field     |                 new state root                  |
-|                         newExitRoot                         |     field     |                  new exit root                  |
-| L1TxsData[maxL1Tx * (2*nLevels + 32 + 16 + 16 + 256 + 160)] | boolean array |                  bits L1 data                   |
-|            L2TxsData[nTx * (2*nLevels + 16 + 8)]            | boolean array |      bits L2 transaction data-availability      |
-|                    feeTxsData[maxFeeTx]                     | nLevels array | all index accounts to  receive accumulated fees |
-|                        globalChainID                        |    uint16     |             global chain identifier             |
+|                              Input                              |     type      |                   Description                   |
+|:---------------------------------------------------------------:|:-------------:|:-----------------------------------------------:|
+|                           oldLastIdx                            |    uint48     |       old last merkle tree index created        |
+|                           newLastIdx                            |    uint48     |       new last merkle tree index created        |
+|                          oldStateRoot                           |     field     |                 old state root                  |
+|                          newStateRoot                           |     field     |                 new state root                  |
+|                           newExitRoot                           |     field     |                  new exit root                  |
+| L1TxsFullData[maxL1Tx * (2*nLevels + 32 + 16 + 16 + 256 + 160)] | boolean array |                bits L1 full data                |
+|             L1L2TxsData[nTx * (2*nLevels + 16 + 8)]             | boolean array |    bits L1-L2 transaction data-availability     |
+|                      feeTxsData[maxFeeTx]                       | uint48 array  | all index accounts to  receive accumulated fees |
+|                          globalChainID                          |    uint16     |             global chain identifier             |
+|                         currentNumBatch                         |    uint32     |         current batch number processed          |
 
 #### Ouputs
 |    Output     | type  |              Description               |
@@ -432,9 +436,10 @@ This circuit checks if there is enough balance in the sender account to do the t
 
 It computes the new balances for the sender and the receiver. Besides, returns the fee that will be charged and if the amount to transfer is 0 (`isP2Nop` signal). These signals will be used in further circuits.
 
-It should be noted that in L1 tx, no errors are allowed but the circuit needs to process them. Hence, in case it is not enough balance on the sender account, it will process the transaction as a 0 amount transfer. In case of an L2 tx, the protocol does not allow to do a transaction if there is not enough balance on the sender account.
+It should be noted that in L1 tx, no errors are allowed but the circuit needs to process them. Hence, in case it is not enough balance on the sender account, it will process the transaction as a 0 amount transfer. Hence, signal `isAmountNullified` will notify if a L1 transaction has been nullified if it is invalid. This `isAmountNullified` will be used to compute data-availability where the amount used would not be inserted in [`L1L2TxsData`](developers/protocol/hermez-protocol/protocol?id=l1-l2-transactions) since L1Tx is not valid or triggers underflow.
+In case of an L2 tx, the protocol does not allow to do a transaction if there is not enough balance on the sender account.
 
-- The following assumptions has been taken:
+- The following assumptions have been taken:
   - smart contract filters `loadAmount` above 2^128
   - smart contract filters `amount` above 2^192
   - circuit reserves 192 bits for the balance of an account
@@ -457,7 +462,7 @@ It should be noted that in L1 tx, no errors are allowed but the circuit needs to
 |        amount        | uint192 |              amount to transfer from L2 to L2               |
 |      loadAmount      | uint192 |               amount to deposit from L1 to L2               |
 |     feeSelector      |  uint8  |                      user selector fee                      |
-|       onChain        |  bool   |          determines if the transaction is L1 or L2           |
+|       onChain        |  bool   |         determines if the transaction is L1 or L2           |
 |         nop          |  bool   | determines if the transfer amount and fees are considered 0 |
 |  nullifyLoadAmount   |  bool   |       determines if loadAmount is considered to be 0        |
 |    nullifyAmount     |  bool   |         determines if amount is considered to be 0          |
@@ -467,8 +472,9 @@ It should be noted that in L1 tx, no errors are allowed but the circuit needs to
 |:--------------------:|:-------:|:----------------------------------------------------:|
 |  newStBalanceSender  | uint192 |                 final balance sender                 |
 | newStBalanceReceiver | uint192 |                final balance receiver                |
-|       isP2Nop        |  bool   |   determines if processor 2 performs a NOP function  |
+|       isP2Nop        |  bool   | determines if processor 2 performs a NOP transaction |
 |      fee2Charge      | uint192 |              effective transaction fee               |
+|  isAmountNullified   | uint32  |        determines if the amount is nullified         |
 
 ### rollup-tx-states
 #### Description
@@ -623,15 +629,15 @@ For the sake of clarity, this circuit could be splitted internally into phases:
 |         auxFromIdx          |    uint48     |            auxiliary index to create accounts             |
 |            toIdx            |    uint48     |                      index receiver                       |
 |          auxToIdx           |    uint48     | auxiliary index when signed index receiver is set to null |
-|           toBjjAy           |     field     |              bayjubjub y coordinate receiver              |
+|           toBjjAy           |     field     |             babyjubjub y coordinate receiver              |
 |          toBjjSign          |     bool      |                 babyjubjub sign receiver                  |
 |          toEthAddr          |    uint160    |                 ethereum address receiver                 |
 |           amount            |    uint192    |             amount to transfer from L2 to L2              |
 |           tokenID           |    uint32     |             tokenID signed in the transaction             |
-|            nonce            |    uint40     |              nince signed in the transaction              |
+|            nonce            |    uint40     |              nonce signed in the transaction              |
 |           userFee           |    uint16     |                     user fee selector                     |
 |          rqOffset           |     uint3     |                relative linked transaction                |
-|           onChain           |     bool      |         determines if the transacion is L1 or L2          |
+|           onChain           |     bool      |        determines if the transaction is L1 or L2          |
 |         newAccount          |     bool      |      determines if transaction creates a new account      |
 |    rqTxCompressedDataV2     |    uint193    |  requested encode transaction fields together version 2   |
 |         rqToEthAddr         |    uint160    |            requested ethereum address receiver            |
@@ -667,11 +673,12 @@ For the sake of clarity, this circuit could be splitted internally into phases:
 |         oldExitRoot         |     field     |                     initial exit root                     |
 
 #### Ouputs
-|       Output        |     type      |      Description       |
-|:-------------------:|:-------------:|:----------------------:|
-| accFeeOut[maxFeeTx] | uint192 array | final fees accumulated |
-|    newStateRoot     |     field     |    final state root    |
-|     newExitRoot     |     field     |    final exit root     |
+|       Output        |     type      |              Description              |
+|:-------------------:|:-------------:|:-------------------------------------:|
+|  isAmountNullified  |     bool      | determines if the amount is nullified |
+| accFeeOut[maxFeeTx] | uint192 array |        final fees accumulated         |
+|    newStateRoot     |     field     |           final state root            |
+|     newExitRoot     |     field     |            final exit root            |
 
 ### rollup-main
 #### Description
@@ -700,71 +707,75 @@ Main circuit could be splitted in the following phases:
 - G: check integrity fee transactions intermediary signals
 - H: compute global hash input
 
+In section H, only bits associated to `amountF` in `L1L2TxsData` are multiplied by `isAmountNullififed`. Note that this only applies for invalid L1 transactions.
+
 #### Schematic
 ![center](rollup-main.png)
 
 #### Inputs
-|            Input             |       type        |                               Description                               |
-|:----------------------------:|:-----------------:|:-----------------------------------------------------------------------:|
-|          oldLastIdx          |      uint48       |                         old last index assigned                         |
-|         oldStateRoot         |       field       |                           initial state root                            |
-|        globalChainID         |      uint16       |                         global chain identifier                         |
-|      feeIdxs[maxFeeTx]       |   uint48 array    |                   merkle tree indexes to receive fees                   |
-|   feePlanTokens[maxFeeTx]    |   uint32 array    |                 tokens identifiers of fees accumulated                  |
-|       imOnChain[nTx-1]       |   boolean array   |      intermediary signals: decode transaction output onChain flag       |
-|       imOutIdx[nTx-1]        |   uint48 array    |      intermediary signals: decode transaction final index assigned      |
-|      imStateRoot[nTx-1]      |    field array    |           intermediary signals: transaction final state root            |
-|      imExitRoot[nTx-1]       |    field array    |            intermediary signals: transaction final exit root            |
-| imAccFeeOut[nTx-1][maxFeeTx] |   uint192 array   |         intermediary signals: transaction final accumlate fees          |
-| imStateRootFee[maxFeeTx - 1] |    field array    |         intermediary signals: transaction fee final state root          |
-|      imInitStateRootFee      |       field       |    intermediary signals: final state root of all rollup transactions    |
-|   imFinalAccFee[maxFeeTx]    |    field array    | intermediary signals: final fees accumulated of all rollup transactions |
-|    txCompressedData[nTx]     |   uint241 array   |                   encode transaction fields together                    |
-|   txCompressedDataV2[nTx]    |   uint193 array   |              encode transaction fields together version 2               |
-|         fromIdx[nTx]         |   uint48 array    |                              index sender                               |
-|       auxFromIdx[nTx]        |   uint48 array    |                   auxiliary index to create accounts                    |
-|          toIdx[nTx]          |   uint48 array    |                             index receiver                              |
-|        auxToIdx[nTx]         |   uint48 array    |        auxiliary index when signed index receiver is set to null        |
-|         toBjjAy[nTx]         |    field array    |                     bayjubjub y coordinate receiver                     |
-|        toEthAddr[nTx]        |   uint160 array   |                        ethereum address receiver                        |
-|         onChain[nTx]         |    bool array     |                determines if the transacion is L1 or L2                 |
-|       newAccount[nTx]        |    bool array     |             determines if transaction creates a new account             |
-|  rqTxCompressedDataV2[nTx]   |   uint193 array   |         requested encode transaction fields together version 2          |
-|       rqToEthAddr[nTx]       |   uint160 array   |                   requested ethereum address receiver                   |
-|        rqToBjjAy[nTx]        |    field array    |                    requested babyjubjub y coordinate                    |
-|            s[nTx]            |    field array    |                          eddsa signature field                          |
-|           r8x[nTx]           |    field array    |                          eddsa signature field                          |
-|           r8y[nTx]           |    field array    |                          eddsa signature field                          |
-|       loadAmountF[nTx]       |   uint16 array    |           amount to deposit from L1 to L2 encoded as float16            |
-|       fromEthAddr[nTx]       |   uint160 array   |                         ethereum address sender                         |
-| fromBjjCompressed[nTx][256]  |   boolean array   |                      babyjubjub compressed sender                       |
-|        tokenID1[nTx]         |   uint32 array    |                       tokenID of the sender leaf                        |
-|         nonce1[nTx]          |   uint40 array    |                        nonce of the sender leaf                         |
-|          sign1[nTx]          |    bool array     |                         sign of the sender leaf                         |
-|        balance1[nTx]         |   uint192 array   |                       balance of the sender leaf                        |
-|           ay1[nTx]           |    field array    |                          ay of the sender leaf                          |
-|        ethAddr1[nTx]         |   uint160 array   |                       ethAddr of the sender leaf                        |
-| siblings1[nTx][nLevels + 1]  |    field array    |                siblings merkle proof of the sender leaf                 |
-|        isOld0_1[nTx]         |    bool array     |                     flag to require old key - value                     |
-|         oldKey1[nTx]         |   uint48 array    |                       old key of the sender leaf                        |
-|        oldValue1[nTx]        |    field array    |                      old value of the sender leaf                       |
-|        tokenID2[nTx]         |   uint32 array    |                      tokenID of the receiver leaf                       |
-|         nonce2[nTx]          |   uint40 array    |                       nonce of the receiver leaf                        |
-|          sign2[nTx]          |    bool array     |                        sign of the receiver leaf                        |
-|        balance2[nTx]         |   uint192 array   |                      balance of the receiver leaf                       |
-|           ay2[nTx]           |    field array    |                         ay of the receiver leaf                         |
-|        ethAddr2[nTx]         |   uint160 array   |                      ethAddr of the receiver leaf                       |
-| siblings2[nTx][nLevels + 1]  |    field array    |               siblings merkle proof of the receiver leaf                |
-|        isOld0_2[nTx]         |    bool array     |                     flag to require old key - value                     |
-|         oldKey2[nTx]         |   uint48 array    |                       old key of the sender leaf                        |
-|        oldValue2[nTx]        |    field array    |                      old value of the sender leaf                       |
-|      tokenID3[maxFeeTx]      |   uint32 array    |                        tokenID of leafs feeIdxs                         |
-|       nonce3[maxFeeTx]       |   uint40 array    |                         nonce of leafs feeIdxs                          |
-|       sign3[maxFeeTx]        |    bool array     |                          sign of leafs feeIdxs                          |
-|      balance3[maxFeeTx]      |   uint192 array   |                        balance of leafs feeIdxs                         |
-|        ay3[maxFeeTx]         |    field array    |                           ay of leafs feeIdxs                           |
-|      ethAddr3[maxFeeTx]      |   uint160 array   |                        ethAddr of leafs feeIdxs                         |
-|    siblings3[nLevels + 1]    | field array       |                   siblings merkle proof of leafs Idxs                   |
+|              Input               |        type         |                               Description                               |
+|:--------------------------------:|:-------------------:|:-----------------------------------------------------------------------:|
+|            oldLastIdx            |       uint48        |                         old last index assigned                         |
+|           oldStateRoot           |        field        |                           initial state root                            |
+|          globalChainID           |       uint16        |                         global chain identifier                         |
+|         currentNumBatch          |       uint32        |                     current batch number processed                      |
+|        feeIdxs[maxFeeTx]         |    uint48 array     |                   merkle tree indexes to receive fees                   |
+|     feePlanTokens[maxFeeTx]      |    uint32 array     |                 tokens identifiers of fees accumulated                  |
+|         imOnChain[nTx-1]         |    boolean array    |      intermediary signals: decode transaction output onChain flag       |
+|         imOutIdx[nTx-1]          |    uint48 array     |      intermediary signals: decode transaction final index assigned      |
+|        imStateRoot[nTx-1]        |     field array     |           intermediary signals: transaction final state root            |
+|        imExitRoot[nTx-1]         |     field array     |            intermediary signals: transaction final exit root            |
+|   imAccFeeOut[nTx-1][maxFeeTx]   | uint192 array array |        intermediary signals: transaction final accumulated fees         |
+|   imStateRootFee[maxFeeTx - 1]   |     field array     |         intermediary signals: transaction fee final state root          |
+|        imInitStateRootFee        |        field        |    intermediary signals: final state root of all rollup transactions    |
+|     imFinalAccFee[maxFeeTx]      |     field array     | intermediary signals: final fees accumulated of all rollup transactions |
+|      txCompressedData[nTx]       |    uint241 array    |                   encode transaction fields together                    |
+|     txCompressedDataV2[nTx]      |    uint193 array    |              encode transaction fields together version 2               |
+|           fromIdx[nTx]           |    uint48 array     |                              index sender                               |
+|         auxFromIdx[nTx]          |    uint48 array     |                   auxiliary index to create accounts                    |
+|            toIdx[nTx]            |    uint48 array     |                             index receiver                              |
+|          auxToIdx[nTx]           |    uint48 array     |        auxiliary index when signed index receiver is set to null        |
+|           toBjjAy[nTx]           |     field array     |                    babyjubjub y coordinate receiver                     |
+|          toEthAddr[nTx]          |    uint160 array    |                        ethereum address receiver                        |
+|         maxNumBatch[nTx]         |    uint32 array     |   maximum allowed batch number when the transaction can be processed    |
+|           onChain[nTx]           |     bool array      |                determines if the transaction is L1 or L2                |
+|         newAccount[nTx]          |     bool array      |             determines if transaction creates a new account             |
+|    rqTxCompressedDataV2[nTx]     |    uint193 array    |         requested encode transaction fields together version 2          |
+|         rqToEthAddr[nTx]         |    uint160 array    |                   requested ethereum address receiver                   |
+|          rqToBjjAy[nTx]          |     field array     |                    requested babyjubjub y coordinate                    |
+|              s[nTx]              |     field array     |                          eddsa signature field                          |
+|             r8x[nTx]             |     field array     |                          eddsa signature field                          |
+|             r8y[nTx]             |     field array     |                          eddsa signature field                          |
+|         loadAmountF[nTx]         |    uint16 array     |           amount to deposit from L1 to L2 encoded as float16            |
+|         fromEthAddr[nTx]         |    uint160 array    |                         ethereum address sender                         |
+|   fromBjjCompressed[nTx][256]    | boolean array array |                      babyjubjub compressed sender                       |
+|          tokenID1[nTx]           |    uint32 array     |                       tokenID of the sender leaf                        |
+|           nonce1[nTx]            |    uint40 array     |                        nonce of the sender leaf                         |
+|            sign1[nTx]            |     bool array      |                         sign of the sender leaf                         |
+|          balance1[nTx]           |    uint192 array    |                       balance of the sender leaf                        |
+|             ay1[nTx]             |     field array     |                          ay of the sender leaf                          |
+|          ethAddr1[nTx]           |    uint160 array    |                       ethAddr of the sender leaf                        |
+|   siblings1[nTx][nLevels + 1]    |  field array array  |                siblings merkle proof of the sender leaf                 |
+|          isOld0_1[nTx]           |     bool array      |                     flag to require old key - value                     |
+|           oldKey1[nTx]           |    uint48 array     |                       old key of the sender leaf                        |
+|          oldValue1[nTx]          |     field array     |                      old value of the sender leaf                       |
+|          tokenID2[nTx]           |    uint32 array     |                      tokenID of the receiver leaf                       |
+|           nonce2[nTx]            |    uint40 array     |                       nonce of the receiver leaf                        |
+|            sign2[nTx]            |     bool array      |                        sign of the receiver leaf                        |
+|          balance2[nTx]           |    uint192 array    |                      balance of the receiver leaf                       |
+|             ay2[nTx]             |     field array     |                         ay of the receiver leaf                         |
+|          ethAddr2[nTx]           |    uint160 array    |                      ethAddr of the receiver leaf                       |
+|   siblings2[nTx][nLevels + 1]    |  field array array  |               siblings merkle proof of the receiver leaf                |
+|          isOld0_2[nTx]           |     bool array      |                     flag to require old key - value                     |
+|           oldKey2[nTx]           |    uint48 array     |                       old key of the sender leaf                        |
+|          oldValue2[nTx]          |     field array     |                      old value of the sender leaf                       |
+|        tokenID3[maxFeeTx]        |    uint32 array     |                        tokenID of leafs feeIdxs                         |
+|         nonce3[maxFeeTx]         |    uint40 array     |                         nonce of leafs feeIdxs                          |
+|         sign3[maxFeeTx]          |     bool array      |                          sign of leafs feeIdxs                          |
+|        balance3[maxFeeTx]        |    uint192 array    |                        balance of leafs feeIdxs                         |
+|          ay3[maxFeeTx]           |     field array     |                           ay of leafs feeIdxs                           |
+|        ethAddr3[maxFeeTx]        |    uint160 array    |                        ethAddr of leafs feeIdxs                         |
+| siblings3[maxFeeTx][nLevels + 1] |  field array array  |                   siblings merkle proof of leafs Idxs                   |
 
 #### Outputs
 |      Output      | type  |             Description             |
