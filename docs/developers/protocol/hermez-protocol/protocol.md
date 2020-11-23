@@ -228,7 +228,13 @@ There are two ways to authorize an account creation (that is, an ethereum addres
 - Via ethereum transaction, which has an implicit signature of the ethereum address.  This requires the owner of the ethereum address to sign the smart contract transaction call
 - Via an authorization signature (`AccountCreationAuthSig`) that can be used by any party to create accounts on behalf of the user
 
-`AccountCreationAuthMsg = "I authorize this babyjubjub key for hermez rollup account creation" || compressed-bjj`
+```
+[32 bytes] compressed-bjj
+[ 2 bytes] chainId
+[20 bytes] hermezAddress
+```
+
+`AccountCreationAuthMsg = "I authorize this babyjubjub key for hermez rollup account creation" || compressed-bjj || chainId || hermezAddress`
 
 `AccountCreationAuthSig = Sign_ecdsa(AccountCreationAuthMsg)`
 
