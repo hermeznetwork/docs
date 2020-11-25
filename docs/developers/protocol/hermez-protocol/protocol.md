@@ -747,10 +747,11 @@ There two types of L1CoordinatorTx:
 All transactions processed in a batch must be posted on L1. This is assured by hashing all data-availability and forces the coordinator to match all his processed transactions with his posted L1 data-availability.
 
 L2 transactions data-availability struct `L2TxData`:
+> `finalToIdx` is equal to `toIdx` except when `toIdx == IDX 0` where it will be equal to `auxToIdx`
 ```
 **Buffer bytes notation**
 L2TxData: [ NLevels  bits ] fromIdx
-          [ NLevels  bits ] toIdx
+          [ NLevels  bits ] finalToIdx
           [    16  bits   ] amountF
           [     8  bits   ] fee
 ```

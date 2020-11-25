@@ -231,6 +231,7 @@ Take the transaction data, decodes it and build data structures to be used in fu
 |        onChain         |     bool      |             determines if the transaction is L1 or L2              |
 |       newAccount       |     bool      |          determines if transaction creates a new account           |
 |       auxFromIdx       |    uint48     |                 auxiliary index to create accounts                 |
+|        auxToIdx        |    uint48     |     auxiliary index when signed index receiver is set to null      |
 |         inIdx          |    uint48     |                      old last index assigned                       |
 
 #### Outputs
