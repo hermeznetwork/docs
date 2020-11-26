@@ -2,17 +2,17 @@
 
 ## Goal
 
-As announced in the project whitepaper and in the documentation, Hermez will be covering an initial phase of network bootstrapping where some additional security measures are deployed as a good practice for risk management.
+As announced in the project whitepaper as well as the documentation, Hermez will be covering an initial phase of network bootstrapping where some additional security measures are deployed as a good practice for risk management.
 
-An automated limitation on withdrawals will be implemented as an additional checkpoint to identify anomalous behaviour of the network. In such condition, some time for the developers team to verify the system is required and to identify if the behaviour has evolved and a change of security parameters is needed.
+An automated limitation on withdrawals will be implemented as an additional checkpoint to identify anomalous behavior of the network. In such conditions, some time for the developers team to verify the system is required and to identify if the behavior has evolved and a change of security parameters is needed.
 
-The purpose of this smart contract is to delay the withdraw in case of anomalous behaviour of the network.
+The purpose of this smart contract is to delay the withdraw in case of anomalous behavior of the network.
 Users will be prompted to try again after some time or they can decide to use this delayed withdraw alternative with a guaranteed delay time.
-Hence, tokens will be held by the smart contract for a period of `D` and only afterwards tokens could be really withdrawn.
+Hence, tokens will be held by the smart contract for a period of `D` and only afterward tokens could be really withdrawn.
 
 ## Actors
 
-- `hermezRollup`: Smart contract responsible of making deposits and it's able to change the delay
+- `hermezRollup`: Smart contract responsible for making deposits and it's able to change the delay
 - `hermezKeeperAddress`: can enable emergency mode and modify the delay to make a withdrawal
 - `hermezGovernanceDAOAddress`: can claim the funds in an emergency mode
 - `whiteHackGroupAddress`: can claim the funds in an emergency when `MAX_EMERGENCY_MODE_TIME` is exceeded
@@ -48,5 +48,5 @@ There will be a delay time `D` to decide if there has been an attack or not:
 ## Parameters
 
 - `D`: delay to withdraw from `WithdrawalDelayer` measured in seconds
-- `MAX_WITHDRAWAL_DELAY`: maximum delay time to decide if it was an attack or not mesured in weeks --> 2 weeks
-- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract mesured in weeks --> 6 months (~ 26 weeks)
+- `MAX_WITHDRAWAL_DELAY`: maximum delay time to decide if it was an attack or not measured in weeks --> 2 weeks
+- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract measured in weeks --> 6 months (~ 26 weeks)
