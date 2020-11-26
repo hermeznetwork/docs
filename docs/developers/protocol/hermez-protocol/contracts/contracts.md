@@ -74,13 +74,13 @@ There are 2 kind of `forgeBatch`, a flag in the function will distinguish betwee
   - Set a new state and exit root
   - Delete the current frozen queue and freeze the next one
 
-In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establish a deadline for the L1-L2-batches. Every L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-batches until the deadline, when only L1-L2-batches are accepted.
+In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establishes a deadline for the L1-L2-batches. Every L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-batches until the deadline, when only L1-L2-batches are accepted.
 
 ![](forgeL1L2.png)
 
 #### L1 coordinator transactions
 
-In the global spec are specified all the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)
+In the global spec all of the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)  are specified 
 
 #### Data availability
 
@@ -88,7 +88,7 @@ In the global spec are specified all the [L1 coordinator transactions](developer
 - L1-Coordinator-Tx --> `forgeBatch` ethereum Tx Input
 - L2-Tx --> `forgeBatch` ethereum Tx Input
 
-In order to provide data availability the `forgeBatch` transaction inputs must be recovered. To allow this data retrieval from a regular ethereum node, hermez must force that the call is not made from another smart contract:
+In order to provide data availability the `forgeBatch` transaction inputs must be recovered. To allow this data retrieval from a regular ethereum node, Hermez must force that the call is not made from another smart contract:
 
 ```
 assert(msg.sender == tx.origin)
