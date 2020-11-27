@@ -11,16 +11,16 @@ All rules a transaction must follow in order to be valid are designed and coded 
 
 Circuits are built from the bottom up. Hence, small circuits are first introduced and are referenced in advanced ones for the sake of clarity.
 
-Circuits would be splitted in three modules:
-- library: basic hermez circuits and structs commonly used across the rest of the circuits
-- withdraw: specific circuit to allow a user to withdraw funds from hermez contract
+Circuits would be split into three modules:
+- library: basic Hermez circuits and structs commonly used across the rest of the circuits
+- withdraw: specific circuit to allow a user to withdraw funds from Hermez contract
 - rollup-main: main circuit that contains all the logic described in [zkRollup protocol](developers/protocol/hermez-protocol/protocol)
 
 > withdraw: user could perform a withdrawal by submitting a zkProof or a merkle tree proof. Both methods are equivalent in terms of functionality. 
 
 - Global variables:
   - `nTx`: absolute maximum of L1 or L2 transactions allowed
-  - `nLevels`: merkle tree depth
+  - `nLevels`: Merkle tree depth
   - `maxL1Tx`: absolute maximum of L1 transaction allowed
   - `maxFeeTx`: absolute maximum of fee transactions allowed
 
@@ -48,7 +48,7 @@ Circuits would be splitted in three modules:
 
 ## Assumptions
 ### L1 transactions
-Some assumptions has to take into account in L1 transactions. Those are performed by users which interact with the smart contract. Hence, smart contract perform checks and force some parameters that are assumed in the circuit implementation:
+Some assumptions must be taken into account in L1 transactions. They are performed by users which interact with the smart contract. Hence, smart contract perform checks and force some parameters that are assumed in the circuit implementation:
 - `tokenID` must exist
 - `loadAmount` < 2^128
 - `amount` < 2^192
@@ -479,13 +479,13 @@ In case of an L2 tx, the protocol does not allow to do a transaction if there is
 
 ### rollup-tx-states
 #### Description
-This circuit is a subset of the `rollup-tx` circuit. It has been splitted for clarity.
+This circuit is a subset of the `rollup-tx` circuit. It has been split for clarity.
 
-Transaction states are computed depending on transactions type. All transaction types can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-types)
+Transaction states are computed depending on transaction's type. All transaction types can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-types)
 
-> Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user o by coordinator.
+> Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user or by coordinator.
 
-Sender and receiver accounts have their own merkle tree processors inside the circuit in order to perform actions on their leafs:
+Sender and receiver accounts have their own Merkle tree processors inside the circuit in order to perform actions on their leafs:
   - sender: processor 1
   - receiver: processor 2
 
@@ -594,7 +594,7 @@ This circuit includes all the rules given a transaction. Hence, `rollup-tx` incl
 - `balance-updater`
 - `fee-accumulator`
 
-For the sake of clarity, this circuit could be splitted internally into phases:
+For the sake of clarity, this circuit could be split internally into phases:
 - A: compute transaction states
 - B: check request transaction
 - C: checks state fields
@@ -785,7 +785,7 @@ In section H, only bits associated to `amountF` in `L1L2TxsData` are multiplied 
 
 ## Withdraw
 #### Description
-This circuit is used to prove that a leaf exist on the exit tree. If its existence is proved, user will be able to withdraw funds from the hermez contract.
+This circuit is used to prove that a leaf exist on the exit tree. If its existence is proved, user will be able to withdraw funds from the Hermez contract.
 All pretended public inputs are hashed together as described [here](developers/protocol/hermez-protocol/protocol?id=hermezwithdraw).
 
 - Steps:
