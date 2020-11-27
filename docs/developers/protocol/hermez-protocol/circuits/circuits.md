@@ -530,9 +530,10 @@ Following truth table determines how to set the above signals depending on trans
 |             nop             |      0      |     0      |   0   |     0      |           0            |    0    |     0      |     0      |   0    |          0           |  0   |          0           |      NOP      |         NOP          |    0     |         0          |   1   |        0         |      0       |
 
 L1 invalid transactions should not be allowed but the circuit needs to process them even if they are not valid. In order to do so, the circuit performs a zero `loadAmount` \ `amount` update if L1 transaction is not valid. Therefore, circuit nullifies `loadAmount` \ `amount` if L1 invalid transaction is detected.
+
 Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1 transaction type:
 
-> Note that `nullifyLoadAmount` \ `nullifyAmount` fields are set to 1 only if `checks` are not successful
+> Note that `nullifyLoadAmount` \ `nullifyAmount` fields are set to 1 only if `checks` are not successful and L1 transfers are only allowed if `tokenID == tokenID1 == tokenID2` as a sanity check
 
 |     **Transaction type**     | newAccount | isLoadAmount | isAmount | checkEthAddr | checkTokenID1 |  checkTokenID2   | *nullifyLoadAmount* | *nullifyAmount* |
 |:----------------------------:|:----------:|:------------:|:--------:|:------------:|:-------------:|:----------------:|:-------------------:|:---------------:|
@@ -540,7 +541,7 @@ Next table sets when to apply `nullifyLoadAmount` \ `nullifyAmount` depending L1
 |     createAccountDeposit     |     1      |      1       |    0     |      0       |       0       |        0         |          0          |        0        |
 | createAccountDepositTransfer |     1      |      1       |    1     |      0       |       0       |        1         |          0          |        1        |
 |           deposit            |     0      |      1       |    0     |      0       |       1       |        0         |          1          |        0        |
-|       depositTransfer        |     0      |      1       |    1     |      1       |       1       |        1         |          0          |        1        |
+|       depositTransfer        |     0      |      1       |    1     |      1       |       1       |        1         |          1          |        1        |
 |        forceTransfer         |     0      |      0       |    1     |      1       |       1       |        1         |          0          |        1        |
 |          forceExit           |     0      |      0       |    1     |      1       |       1       | 1 if newExit = 0 |          0          |        1        |
 
