@@ -1,13 +1,13 @@
 # FAQ
 
 ## How to select a coordinator?
-At the beginning we expect only a single coordinator working (boot coordinator). Both HermezJS and the wallet we provide to interact with Hermez, will connect to this boot coordinator by default. As network matures and different coordinators become online, one can check their status by using the provided REST API.
+At the beginning we expect only a single coordinator working (boot coordinator). Both HermezJS and the wallet we provide to interact with Hermez will connect to this boot coordinator by default. As the network matures and different coordinators come online, one can check their status by using the provided REST API.
 
 ## How many coordinators will there be?
 
-There is no limit to the number of coordinators. Becoming a coordinator is entirely permissionless and it will be enabled since the launch.
+There is no limit to the number of coordinators. Becoming a coordinator is entirely permissionless and it will be enabled from the time of launch.
 
-Although the first coordinator will be the Hermez Boot coordinator which will forge blocks when there's no alternative bids in the auction, it’s important for us that the market for coordinators becomes open over time.
+Although the first coordinator will be the Hermez Boot coordinator, which will forge blocks when there's no alternative bids in the auction, it is important for us that the market for coordinators becomes open over time.
 
 ## Will there be a competitive market for coordinators?
 
