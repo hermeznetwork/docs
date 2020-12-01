@@ -25,7 +25,7 @@
 All L1UserTx are encoded and added to a queue, when the queue is full or frozen, a new queue is created.
 Once a queue is frozen means that L1 transactions can't be added anymore.
 Each queue is identified by a index that grows incrementally.
-The queue index of the next L1-L2-batch is always frozen wich is identified by `nextL1ToForgeQueue`
+The queue index of the next L1-L2-batch is always frozen which is identified by `nextL1ToForgeQueue`
 
 When a user calls a function that adds an L1UserTx, the following happens:
 
@@ -74,7 +74,7 @@ There are 2 kind of `forgeBatch`, a flag in the function will distinguish betwee
   - Set a new state and exit root
   - Delete the current frozen queue and freeze the next one
 
-In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establish a deadline for the L1-L2-batches. Every L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-barches until the deadline, when only L1-L2-batches are accepted.
+In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establish a deadline for the L1-L2-batches. Every L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-batches until the deadline, when only L1-L2-batches are accepted.
 
 ![](forgeL1L2.png)
 
@@ -114,9 +114,9 @@ The governance will be able to set the following parameters:
 
 #### Goal
 
-This logic is implemented in order to mitigate attacks that could potentially steal funds from hermez network. The aim of this method is to mitigate funds stolen while preserving decentralization.
+This logic is implemented during the bootstrapping phase of the network as an additional security measure in order to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez network. The objective is to temporary enable this last resort measure while preserving decentralization.
 
-The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of funds stolen. Therefore, it is assured that the attacker can only steal a certain amount of tokens.
+The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of illegitimate funds access. Therefore, it is assured that the attacker can only withdraw a certain amount of tokens.
 
 #### Hermez withdraw limit
 
@@ -132,7 +132,7 @@ Every time a user tries to perform an instant withdraw:
 
 ![](buckets.png)
 
-> Note that `withdraw limit` would be the maximum amount of tokens that an attacker can steal since the contract will return `revert` when the instant withdraw is called again and there are no tokens left to send.
+> Note that `withdraw limit` would be the maximum amount of tokens that an attacker can withdraw since the contract will return `revert` when the instant withdraw is called again and there are no tokens left to send.
 > The histogram is understood as buckets.
 
 #### Mechanism
@@ -155,7 +155,7 @@ There will be a delay time `withdrawalDelay` (parameter of the `WithdrawalDelaye
 
 ![](emergency-mechanism.png)
 
-> Hermez network foundation will be monitoring constantly the system in order to detect possible anomalies and to be able to decide as soon as possible if they are an attack.
+> During the bootstrapping phase, Hermez devs team will be monitoring constantly the system in order to detect possible anomalies and to be able to decide as soon as possible if the network is under an attack.
 
 #### Parameters
 

@@ -16,7 +16,6 @@ As a summary, Hermez makes the following security assumptions:
 3. Certain cryptographic assumptions from  primitives such as signatures and hashes
 4. Software security assumptions that rely on correct design and implementation.
 
-
 ## Ethereum
 Hermez runs on top of Ethereum. All Hermez data is available on Ethereum and borrows layer 1 security too.
 
@@ -91,6 +90,9 @@ BVI 2043757 in Wickhams Cay II, Road Town, Tortola, VG1110, British Virgin Islan
  increase the chances that transactions are forged by Boot coordinator.
 
 ### Security Audits
-Smart contracts and circuits designed for zk-proof system are being audited by different entities. The results
- will be published here as soon as they are available.
+Smart contracts and circuits designed for zk-proof system are being audited by different entities. The results will be published here as
+soon as they are available.
+
+Results from the first audit performed by [`Solidified`](https://solidified.io/) can be found
+[`here`](https://github.com/solidified-platform/audits/blob/master/Audit%20Report%20-%20Hermez%20%5B31.10.2020%5D.pdf)
 

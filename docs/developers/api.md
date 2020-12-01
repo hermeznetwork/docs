@@ -22,7 +22,7 @@ The API end points are divided in three main groups:
 All the endpoints that return a list of undefined size use pagination. 
 In order to use pagination, three query parameters are used:
 * `fromItem`: indicates the first item to be returned. In general, this parameter shouldn't be provided in the first call to the endpoint, and use the `itemId` of the last returned item (+/-) 1, if the order is (ascending/descending).
-* `order`: all pginated items are ordered chronologicaly. However the specific fields to guarantee this order depend on each endpoint. For this purpose, `itemId` is used (itemId follows ascending chronological order except for unforged L1 user transactions). If the parameter is not provided, ascending order will be used by default. 
+* `order`: all paginated items are ordered chronologically. However the specific fields to guarantee this order depend on each endpoint. For this purpose, `itemId` is used (itemId follows ascending chronological order except for unforged L1 user transactions). If the parameter is not provided, ascending order will be used by default. 
 * `limit`: maximum amount of items to include in each response. Default is 20, maximum 2049.
     
 Responses for those endpoints will always include a `pagination` object. This object includes the total amount of items that the endpoint will return at a given time with the given filters. Apart from that, it also includes the `itemId` of the last and first items that will be returned (not in a single response but within the total items). These two properties can be used to know when to stop querying. 
@@ -31,9 +31,9 @@ Responses for those endpoints will always include a `pagination` object. This ob
 
 Since all the items follow a chronological order, there are no safety problems when fetching items in ascending order (except for reorgs).
 
-When fetching items descending order, new items will be added at the beginning. This doesn't cause any safety problems. In this case it is necessary to start queryng without the `fromItem` set to `pagination.lastItem`.
+When fetching items descending order, new items will be added at the beginning. This doesn't cause any safety problems. In this case it is necessary to start querying without the `fromItem` set to `pagination.lastItem`.
 
-`itemId` can be used during reorgs. This is important since other identifiers may be the same but with different content. As an example, if the batch 424 get's reorged, it will be deleted. Eventualy, a new batch 424 will appear with potentialy different content.
+`itemId` can be used during reorgs. This is important since other identifiers may be the same but with different content. As an example, if the batch 424 get's reorged, it will be deleted. Eventually, a new batch 424 will appear with potentiality different content.
 
 ## Account Endpoints
 ### POST /account-creation-authorization
@@ -52,7 +52,7 @@ Get account information by its index.
 Get exit information. 
 
 ### GET /exits/{batchNum}/{accountIndex}
-Get exit information for a specific exit tree and account. This information is required to perform a withdraw. Exits are identified with accounIndex and batchNum since every batch that has exits has a different exit tree.
+Get exit information for a specific exit tree and account. This information is required to perform a withdraw. Exits are identified with accountIndex and batchNum since every batch that has exits has a different exit tree.
 
 ## Transaction Endpoints
 ### POST /transactions-pool
@@ -78,7 +78,7 @@ Get information on a specific batch.
 
 ### GET /full-batches/{batchNum}
 Get information on a specific batch, including the associated transactions. The object returned in this method can be a bit heavy. 
-If you're devloping a front end, you may consider using a combinaton of `GET /batches/{batchnum}` and `GET /history-transactions?batchNum={batchNum}`.
+If you're developing a front end, you may consider using a combination of `GET /batches/{batchnum}` and `GET /history-transactions?batchNum={batchNum}`.
 
 ### GET /slots
 Get information about slots.

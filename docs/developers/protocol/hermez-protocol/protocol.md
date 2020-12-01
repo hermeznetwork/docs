@@ -94,7 +94,6 @@ dataBuffer: [48 bits] fromIdx
   - determines the maximum number of accounts that can exist in the zkRollup: $MAX\_ACCOUNTS=2^{MAX\_NLEVELS}$
 - `MAX_TX`: absolute maximum L1 or L2 transactions allowed to process in one batch
 - `MAX_L1_TXS`: absolute maximum of L1 transactions allowed to process in one batch
-- `CHAIN_ID`: identifier zkRollup chain
 - `MAX_FEE_TX`: maximum number of tokens that the coordinator is able to collect fees from in a batch from the included transactions
 - `NLevels`: merkle tree depth
   - It should be noted that `NLevels` is always a multiple of 8
@@ -109,7 +108,6 @@ dataBuffer: [48 bits] fromIdx
     - `2 <= IDX < 256`: reserved Idx values for future uses
     - `256 <= IDX < 2^MAX_NLEVELS`: available Idx values for rollup accounts
 - `MAX_TOKENS`: maximum amount of tokens allowed to be registered in the zkRollup
-- `forgeL1Timeout`: maximum time between batches that include L1 transactions
 
 ## Data types
 ### Floating point format (Float16)
@@ -157,32 +155,30 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `amountFloat16`: number of tokens to transfer inside the zkRollup (16 bits) 
 - `tokenID`: token identifier (32 bits)
 - `nonce`: nonce (40 bits)
-- `feeSelector`: select %fee to apply (8 bits) 
+- `feeSelector`: select %fee to apply (8 bits)
+- `maxNumBatch`: maximum allowed batch number when the transaction can be processed (32 bits)
 - `onChain`: mark transaction as L1 transaction (1 bit) 
 - `newAccount`: mark transaction to create new account (1 bit)
 - `fromIdx`: sender account index (NLevels bits)
-- `fromBjjCompressed`: sender babyjubjub public key compressed (253 bits)
+- `fromBjjCompressed`: sender babyjubjub public key compressed (256 bits)
 - `fromEthAddr`: sender ethereum address (160 bits)
 - `toIdx`: recipient account index (NLevels bits)
 - `toEthAddr`: recipient ethereum address (160 bits)
-- `toBjjSign`: recipient babyjubjub sign (253 bits)
+- `toBjjSign`: recipient babyjubjub sign (1 bits)
 - `toAy`: recipient babyjubjub public key Y coordinate (253 bits)
 - `loadAmountFloat16`: L1 amount transfered to L2 (16 bits)
 - `txCompressedData`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
+- `txCompressedDataV2`: transaction fields joined together used for other transactions when using atomic transactions feature (193 bits) [See L2Tx specification](#l2) 
 - `rqOffset`: relative transaction position to be linked. Used to perform atomic transactions (3 bits)
+- `rqTxCompressedDataV2`: requested `txCompressedDataV2`
+- `rqToEthAddr`: requested `toEthAddr`
+- `rqToBjjAy`: requested `toBjj` 
 
 Fields to perform atomic transactions:
-- `rqTxCompressedDataV2`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
-  - `fromIdx`
-  - `toIdx `
-  - `amountFloat16`
-  - `tokenID`
-  - `nonce`
-  - `userFee`
-  - `toBjjSign`
-- `rqToEthAddr`: requested `toEthAddr`
-- `rqToBjjAy`: requested `toBjj`
-- `rqTxOffset`: relative transaction position to be linked
+- `rqTxCompressedDataV2`
+- `rqToEthAddr`
+- `rqToBjjAy`
+- `rqOffset`
 
 ## Trees
 - It is assured by protocol a unique `idx` for each account. Therefore, a given `idx` identifies uniquely a zkRollup account
@@ -232,7 +228,13 @@ There are two ways to authorize an account creation (that is, an ethereum addres
 - Via ethereum transaction, which has an implicit signature of the ethereum address.  This requires the owner of the ethereum address to sign the smart contract transaction call
 - Via an authorization signature (`AccountCreationAuthSig`) that can be used by any party to create accounts on behalf of the user
 
-`AccountCreationAuthMsg = "I authorize this babyjubjub key for hermez rollup account creation" || compressed-bjj`
+```
+[32 bytes] compressed-bjj
+[ 2 bytes] chainId
+[20 bytes] hermezAddress
+```
+
+`AccountCreationAuthMsg = "I authorize this babyjubjub key for hermez rollup account creation" || compressed-bjj || chainId || hermezAddress`
 
 `AccountCreationAuthSig = Sign_ecdsa(AccountCreationAuthMsg)`
 
@@ -303,17 +305,17 @@ Since the operator is forced to process L1 transactions, those transactions have
 Data of the transaction that is concatenated, hashed with sha256 and used as a public input in the circuit:
 ```
 **Buffer bytes notation**
-L1TxData: [     160 bits     ] fromEthAddr
-          [     256 bits     ] fromBjj-compressed
-          [ MAX_NLEVELS bits ] fromIdx
-          [      16 bits     ] loadAmountFloat16
-          [      16 bits     ] amountFloat16
-          [      32 bits     ] tokenID
-          [ MAX_NLEVELS bits ] toIdx
+L1TxFullData: [     160 bits     ] fromEthAddr
+              [     256 bits     ] fromBjj-compressed
+              [ MAX_NLEVELS bits ] fromIdx
+              [      16 bits     ] loadAmountFloat16
+              [      16 bits     ] amountFloat16
+              [      32 bits     ] tokenID
+              [ MAX_NLEVELS bits ] toIdx
 
-L1TxData length: 576 bits / 72 bytes
+L1TxFullData length: 576 bits / 72 bytes
 
-L1TxsData = L1TxData[0] || L1TxData[1] || ... || L1TxData[len(L1Txs) - 1] || zero[(len(L1Txs)] || ... || zero[MAX_L1_TX - 1]
+L1TxsFullData = L1TxFullData[0] || L1TxFullData[1] || ... || L1TxFullData[len(L1Txs) - 1] || zero[(len(L1Txs)] || ... || zero[MAX_L1_TX - 1]
 ```
 
 All L1 txs that perform a transfer or exit must be approved by the ethereum address of the account.  This is indicated by setting the `fromEthAddr` as the `message.sender`, which is the address that signs the L1 tx.
@@ -545,14 +547,19 @@ toEthAddr
 toBjjAy
 
 **Field element notation**                  
-rqTxCompressedDataV2: [ MAX_NLEVELS bits ] fromIdx
+txCompressedDataV2: [ MAX_NLEVELS bits ] fromIdx
                       [ MAX_NLEVELS bits ] toIdx
                       [      16 bits     ] amountFloat16
                       [      32 bits     ] tokenID
                       [      40 bits     ] nonce
                       [      8 bits      ] userFee
                       [      1 bits      ] toBjjSign                         
-Total bits rqTxCompressedDataV2: 193
+Total bits txCompressedDataV2: 193
+
+**Field element notation**
+element_1:[      160 bits    ] toEthAddr
+          [      32 bits     ] maxNumBatch
+Total bits element_1: 192
 
 rqToEthAddr                  
 rqToBjjAy
@@ -560,7 +567,7 @@ rqToBjjAy
 messageToSign = H(e_0, e_1, e_2, e_3, e_4, e_5)
 
 e_0: [ 241 bits ] txCompressedData
-e_1: [ 160 bits ] toEthAddr
+e_1: [ 192 bits ] element_1
 e_2: [ 253 bits ] toBjjAy
 e_3: [ 193 bits ] rqTxCompressedDataV2
 e_4: [ 160 bits ] rqToEthAddr
@@ -699,18 +706,18 @@ $len(l1\_txs) \leq MAX\_L1\_TXS < MAX\_TXS$
 $len(l1\_user\_txs) \leq MAX\_L1\_USER\_TXS < MAX\_L1\_TXS$
 
 ### L1 user transactions
-All transaction data triggered by a smart contract function can be directly retrieved since it will be stored on the blockchain, but it's harder when this data happens in internal transactions, not all nodes support that functionality. That's why all the L1 user transactions emit an L1UserTx event to facilitate the data retrieval.
+All transaction data triggered by a smart contract function can be directly retrieved since it will be stored on the blockchain, but it's harder when this data happens in internal transactions, not all nodes support that functionality. That's why all the L1 user transactions emit an `L1UserTx` event to facilitate the data retrieval.
 
-When a user calls a function that adds an L1UserTx, the folowing happens:
+When a user calls a function that adds an `L1UserTx`, the following happens:
 - Storage
-    - Add the L1UserTx data at the end of the last non-frozen non-full queue of L1UserTxs (`L1UserTxs[lastL1UserTxs]`).
+    - Add the `L1UserTx` data at the end of the last non-frozen non-full queue of `L1UserTxs` (`L1UserTxs[lastL1UserTxs]`).
         - Each queue is identified by a toForgeL1TxsNumber that grows incrementally
-        - The queue in which this data is added is identified by a particular toForgeL1TxsNumber (which is lastL1UserTxs at the moment the L1UserTx is added)
-        - The L1UserTxs has a position in this queue: `L1UserTxs[lastL1UserTxs][position]`
+        - The queue in which this data is added is identified by a particular `toForgeL1TxsNumber` (which is `lastL1UserTxs` at the moment the `L1UserTx` is added)
+        - The `L1UserTxs` has a position in this queue: `L1UserTxs[lastL1UserTxs][position]`
 - Event
-    - toForgeL1TxsNumber
-    - L1UserTx data (68 bytes)
-    - position
+    - `toForgeL1TxsNumber`
+    - [`L1UserTx`](#l1-user-transactions) data (68 bytes)
+    - `position`
 
 ### L1 coordinator transactions
 Coordinator could perform some special transactions to trigger L1 transactions. This transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the ethereum transaction.
@@ -736,32 +743,35 @@ There two types of L1CoordinatorTx:
   - Coordinator should create an account with a babyjubjub key equal to the `toAx` and `toAy` in the L2 transaction in order to process the L2 transaction
   - ecdsa signature fields are set to 0
 
-### L2 transactions
-All L2 transactions processed in a batch must be posted on L1. This is assured by hashing all L2 data-availability and forces the coordinator to match all his processed L2 transaction with his posted L1 data-availability.
+### L1 - L2 transactions
+All transactions processed in a batch must be posted on L1. This is assured by hashing all data-availability and forces the coordinator to match all his processed transactions with his posted L1 data-availability.
 
-L2 transactions data-availability struct `L2Tx`:
+L2 transactions data-availability struct `L2TxData`:
+> `finalToIdx` is equal to `toIdx` except when `toIdx == IDX 0` where it will be equal to `auxToIdx`
 ```
 **Buffer bytes notation**
 L2TxData: [ NLevels  bits ] fromIdx
-          [ NLevels  bits ] toIdx
+          [ NLevels  bits ] finalToIdx
           [    16  bits   ] amountF
           [     8  bits   ] fee
 ```
+> note that `nopTxData` is a `L2TxData` struct where all the fields are set to 0
 
-L1 transactions are not included in L2 data-availability. Therefore, their slots are replaced by 0:
+L1 transactions data-availability struct `L1TxData`:
+> note that effectiveAmount is the amount that will be transferred on L1 transaction once all the nullifiers are applied
 ```
 **Buffer bytes notation**
-L2TxData: [ NLevels  bits ] fromIdx = 0
-          [ NLevels  bits ] toIdx = 0
-          [    16  bits   ] amountF = 0
+L1TxData: [ NLevels  bits ] fromIdx
+          [ NLevels  bits ] toIdx
+          [    16  bits   ] effectiveAmountF = amounF * (1 - isNullified)
           [     8  bits   ] fee = 0
 ```
 
 > Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 16 + 8 = 88 bits = 11 bytes
 
-`L2TxsData` is the all the L2 transaction data concatenated:
+`L1L2TxsData` is the all the L1-L2 transaction data concatenated:
 ```
-L2TxsData = zero[0] || ... || zero[len(L1Txs) - 1] || L2Tx[0] || L2Tx[1] || ... || L2Tx[len(L2Txs) - 1] || zero[len(Txs)] || ... || zero[MAX_TXS - 1]
+L1L2TxsData = L1TxData[0] || L1TxData[1] || ... || L1TxData[len(L1Txs) - 1] || L2TxData[0] || L2TxData[1] || ... || L2TxData[len(L2Txs) - 1] || nopTxData[len(Txs)] || ... || nopTxData[MAX_TXS - 1]
 ```
 
 ### Fee Tx
@@ -773,7 +783,7 @@ feeTxsData = idx[0] || ... || ... || L2Tx[MAX_FEE_TX - 1]
 ```
 
 ### Forging
-When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retreived by querying the arguments of the function call.  To allow this data retrieval from a regular ethereum node, we must force that the call is not made from a smart contract:
+When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retrieved by querying the arguments of the function call.  To allow this data retrieval from a regular ethereum node, we must force that the call is not made from a smart contract:
 ```
 assert(msg.sender == tx.origin)
 ```
@@ -785,6 +795,19 @@ The rollup `forging` function will be private, and will be called internally in 
 
 Contract will compute the hash of all pretended public inputs of the circuit in order to force these private signals to be processed by the coordinator.
 
+- List parameters in `hashGlobalData`:
+  - `oldLastIdx`: old last merkle tree index created
+  - `newLastIdx`: new last merkle tree index created
+  - `oldStateRoot`: ols state root
+  - `newStateRoot`: new state root
+  - `newExitRoot`: new exit root
+  - `L1TxsFullData`: bits  L2 full data
+  - `L1L2TxsData`: bits L1-L2 transaction data-availability
+  - `feeTxsData`: all index accounts to receive accumulated fees
+  - `chainId`: global chain identifier
+  - `currentNumBatch`: current batch number processed
+
+
 ```
 **Buffer bytes notation**
 hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx 
@@ -792,10 +815,11 @@ hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx
                 [                256 bits              ] oldStRoot
                 [                256 bits              ] newStRoot
                 [                256 bits              ] newExitRoot
-                [ MAX_L1_TX*(2*MAX_NLEVELS + 480) bits ] L1TxsData
-                [     MAX_TX*(2*NLevels + 24) bits     ] L2TxsData
+                [ MAX_L1_TX*(2*MAX_NLEVELS + 480) bits ] L1TxsFullData
+                [     MAX_TX*(2*NLevels + 24) bits     ] L1L2TxsData
                 [       NLevels * MAX_TOKENS_FEE       ] feeTxsData
                 [                 16 bits              ] chainID
+                [                 32 bits              ] currentNumBatch
 
 hashGlobalInputs = SHA256(hashGlobalData) % rField
 ```
@@ -803,14 +827,14 @@ hashGlobalInputs = SHA256(hashGlobalData) % rField
 ## Fee model
 ### User
 Fees are paid on L2 transactions in the same token that they are done. So, if user send a token A, the fees will be paid in token A.
-Fee is represented as a percentatge of the total amount sent:
+Fee is represented as a percentage of the total amount sent:
 
-$Fee_{amount} = amount * Fee_{percentatge}$
+$Fee_{amount} = amount * Fee_{percentage}$
 
 $TotalTxCost = amount + Fee_{amount}$  
 
 Since there are 8 reserved bits for this field, there will be 256 different fee
-percentatges that the user could choose to perform its transaction.
+percentages that the user could choose to perform its transaction.
 See the [table showing the 256 values for each fee index](developers/protocol/hermez-protocol/fee-table?id=transaction-fee-table)
 
 #### Compute fees
@@ -837,7 +861,6 @@ In order to ensure that the coordinator receives the correct amount of fees, the
 ## Token listing
 - ERC20 tokens are supported by the rollup and it could be added up to $2^{32}$ different tokens
 - Ether is supported by the rollup and it has an assigned `tokenID = 0`
-- Only the governance could add tokens
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it
 - `tokenID` is assigned (sequentially) each time a token is listed in the system and this identifier will be used for any rollup transaction, either L1 or L2, that modifies the state tree 
 - TokenInfo:

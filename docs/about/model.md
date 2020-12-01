@@ -31,11 +31,11 @@ The winning bid is the one with the highest amount of HEZ, a ERC-20 utility toke
 All bids will be processed by the auction smart contract , and all the HEZ tokens placed will be used as follows:
 
 - 30% will be burned (permanently removed).
-- 40% will be automatically and permanently transferred to a donations account controlled by the Ethereum Foundation. These donations will be initially sent to Gitcon quadratic funding grants but with the future-proof ability to donate also to other quadratic funding matching pools as they become available;
+- 40% will be automatically and permanently transferred to a donations account controlled by the Ethereum Foundation. These donations will be initially sent to Gitcoin quadratic funding grants but with the future-proof ability to donate also to other quadratic funding matching pools as they become available;
 - 30% will be allocated as Hermez Network usage incentives, compensating active engagement and network adoption, e.g. rewarding transaction and rewarding the holding of specific tokens in Hermez L2 addresses, instead of on L1 Ethereum addresses.
 
 
-The auction process incentivises efficiency, as coordinators need to include as many transactions as possible in each time slot in order to compensate for their bidding costs and operative expenses.
+The auction process incentivise efficiency, as coordinators need to include as many transactions as possible in each time slot in order to compensate for their bidding costs and operative expenses.
 
 To prevent bidders from buying up all the slots in one go, nobody will be able to bid on a specific slot more than one month in advance. And the auction will be closed two time slots before the time of creating the slot.
 

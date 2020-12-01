@@ -18,3 +18,4 @@
     - [Coordinators](faq/coordinators.md)
     - [End-Users](faq/end-users.md)
     - [Proof of Donation](faq/pod.md)
+    - [Other](faq/other.md)

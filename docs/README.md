@@ -1,4 +1,4 @@
-# Hermez docs
+# Hermez network docs
 
 > Hermez is currently under development. Some of the details in the documentation can be modified before network launch.
 
