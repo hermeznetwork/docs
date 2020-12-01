@@ -6,6 +6,8 @@ This document is an overview of the Hermez protocol. Its objective is to provide
 
 For a more in depth analysis, read the [`protocol`](../developers/protocol/README?id=protocol) section.
 
+Hermez smart contracts can be downloaded from [`here`](https://github.com/hermeznetwork/contracts).
+
 ## Overview
 Hermez is a [`zk-rollup`](../developers/glossary?id=zk-rollup) solution that allows scaling payments and token transfers on top of the Ethereum public blockchain. It uses Ethereum for data storage but not for computation. In addition, by using zero-knowledge proofs, it is easy to verify on-chain that computations have been carried out correctly.
 
