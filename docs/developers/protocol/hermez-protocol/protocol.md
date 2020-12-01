@@ -477,7 +477,7 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `fromEthAddr` should match state1 update account
 
 ### L1 coordinator
-Coordinator has the ability to create accounts at the time to forge a batch. This transactions are also included in the `L1TxsData`.
+Coordinator has the ability to create accounts at the time to forge a batch. These transactions are also included in the `L1TxsData`.
 Account could be created for a given:
 - ethereum address - babyjubjub key pair (regular rollup account)
 - babyjubjub public key (internal rollup account)
@@ -526,7 +526,7 @@ Account could be created for a given:
 ### L2
 All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it. 
 The coordinator must check that it collects valid transactions that must not perform an invalid transition state. Otherwise, the proof computed by the coordinator will not be valid.
-The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is in the users benefit to provide a valid transaction if they want it to be inserted in the zkRollup.
+The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is in the users' benefit to provide a valid transaction if they want it to be inserted in the zkRollup.
 
 Signature used for L2 transactions is `eddsa` with Babyjubjub key.
 L2 transaction data in the signature:
@@ -720,7 +720,7 @@ When a user calls a function that adds an `L1UserTx`, the following happens:
     - `position`
 
 ### L1 coordinator transactions
-Coordinator could perform some special transactions to trigger L1 transactions. This transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the Ethereum transaction.
+Coordinator could perform some special transactions to trigger L1 transactions. These transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the Ethereum transaction.
 
 Data needed to perform this transactions will be encoded as:
 ```
