@@ -58,7 +58,7 @@ By searching for the Ethereum address of an existing coordinator, or by navigati
 ## Searching through Hermez Batch Explorer
 There are limited options available for search and navigation in the app itself. Those include:
 * Ethereum address
-* hez Ethereum address
+* HEZ Ethereum address
 * BJJ address
 * Batch number
 * Id of a Transaction
