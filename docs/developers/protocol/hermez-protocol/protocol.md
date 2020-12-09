@@ -1,7 +1,7 @@
 # Hermez zkRollup protocol
 
 ## Overview
-The core protocol ensures that state transitions are valid through a validity proof which will assure that certain rules has been fulfilled. 
+The core protocol ensures that state transitions are valid through a validity proof which will assure that certain rules have been fulfilled. 
 This collection of rules are determined into a smart contract which will validate a proof of state transition. This verification will check that each state transitioning is made correctly. This is achieved by using zkSNARKs circuit and it will make sure that all rules for state transition are being followed.
 Any prover must submit a proof in order to demonstrate the correctness of the state transition computation.
 
@@ -9,7 +9,7 @@ A prover (aka coordinator) is in charge to compute all state changes and calcula
 
 ![](zkSNARK-proof-1.png)
 
-A sparse-merkle-tree is used to keep the state data where all accounts and balances are stored. This information is kept on L2 and users will sign transactions in order to spend their balances between L2 accounts. This L2 transactions are collected together to create a batch. Afterwards, batch data is compressed through a zk-SNARKs and it will prove that the state transitions of all those L2 transactions are correct.
+A sparse-Merkle-tree is used to keep the state data where all accounts and balances are stored. This information is kept on L2 and users will sign transactions in order to spend their balances between L2 accounts. This L2 transactions are collected together to create a batch. Afterward, batch data is compressed through a zk-SNARKs and it will prove that the state transitions of all those L2 transactions are correct.
 
 This collection of transactions are made public on L1 in order to provide data-availability to the protocol, meaning that anyone can re-build the L2 state just depending on L1 data. Hence, there is no need to rely on third parties to provide or store this data.
 
@@ -19,7 +19,7 @@ The system is composed by L1 and L2 transactions:
 
 ![](zkSNARK-proof-2.png)
 
-L1 transactions are forced to be executed by the coordinator in the protocol. Therefore, this kind of transactions will be always forged at some time.
+L1 transactions are forced to be executed by the coordinator in the protocol. Therefore, these kind of transactions will be always forged at some time.
 L2 transactions are generated off-chain by the users and they are sent to the coordinators. Coordinators would be in charge to gather them.
 
 Some of the rollup functionality depends on a consensus mechanism to decide who
@@ -95,13 +95,13 @@ dataBuffer: [48 bits] fromIdx
 - `MAX_TX`: absolute maximum L1 or L2 transactions allowed to process in one batch
 - `MAX_L1_TXS`: absolute maximum of L1 transactions allowed to process in one batch
 - `MAX_FEE_TX`: maximum number of tokens that the coordinator is able to collect fees from in a batch from the included transactions
-- `NLevels`: merkle tree depth
+- `NLevels`: Merkle tree depth
   - It should be noted that `NLevels` is always a multiple of 8
 
 ### Contracts
 - `MAX_L1_USER_TXS`: absolute maximum of L1 user transactions allowed to be queued for a batch
 - `MAX_AMOUNT_DEPOSIT`: maximum amount of tokens that can be added when creating a new account
-- `INITIAL_IDX`: first merkle tree index to populate if a new account is created
+- `INITIAL_IDX`: first Merkle tree index to populate if a new account is created
   - Some indexes are reserved in order to specify special transactions
     - `IDX 0`: null index
     - `IDX 1`: exit
@@ -137,7 +137,7 @@ bit position:
 - `idx`: integer, path in the sparse merkle tree (NLevels bits)
 - `sign`: babyjubjub sign (1 bits)
 - `ay`: babyjubjub public key Y coordinate (253 bits)
-- `ethAddr`: ethereum address (160 bits)
+- `ethAddr`: Ethereum address (160 bits)
 - `tokenID`: token identifier (32 bits)
 - `balance`: balance (192 bits)
 - `nonce`: nonce (40 bits)
@@ -163,7 +163,7 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `fromBjjCompressed`: sender babyjubjub public key compressed (256 bits)
 - `fromEthAddr`: sender ethereum address (160 bits)
 - `toIdx`: recipient account index (NLevels bits)
-- `toEthAddr`: recipient ethereum address (160 bits)
+- `toEthAddr`: recipient Ethereum address (160 bits)
 - `toBjjSign`: recipient babyjubjub sign (1 bits)
 - `toAy`: recipient babyjubjub public key Y coordinate (253 bits)
 - `loadAmountFloat16`: L1 amount transfered to L2 (16 bits)
@@ -187,7 +187,7 @@ Fields to perform atomic transactions:
 ![](state-tree.png)
 
 ### State tree
-Sparse merkle tree is used to represent the whole zkRollup state which is identified by its root. 
+Sparse Merkle tree is used to represent the whole zkRollup state which is identified by its root. 
 Each leaf of the state tree (account) contains the following data:
 
 - Key: merkle tree index (`idx`)
@@ -204,9 +204,9 @@ Each leaf of the state tree (account) contains the following data:
     e_3: [ 160 bits ] ethAddr
     ```
 
-All data is hashed with Poseidon hash function and inserted into the sparse merkle tree as a key-value pair.
+All data is hashed with Poseidon hash function and inserted into the sparse Merkle tree as a key-value pair.
 
-This approach implies a balanced merkle tree: path is traversed from the root starting with the least significant bit out of the NLevels bits.
+This approach implies a balanced Merkle tree: path is traversed from the root starting with the least significant bit out of the NLevels bits.
 This allows to have as many accounts as the tree levels:
 
 $MAX\_ACCOUNTS$ = $2^{MAX\_NLEVELS}$
@@ -217,15 +217,15 @@ The exit tree has the same leaf structure as the state tree with some particular
 - nonce is always set to 0
 - if several exits are done in the same batch for the same account, the balance is just added on top of the account
 
-User will need to prove that it owns a leaf in the exit tree in order to perform its withdraw and get back the tokens from the contract. This verification could be done either by submitting a merkle tree proof or by submitting a zkProof.
+User will need to prove that it owns a leaf in the exit tree in order to perform its withdraw and get back the tokens from the contract. This verification could be done either by submitting a Merkle tree proof or by submitting a zkProof.
 
 ## Account types
 
 ### Regular rollup account
 
-Regular accounts contain an ethereum address and a babyjubjub public key.  Accounts are always indexed by ethereum address in the UX, so it is a requirement that the ethereum address authorizes the account keys.  Once the account is created, the ethereum key is used to authorize L1 txs and the babyjubjub key is used to authorize L2 txs.
-There are two ways to authorize an account creation (that is, an ethereum address authorizes the creation of an account containing that same ethereum address and a babyjubjub public key):
-- Via ethereum transaction, which has an implicit signature of the ethereum address.  This requires the owner of the ethereum address to sign the smart contract transaction call
+Regular accounts contain an Ethereum address and a babyjubjub public key.  Accounts are always indexed by Ethereum address in the UX, so it is a requirement that the ethereum address authorizes the account keys.  Once the account is created, the ethereum key is used to authorize L1 txs and the babyjubjub key is used to authorize L2 txs.
+There are two ways to authorize an account creation (that is, an Ethereum address authorizes the creation of an account containing that same ethereum address and a babyjubjub public key):
+- Via Ethereum transaction, which has an implicit signature of the Ethereum address.  This requires the owner of the Ethereum address to sign the smart contract transaction call
 - Via an authorization signature (`AccountCreationAuthSig`) that can be used by any party to create accounts on behalf of the user
 
 ```
@@ -240,7 +240,7 @@ There are two ways to authorize an account creation (that is, an ethereum addres
 
 ### Internal rollup account
 
-An internal rollup account does not use an ethereum address, and thus can only operate via L2 txs.  Since no ethereum address is involved, the account creation does not require an authorization and will only specify the babyjubjub public key.  Internally, this account will have the `ethAddr = 0xffff..`.
+An internal rollup account does not use an Ethereum address, and thus can only operate via L2 txs.  Since no Ethereum address is involved, the account creation does not require an authorization and will only specify the babyjubjub public key.  Internally, this account will have the `ethAddr = 0xffff..`.
 
 
 ## Transaction types
@@ -291,7 +291,7 @@ Summary:
 zkSNARK proof.
 
 **HermezWithdraw** is a transaction performed through the smart contract to get
-funds back from smart contract to ethereum address. This is done by
+funds back from smart contract to Ethereum address. This is done by
 demonstating the existence of a leaf in the exit tree.
 
 **NOP transaction** is an empty transaction that does not perform any action.  Used in the circuit inputs when the coordinator does not have enough transactions to fill maximum number of transactions in a batch.
@@ -318,7 +318,7 @@ L1TxFullData length: 576 bits / 72 bytes
 L1TxsFullData = L1TxFullData[0] || L1TxFullData[1] || ... || L1TxFullData[len(L1Txs) - 1] || zero[(len(L1Txs)] || ... || zero[MAX_L1_TX - 1]
 ```
 
-All L1 txs that perform a transfer or exit must be approved by the ethereum address of the account.  This is indicated by setting the `fromEthAddr` as the `message.sender`, which is the address that signs the L1 tx.
+All L1 txs that perform a transfer or exit must be approved by the Ethereum address of the account.  This is indicated by setting the `fromEthAddr` as the `message.sender`, which is the address that signs the L1 tx.
 
 CreateAccount actions must be authorized by the `fromEthAddr`.  To allow other parties to create accounts on behalf of the user, a special smart contract function (`CreateAccountDepositFromRelayer`) is added that requires the same signature authorization used in L1CoordinatorTxs to create regular accounts.
 
@@ -477,7 +477,7 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
   - `fromEthAddr` should match state1 update account
 
 ### L1 coordinator
-Coordinator has the ability to create accounts at the time to forge a batch. This transactions are also included in the `L1TxsData`.
+Coordinator has the ability to create accounts at the time to forge a batch. These transactions are also included in the `L1TxsData`.
 Account could be created for a given:
 - ethereum address - babyjubjub key pair (regular rollup account)
 - babyjubjub public key (internal rollup account)
@@ -526,7 +526,7 @@ Account could be created for a given:
 ### L2
 All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it. 
 The coordinator must check that it collects valid transactions that must not perform an invalid transition state. Otherwise, the proof computed by the coordinator will not be valid.
-The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is on the user benefit to provide valid transaction if they want it to be inserted in the zkRollup.
+The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is in the users' benefit to provide a valid transaction if they want it to be inserted in the zkRollup.
 
 Signature used for L2 transactions is `eddsa` with Babyjubjub key.
 L2 transaction data in the signature:
@@ -605,7 +605,7 @@ Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-pr
 
 #### TransferToEthAddr
 Sender sends the transaction to a ethereum address recipient in the state tree. 
-If the recipient does not exist and coordinator wants to process the transaction, it should create a new account with the recipient ethereum address. 
+If the recipient does not exist and coordinator wants to process the transaction, it should create a new account with the recipient Ethereum address. 
 
 It is assumed that the `toIdx` is set to the special index 0.
 `toEthAddr` would be used to choose a recipient to transfer the `amountFloat16`. 
@@ -630,7 +630,7 @@ If the recipient does not exist and coordinator wants to process the transaction
 
 It is assumed that the `toIdx` is set to the special index 0.
 `toBjjAy` + `toBjjSign` would be used to choose the recipeint to transfer the `amountFloat16`.
-`toEthAddr` will be set to `0xff..fff` which is a special case of an ethereum address that no one can control and it will be check that the recipient account has its ethereum address set to `0xff..ff`.  This value allows account creation without ethereum address authorization.
+`toEthAddr` will be set to `0xff..fff` which is a special case of an Ethereum address that no one can control and it will be check that the recipient account has its Ethereum address set to `0xff..ff`.  This value allows account creation without Ethereum address authorization.
 Hence, coordinator would select the recipient `idx` to add `amountFloat16` (called `auxToIdx`).
 
 > Note that this transaction encourage coordinador to create new accounts through L1 coordinator transaction [CreateAccountBjj](#createaccountbjj).
@@ -652,7 +652,7 @@ Funds are held on hermez contract once the user has perform an [exit transaction
 The withdrawal data will contain unique data (nullifier) which identifies the withdrawal. Hence, smart contract will store that data to avoid perform withdrawals multiple times.
 
 Each withdrawal could be identified uniquely by:
-  - merkle tree index
+  - Merkle tree index
   - number exit root
 
 ```
@@ -720,7 +720,7 @@ When a user calls a function that adds an `L1UserTx`, the following happens:
     - `position`
 
 ### L1 coordinator transactions
-Coordinator could perform some special transactions to trigger L1 transactions. This transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the ethereum transaction.
+Coordinator could perform some special transactions to trigger L1 transactions. These transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the Ethereum transaction.
 
 Data needed to perform this transactions will be encoded as:
 ```
@@ -737,8 +737,8 @@ L1CoordinatorTxs = L1CoordinatorTx[0] || L1CoordinatorTx[1] || ... || L1Coordina
 There two types of L1CoordinatorTx:
 - CreateAccountEth:
   - Ethereum address is recovered from the ecdsa signature
-  - Coordinator should create an account with an ethereum address equal to the `toEthAddr` in the L2 transaction in order to process the L2 transaction
-  - Contract will have to build the [`AccountCreationAuthMsg`](#regular-rollup-account), hash it and retrieve ethereum account from signed message and the signature (`r`, `s` and `v`).
+  - Coordinator should create an account with an Ethereum address equal to the `toEthAddr` in the L2 transaction in order to process the L2 transaction
+  - Contract will have to build the [`AccountCreationAuthMsg`](#regular-rollup-account), hash it and retrieve Ethereum account from signed message and the signature (`r`, `s` and `v`).
 - CreateAccountBjj:
   - Coordinator should create an account with a babyjubjub key equal to the `toAx` and `toAy` in the L2 transaction in order to process the L2 transaction
   - ecdsa signature fields are set to 0
@@ -880,9 +880,9 @@ In order to ensure that the coordinator receives the correct amount of fees, the
 
 This logic is implemented in order to mitigate attacks that could potentially steal funds from hermez network. The aim of this method is to mitigate funds stolen while preserving decentralization.
 
-The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of funds stolen. Therefore, it is assured that the attacker can only steal a certain amount of tokens.
+The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of stolen funds. Therefore, it is assured that the attacker can only steal a certain amount of tokens.
 
-This logic is implemented in a smart contract: `WithdrawalDelayer`. This contract is for use completely independent of the hermez network but it meets the objective we need to mitigate attacks.
+This logic is implemented in a smart contract: `WithdrawalDelayer`. This contract is for use completely independent of the Hermez network but it meets the objective we need to mitigate attacks.
 
 The purpose of this smart contract is to delay the withdraw. Hence, tokens will be held by the smart contract for a period of `D` and only afterwards tokens could be really withdrawn.
 
