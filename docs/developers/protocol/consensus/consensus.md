@@ -1,13 +1,13 @@
 # Forging consensus protocol
 
-Hermez will run an auction to incentivize efficiency in coordinators, meaning that they need to be very effective and include as many transactions as they can in the slots in order to compensate for their bidding costs, gas costs and operations costs.
+Hermez will run an auction to incentivize efficiency of coordinators, meaning that they need to be very effective and include as many transactions as they can in the slots in order to compensate for their bidding costs, gas costs and operations costs.
 
 The general purpose of this protocol is to describe the rules to coordinate this auction where the bids will be placed only in HEZ utility token.
 
 ## General goals
 
 - Select a single coordinator for a given slot to forge a batch
-- Avoid stops zkRollup
+- Avoid stops of zkRollup
 - Incentivize coordinators to participate on zkRollup
 
 ## Scenario
@@ -25,9 +25,9 @@ _**Note:** The number of blocks per slot is a parameter that is hardcoded on the
 
 Bids in the Auction will be placed only in HEZ. The auction of future slots will be open up to **1 month** (system parameter), the opening is a sliding window that opens a new slot every 40 blocks.
 
-Auction will be closed **2 slots** (system parameter) before the begin time of the forging in the slot.
+Auction will be closed **2 slots** (system parameter) before the start time of the forging in the slot.
 
-A bid will not pay premium on top of the previous bid, but a bid placed in the auction should be at least **1,1 times** (system parameter) the previous bid or over the minimal bidding price (if it's the first one) in order to be accepted as valid.
+A bid will not pay premium on top of the previous bid, but a bid placed in the auction should be at least **1.1 times** (system parameter) the previous bid or over the minimal bidding price (if it's the first one) in order to be accepted as valid.
 
 Auction will be structured in series of 6 slots `slots[5]`, with **10 HEZ** as initial minimal bidding price for all the slots. The governance can change this value `slots[i]` independently at any time and **affecting open auctions**, in such a way that all the slots whose `slot % 6 = i` will have the same minimum bid. Bids under the new minimal bidding price will not be considered as valid bids anymore and bidders (if no new bids outbid theirs) will be sent back their HEZ at the event of slot is fully processed (forge).
 
