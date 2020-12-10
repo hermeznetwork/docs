@@ -13,6 +13,7 @@
         - [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)   
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
+    - [Batch Explorer](developers/batch-explorer.md)
     - [Glossary](developers/glossary.md)
 - FAQ
     - [Coordinators](faq/coordinators.md)
