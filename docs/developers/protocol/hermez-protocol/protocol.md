@@ -9,15 +9,17 @@ A prover (aka coordinator) is in charge to compute all state changes and calcula
 
 ![](zkSNARK-proof-1.png)
 
+
 A sparse-Merkle-tree is used to keep the state data where all accounts and balances are stored. This information is kept on L2 and users will sign transactions in order to spend their balances between L2 accounts. This L2 transactions are collected together to create a batch. Afterward, batch data is compressed through a zk-SNARKs and it will prove that the state transitions of all those L2 transactions are correct.
 
 This collection of transactions are made public on L1 in order to provide data-availability to the protocol, meaning that anyone can re-build the L2 state just depending on L1 data. Hence, there is no need to rely on third parties to provide or store this data.
 
-The system is composed by L1 and L2 transactions:
+The system is composed of L1 and L2 transactions:
 - L1 transactions are those ones that are executed through the smart contract and affect the L2 state tree
 - L2 transactions are those ones that are executed exclusively on L2 and affect the L2 state tree
 
 ![](zkSNARK-proof-2.png)
+
 
 L1 transactions are forced to be executed by the coordinator in the protocol. Therefore, these kind of transactions will be always forged at some time.
 L2 transactions are generated off-chain by the users and they are sent to the coordinators. Coordinators would be in charge to gather them.
@@ -33,7 +35,7 @@ contract to update its own state and perform consensus actions if necessary.
 
 ## Assumptions
 - L1 (Ethereum):
-  - integrity and inmutability of data
+  - integrity and immutability of data
 - Hashes
   - `Poseidon` is unbreakable and collision-resistant
   - `SHA256` is unbreakable and collision-resistant
@@ -51,7 +53,7 @@ contract to update its own state and perform consensus actions if necessary.
 - `H`: is the poseidon hash function
 - elements are always encoded in big endian
 
-> Big endian enconding is used since it fits better with EVM encoding
+> Big endian encoding is used since it fits better with EVM encoding
 
 ### Field element
 - the value encoded in a field element must be smaller than the field order
@@ -135,7 +137,7 @@ bit position:
 
 ### Account
 - `idx`: integer, path in the sparse merkle tree (NLevels bits)
-- `sign`: babyjubjub sign (1 bits)
+- `sign`: babyjubjub sign (1 bit)
 - `ay`: babyjubjub public key Y coordinate (253 bits)
 - `ethAddr`: Ethereum address (160 bits)
 - `tokenID`: token identifier (32 bits)
@@ -145,9 +147,9 @@ bit position:
 ### Transaction fields
 All transactions fields are required to build the zkSNARKs proof but depending on the transaction type not all of them are used.
 Detailed transaction types can be seen in [transaction type section](#Transaction-Types)
-Here, it is wanted to summarize all transaction fields and explain its purpose.
+Below is a summary of each transaction field and its explaination:
 
-- `signature_constant`: hardcoded transaction constant that indicates that the user is signing a hermez rollup transaction. Used to avoid transaction replay in case other rollup are deployed (32 bits)
+- `signature_constant`: hardcoded transaction constant that indicates that the user is signing a Hermez rollup transaction. Used to avoid transaction replay in case other rollup are deployed (32 bits)
 ```
 signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 ```
@@ -222,6 +224,7 @@ User will need to prove that it owns a leaf in the exit tree in order to perform
 ## Account types
 
 ### Regular rollup account
+
 
 Regular accounts contain an Ethereum address and a babyjubjub public key.  Accounts are always indexed by Ethereum address in the UX, so it is a requirement that the ethereum address authorizes the account keys.  Once the account is created, the ethereum key is used to authorize L1 txs and the babyjubjub key is used to authorize L2 txs.
 There are two ways to authorize an account creation (that is, an Ethereum address authorizes the creation of an account containing that same ethereum address and a babyjubjub public key):
@@ -479,7 +482,7 @@ Internal rollup accounts do not have an ethereum address.  For this case, the `C
 ### L1 coordinator
 Coordinator has the ability to create accounts at the time to forge a batch. These transactions are also included in the `L1TxsData`.
 Account could be created for a given:
-- ethereum address - babyjubjub key pair (regular rollup account)
+- Ethereum address - babyjubjub key pair (regular rollup account)
 - babyjubjub public key (internal rollup account)
 
 #### CreateAccountEth
