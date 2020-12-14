@@ -1,5 +1,4 @@
 # Hermez Value Proposition
-
 Hermez network project has some properties that will provide value to the users and the community:
 
 ## Production Ready Solution
