@@ -46,10 +46,9 @@ The first bid in each time slot must be over the minimum bidding price in order 
 
 The minimum bidding amount for each slot in an auction series will be decided by the network governance (see section "Hermez Governance"), and it will be possible to change it dynamically, affecting future, even already open, auctions.
 
-Also, governance will be able to implement the effective decentralisation of the network by locking the price of specific slots of the auction to 0 HEZ and therefore wouldn't require any minimal bid, this being an irreversible configuration.
+Also, governance will be able to implement the effective decentralisation of the network by locking the price of specific slots of the auction to 0 HEZ and therefore wouldn't require any minimum bid, this being an irreversible configuration.
 
 ## Users
-
 Network users will be provided with easy-to-use interfaces to register their L1 Ethereum addresses as Hermez 
 L2 accounts. They will then be able to deposit and withdraw their funds, ETH or ERC-20 tokens, into or out of these L2 accounts.
 
