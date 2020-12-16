@@ -6,7 +6,7 @@
   - L2-Batch: The set of transactions are only L2
   - L1-L2-Batch: The set of transactions are L1 or L2
 
-## Hermez general goals
+## Hermez General Goals
 
 - Handle L1-user transactions
   - Ensure that these transactions are forged
@@ -20,7 +20,7 @@
 
 ![](L1diagram.png)
 
-### Handle L1 user transactions
+### Handle L1 User Transactions
 
 All L1UserTx are encoded and added to a queue, when the queue is full or frozen, a new queue is created.
 Once a queue is frozen means that L1 transactions can't be added anymore.
@@ -34,27 +34,27 @@ When a user calls a function that adds an L1UserTx, the following happens:
     - The queue index in which this data is added is identified by `nextL1FillingQueue`
     - The L1UserTxs is encoded as a byte array data and appended to the queue
     - Once the `nextL1FillingQueue` is full, increment the `nextL1FillingQueue`
-- Event information
+- Event Information
   - nextL1FillingQueue
   - position
   - L1UserTx data (72 bytes)
 
-In the global spec are specified all the [L1 user transactions](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions)
+In the global spec, all [L1 user transactions](developers/protocol/hermez-protocol/protocol?id=l1-user-transactions) are specified
 
 The `L1TxQueue` has a lenght of `MAX_L1_TX`, L1UserTx can fulfill till `MAX_L1_USER_TX`, therefore always are some slots reserved for the L1-coordinator-Tx:
 `MAX_L1_TX - len(L1_USER_TXS)`
 
-### Utility actions
+### Utility Actions
 
-#### Add tokens
+#### Add Tokens
 
-Hermez has a list of all the tokens that rollup supports.
+Hermez has a list of all the tokens that the rollup supports.
 Tokens must be an ERC20, and everyone can add a new token with this method.
 A fee in HEZ must be payed to the governance address.
 
 #### Withdraw
 
-Transaction to get funds back from smart contract to ethereum address. This is done by proving the existence of a leaf in the exit tree. Once the withdraw is done a nullifier is set, so this only can happen once
+Transaction to get funds back from smart contract to Ethereum address. This is done by proving the existence of a leaf in the exit tree. Once the withdrawal is done a nullifier is set, so this only can happen once.
 
 > Remember withdraw is not a L1 transaction, it has no impact in the state or exit trees and it's not processed by the circuit.
 
@@ -74,11 +74,11 @@ There are 2 kind of `forgeBatch`, a flag in the function will distinguish betwee
   - Set a new state and exit root
   - Delete the current frozen queue and freeze the next one
 
-In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establishes a deadline for the L1-L2-batches. Every L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-batches until the deadline, when only L1-L2-batches are accepted.
+In order to force the coordinator to forge the L1 transactions, but also allow him to parallelize his proof computation, the contract establishes a deadline for the L1-L2-batches. All L1-L2-batches reset the deadline, so, as shown in the diagram, the coordinator is free to choose to forge L2-batches or L1-L2-batches until the deadline, when only L1-L2-batches are accepted.
 
 ![](forgeL1L2.png)
 
-#### L1 coordinator transactions
+#### L1 Coordinator Transactions
 
 In the global spec all of the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)  are specified 
 
@@ -88,7 +88,7 @@ In the global spec all of the [L1 coordinator transactions](developers/protocol/
 - L1-Coordinator-Tx --> `forgeBatch` ethereum Tx Input
 - L2-Tx --> `forgeBatch` ethereum Tx Input
 
-In order to provide data availability the `forgeBatch` transaction inputs must be recovered. To allow this data retrieval from a regular ethereum node, Hermez must force that the call is not made from another smart contract:
+In order to provide data availability the `forgeBatch` transaction inputs must be recovered. To allow this data retrieval from a regular Ethereum node, Hermez must force that the call is not made from another smart contract:
 
 ```
 assert(msg.sender == tx.origin)
@@ -100,7 +100,7 @@ assert(msg.sender == tx.origin)
 The governance will be able to set the following parameters:
 
 - forgeL1L2BatchTimeout
-  - Number of ethereum blocks after the last L1-L2-batch after which only an L1-L2-batch can be forged
+  - Number of Ethereum blocks after the last L1-L2-batch after which only an L1-L2-batch can be forged
 - feeAddToken
   - Fee in HEZ tokens that must be payed to the governance to add a new token into the rollup
 - tokenExchange
@@ -110,15 +110,15 @@ The governance will be able to set the following parameters:
 - buckets
   - Update buckets parameters for the instant Withdraw purposes
 
-### Emergency mechanism
+### Emergency Mechanism
 
 #### Goal
 
-This logic is implemented during the bootstrapping phase of the network as an additional security measure in order to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez network. The objective is to temporary enable this last resort measure while preserving decentralization.
+This logic is implemented during the bootstrapping phase of the network as an additional security measure in order to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez Network. The objective is to temporary enable this last resort measure while preserving decentralization.
 
 The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of illegitimate funds access. Therefore, it is assured that the attacker can only withdraw a certain amount of tokens.
 
-#### Hermez withdraw limit
+#### Hermez Withdraw Limit
 
 There will be a histogram of maximum amount of withdrawals in a value range:
 - Limits the maximum amount to withdraw
@@ -145,7 +145,7 @@ Actions that will be taken if the `withdrawal limit` is reached are the followin
 - If a user does an `instantWithdraw`, `Hermez Contract` will return `revert`.
 - If a user does a `delayWithdraw`, it will be accepted and the tokens will be sent to `WithdrawalDelayer`. The user can withdraw their tokens but with a delay.
 
-There will be a delay time `withdrawalDelay` (parameter of the `WithdrawalDelayer` contract) during which the Hermez foundation can decide if there has been an attack or not:
+There will be a delay time `withdrawalDelay` (parameter of the `WithdrawalDelayer` contract) during which the Hermez Foundation can decide if there has been an attack or not:
 - Not attack:
   - When enough blocks have passed for the bucket to refill, `Hermez Contract` will accept `instantWithdraw` again, while withdrawals are available in the bucket.
 - Attack:
