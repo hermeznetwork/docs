@@ -162,9 +162,10 @@ withdrawn by the governance under the tutelage of an emergency council that will
 ## Adding New Tokens
 Hermez contains a list with all tokens supported. The following list includes some requirements on the token listing:
 - Tokens must be ERC20
+- Governance can decide the fee cost of adding tokens and therefore can regulate the token listing.
 - There can be up to 2^{32} different tokens.
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it.
-- The token 0 will be reserved for `eth`
+- The token 0 will be reserved for `ether`
 - A token only can be added once
 
 The list of supported tokens can be retrieved though the [`REST API`](../developers/api?=api) 
