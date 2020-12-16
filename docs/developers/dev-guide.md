@@ -20,7 +20,7 @@ Users typically send transactions to Hermez via a wallet. The purpose of this to
 The [`governance`](../developers/glossary?id=governance) is the  entity that oversees the sustainability and evolution of the network. Some functions delegated to the governance include the upgrade of smart contracts, the modification of [`system parameters`](../developers/glossary?id=system-parameters), or the execution of the [`withdrawal delay`](../developers/dev-guide?id=withdrawal) mechanism among others.
 
 Hermez deploys three main smart contracts:
-1. **Hermez smart contract**: Manages the [`forging`](../developers/glossary?id=forging) stage by checking the zk-proofs provided by the selected coordinator, and updates the state and exit trees. It also interacts with users by collecting L1 transactions and adding them to the transaction pool.
+1. **Hermez smart contract**: Manages the [`forging`](../developers/glossary?id=forging) stage by checking the zk-proofs provided by the selected coordinator, and updates the state and exit trees. It also interacts with users by collecting L1 transactions and adding them to the transaction queue.
 2. **Consensus smart contract**: Manages the selection of a coordinator node via an auction process.
 3. **WithdrawalDelayer smart contract**: Manages a withdrawal protection mechanism embedded into the system.
 
@@ -28,7 +28,7 @@ The overall picture of Hermez can be seen in the diagram below.
 
 ![](hermez_zkrollup.png)
 
-Users send L1 transactions (such as Create account, Deposit or Withdrawal requests) using a UI. These transactions are collected by the Hermez smart contract and added into a pool of pending transactions.  Users may also send L2 transactions (Transfer, Exit) directly to the coordinator node. The UI hides all the unnecessary complexities from the user, who just selects the type of operation and the input data for a given operation (source account, destination account, amount to transfer,...).
+Users send L1 transactions (such as Create account, Deposit or Withdrawal requests) using a UI. These transactions are collected by the Hermez smart contract and added into a queue of pending transactions.  Users may also send L2 transactions (Transfer, Exit) directly to the coordinator node. The UI hides all the unnecessary complexities from the user, who just selects the type of operation and the input data for a given operation (source account, destination account, amount to transfer,...).
 At the time of processing a batch, the coordinator takes the pending L1 transactions from the Hermez smart contract and the received L2 transactions, and generates a proof showing that these transactions have been carried out correctly. This proof is given to the smart contract that verifies it and updates the state of the network.  In the meantime, an auction process is ongoing to select the coordinator node for a given amount of time. In this auction, nodes bid for the right to forge upcoming batches and thus collecting the fees associated to those transactions. The proceedings of these bids will be sent to different accounts, including a  Gitcoin grants account.
 
 
@@ -53,8 +53,8 @@ There are two types of accounts to operate in Hermez network:
 ## Transactions
 
 There are two types of Hermez transactions:
-- **L1 transactions** are those that are executed through the smart contract and affect the L2 state tree. These transactions may be started by the user or by the coordinator.
-- **L2 transactions** are those that are executed exclusively on L2 and affect the L2 state tree.
+- **L1 transactions** are those that are executed through the smart contract. These transactions may be started by the user or by the coordinator.
+- **L2 transactions** are those that are executed exclusively on L2.
 
 ### L1 Transactions
 L1 transactions can be divided in two groups depending the originator of the transaction:
@@ -62,16 +62,13 @@ L1 transactions can be divided in two groups depending the originator of the tra
 - **L1 Coordinator Transactions**: originate from the coordinator.
 
 #### L1 User Transactions
-L1 user transactions are received by the smart contract. These transactions are concatenated to [`force the coordinator`](../developers/dev-guide?id=L1L2-Batches) to process them together as part of the same batch. These transactions have to comply with certain rules to be deemed valid by the coordinator. If any of those rules is not fulfilled the transaction will be considered as a NULL transaction.
+L1 user transactions are received by the smart contract. These transactions are concatenated and added in queues to [`force the coordinator`](../developers/dev-guide?id=L1L2-Batches) to process them as part of the batch. The queue that will be forged in the next L1L2-batch it's always frozen, and the L1 Transactions will be added in the following queues. In case a transaction is invalid (e.g. try to send more amount than the account has) will be processed by the circuit but will be nullified.
 
-When coordinator processes L1 transactions, it must process all of them at once (up to a maximum number specified by the smart contract). This rule has two effects:
-- Coordinator cannot block particular users in L1.
-- Coordinator cannot anticipate the computation of L1 transactions proofs because it needs to take all pending transactions up to the moment of forging (moment when smart contract is called). This means that the coordinator needs to provision certain computation power to ensure idle time is minimized.
+This system allows the L1 transactions to be uncensorable
 
 Examples of L1 User transactions include `CreateAccountDeposit`, `Deposit`, `DepositTransfer`... All the transactions details are handled by the UI.
-
 #### L1 Coordinator Transactions
-L1 Coordinator Transactions allow the coordinator to create internal [`accounts`](../developers/dev-guide?id=accounts) when forging a batch so that a user can transfer funds to another user that doesn't own an account yet.
+L1 Coordinator Transactions allow the coordinator to create regular or internal [`accounts`](../developers/dev-guide?id=accounts) when forging a batch so that a user can transfer funds to another user that doesn't own an account yet.
 
 ### L2 Transactions
 L2 transactions are executed exclusively on L2. Examples of L2 transactions include `Transfer` of funds between rollup accounts or `Exit` to transfer funds to the exit tree. All L2 transactions are initiated by the user, who sends the transactions directly to the coordinator via a [`REST API`](../developers/api?id=api). Depending on the UI capabilities, the user may be able to select among different number of coordinators (the one currently forging, the ones that already have won the right to forge in upcoming slots,...).
@@ -117,9 +114,11 @@ There are some rules on how coordinators must process transactions. These rules 
 #### L1/L2 Batches
 There are 2 types of batches:
 - **L2-batch**: Only L2 transactions are mined.
-- **L1L2-batch**: Both L1 and L2 transactions can be mined. In these batches, the coordinator must forge all pending L1 user transactions. Optionally the coordinator may include L1-coordinator-transactions.
+- **L1L2-batch**: Both L1 and L2 transactions can be mined. In these batches, the coordinator must forge the last L1 queue.
 
-Apart from the fact that the coordinator is only able to claim fees for those transactions that are correctly processed, a coordinator is required to process L1 user transactions periodically.  The smart contract establishes a deadline for the L1L2-batches. This deadline indicates the maximum time between two consecutive L1L2 batches. Once this deadline is reached, the coordinator cannot forge any L2 transactions until the deadline is reset which only happens after a L1L2 batch is forged.
+In both cases the coordinator may include L1-coordinator-transactions.
+
+Coordinators must process L1 user transactions periodically. The smart contract establishes a deadline for the L1L2-batches. This deadline indicates the maximum time between two consecutive L1L2 batches. Once this deadline is reached, the coordinator cannot forge any L2 batches until the deadline is reset which only happens after a L1L2 batch is forged.
 
 This mechanism is summarized in the diagram below.
 
@@ -131,7 +130,7 @@ If for some reason the coordinator of the current slot doesn't forge any batch i
 This mechanism ensures that as long as there is one honest working coordinator, Hermez network will be running and all funds will be recoverable. 
 
 #### Boot Coordinator
-Hermez includes the role of Boot coordinator managed by the network. The Boot coordinator acts as the last resort coordinator and its mission is to guarantee that there is always coordinator available.
+Hermez includes the role of Boot coordinator managed by the network. The Boot coordinator acts as the bootstrap mechanism and its mission is to guarantee that there is always coordinator available in the early stages of the project.
 
 #### Slot Grouping
 Auction is structured in groups of **6 slots** (i.e, slots are sequentially indexed 0,1,2,3,4,5,0,1,...). Each slot index has an independent minimum bidding price. This grouping allows certain flexibility to the governance to influence behavior of coordinators. If slots are frequently wasted (meaning that elected coordinators chose not to forge batches), governance may increase the minimum bid amount for certain slots to make slot wasting less efficient for coordinators, and thus allowing the boot coordinator to forge the batches.
@@ -141,8 +140,8 @@ When the minimum bidding price is set to **0 HEZ value** for a given slot index,
 
 ## Withdrawal
 Funds are recovered from Hermez network by executing two transactions back-to-back:
-1. **Exit transaction**: Funds are transferred from Hermez network to a smart contract account.
-2. **Withdrawal**: Funds are transferred from smart contract to ethereum address. The limit and rate at which funds can be transferred from the smart contract is regulated by a [`leaky bucket`](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm. Depending on the amount of available credits in the smart contract, withdrawal may be instantaneous or delayed.
+1. **Exit transaction**: Funds are transferred from the state tree to the exit tree.
+2. **Withdrawal**: Funds are transferred from Hermez smart contract to the user ethereum address. The limit and rate at which funds can be transferred from the smart contract is regulated by a [`leaky bucket`](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm. Depending on the amount of available credits in the smart contract, withdrawal may be instantaneous or delayed.
 
 ### Hermez Withdrawal Limit
 Withdrawals are classified in one of several buckets depending on the USD amount to be withdrawn. Every bucket contains some amount of credits indicating the maximum amount that can be withdrawn at any point in time. Buckets are re-filled with credits at a specific rate (depending on bucket). When a user attempts to withdraw funds, credits in the selected bucket are subtracted. If the withdrawal amount exceeds the existing value of credits, the instant withdrawal cannot be performed and a delayed withdrawal will be done instead. Delayed withdrawal is handled by the WithdrawalDelayer smart contract.
@@ -158,14 +157,14 @@ The WithdrawalDelayer smart contract can be in one of two states:
 1. **Normal Mode**: Amount above withdrawal limit is available for withdrawal, but with a delay D. This is the standard state.
 2. **Emergency Mode**: The Hermez Foundation is the only body that may change the 
 WithdrawalDelayer mode to Emergency in case of an attack. In this scenario, funds can only be 
-withdrawn by the governance under the tutelage of Aragon court. 
+withdrawn by the governance under the tutelage of an emergency council that will return the funds to the users. 
 
 ## Adding New Tokens
 Hermez contains a list with all tokens supported. The following list includes some requirements on the token listing:
 - Tokens must be ERC20
-- Only the governance can add new tokens.
 - There can be up to 2^{32} different tokens.
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it.
-- There cannot be two tokens with the same ethereum address.
+- The token 0 will be reserved for `eth`
+- A token only can be added once
 
 The list of supported tokens can be retrieved though the [`REST API`](../developers/api?=api) 
