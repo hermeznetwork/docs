@@ -2,7 +2,7 @@
 
 # Developer Guide
 
-This document is an overview of the Hermez protocol. Its objective is to provide an introduction to developers on the Hermez protocol so that the use of tools to interact with Hermez network, such as [`HermezJS`](../developers/sdk?id=sdk) (javascript SDK) and the [`REST API`](../developers/api?id=api), becomes simpler.  This document assumes you are familiar with Ethereum ecosystem and L2 Rollups (in particular zk-rollups). 
+This document is an overview of the Hermez Protocol. Its objective is to provide an introduction to developers on the Hermez Protocol so that the use of tools to interact with Hermez Network, such as [`HermezJS`](../developers/sdk?id=sdk) (javascript SDK) and the [`REST API`](../developers/api?id=api), becomes simpler.  This document assumes you are familiar with Ethereum ecosystem and L2 Rollups (in particular zk-rollups). 
 
 For a more in depth analysis, read the [`protocol`](../developers/protocol/README?id=protocol) section.
 
@@ -11,9 +11,9 @@ Hermez smart contracts can be downloaded from [`here`](https://github.com/hermez
 ## Overview
 Hermez is a [`zk-rollup`](../developers/glossary?id=zk-rollup) solution that allows scaling payments and token transfers on top of the Ethereum public blockchain. It uses Ethereum for data storage but not for computation. In addition, by using zero-knowledge proofs, it is easy to verify on-chain that computations have been carried out correctly.
 
-All accounts and balances in Hermez network are stored off-chain in a [`state tree`](../developers/glossary?id=state-tree). Incoming user [`transactions`](../developers/glossary?id=transactions) are [`batched`](../developers/glossary?id=batch) together, and through a [`zk-SNARK`](../developers/glossary?id=zk-snark) that proves that those transactions meet certain rules specified in a smart contract, the state tree transitions to a new verifiable valid state.
+All accounts and balances in Hermez Network are stored off-chain in a [`state tree`](../developers/glossary?id=state-tree). Incoming user [`transactions`](../developers/glossary?id=transactions) are [`batched`](../developers/glossary?id=batch) together, and through a [`zk-SNARK`](../developers/glossary?id=zk-snark) that proves that those transactions meet certain rules specified in a smart contract, the state tree transitions to a new verifiable valid state.
 
-The [`coordinator`](../developers/glossary?id=coordinator) is the entity that collects and codifies these transactions, calculates the zk-SNARK proof and submits the result to the smart contract that validates the transition. Transactions are made public to provide [`data availability`](../developers/glossary?id=data-availability) to the protocol so that anyone can rebuild the state tree from on-chain data.
+The [`coordinator`](../developers/glossary?id=coordinator) is the entity that collects and codifies these transactions, calculates the ZK-SNARK proof and submits the result to the smart contract that validates the transition. Transactions are made public to provide [`data availability`](../developers/glossary?id=data-availability) to the protocol so that anyone can rebuild the state tree from on-chain data.
 
 Users typically send transactions to Hermez via a wallet. The purpose of this tool is to improve the experience of using Hermez by hiding the internal interactions between the different Hermez components and simplifying the usage. 
 
@@ -44,10 +44,10 @@ Hermez functionalities can be summarized in 4 major groups:
 ## Accounts
 Hermez stores accounts as leaves in the Hermez state tree. Each account stores a single type of token. A user may own multiple rollup accounts.
 
-There are two types of accounts to operate in Hermez network:
-1. **Regular**: Regular accounts can be used in both L1 and L2 transactions. Regular accounts include an ethereum and a [`babyjubjub`](../developers/glossary?id=BabyJubJub) public key. Ethereum key is used to authorize L1 transactions and the babyjubjub key is used to authorize L2 transactions. An ethereum address may authorize the creation of a Regular account containing that same ethereum address plus a babyjubjub public key. Typically, this is done via a UI.
+There are two types of accounts to operate in Hermez Network:
+1. **Regular**: Regular accounts can be used in both L1 and L2 transactions. Regular accounts include an Ethereum and a [`babyjubjub`](../developers/glossary?id=BabyJubJub) public key. An Ethereum key is used to authorize L1 transactions and the Baby Jubjub key is used to authorize L2 transactions. An Ethereum address may authorize the creation of a Regular account containing that same Ethereum address plus a Baby Jubjub public key. Typically, this is done via a UI.
 
-2. **Internal**: Internal accounts only have a babyjubjub key, and thus may only be used in L2 transactions. Since there is no ethereum address, the account creation does not require an authorization and will only require a babyjubjub key.
+2. **Internal**: Internal accounts only have a Baby Jubjub key, and thus may only be used in L2 transactions. Since there is no Ethereum address, the account creation does not require an authorization and will only require a Baby Jubjub key.
 
 
 ## Transactions
@@ -81,14 +81,14 @@ In this section we will describe how consensus to select a coordinator with the 
 ### Consensus
 
 In Hermez zkRollup, time is divided into slots of a certain duration:
-  - Block ethereum = ~ 15s.
+  - Ethereum Block = ~ 15s.
   - Slot = 40 Ethereum Blocks ~ 10 min.
 
 ![](consensus-1.png)
 
 Hermez reaches a consensus on who will play the role of coordinator by running an auction managed by a smart contract. This auction is held among the existing nodes for every slot. The node that places the highest bid for a given slot while the auction is open will claim the role of coordinator for that slot. 
 
-The coordinator node is allowed to forge batches during the awarded slot, which is the mechanism by which an authorized coordinator processes a batch of transactions, produces a zk-SNARK attesting to the correctness of the operation and is able to reclaim the processing fees.
+The coordinator node is allowed to forge batches during the awarded slot, which is the mechanism by which an authorized coordinator processes a batch of transactions, produces a ZK-SNARK attesting to the correctness of the operation and is able to reclaim the processing fees.
 
 Auction bids are placed only in [`HEZ`](../developers/glossary?id=hez). The auction of future slots opens up to **S1** slots in advance. Auction closes **S2** slots before the beginning the slot. Tentative **S1** and **S2** values are 1 month and 2 slots respectively. Additionally, these parameters can be changed by governance at any time.
 
@@ -125,9 +125,9 @@ This mechanism is summarized in the diagram below.
 ![](forgeL1L2.png)
 
 #### Coordinator Override
-If for some reason the coordinator of the current slot doesn't forge any batch in the N first available blocks inside the slot, any available coordinator may forge batches without bidding. These maximum idle time is called **Slot deadline**, and defines the amount of time that any coordinator must wait to start forging without bidding, provided that the coordinator that won the current slot action hasn't forged anything during that time.
+If for some reason the coordinator of the current slot doesn't forge any batch in the N first available blocks inside the slot, any available coordinator may forge batches without bidding. This maximum idle time is called **Slot deadline**, and defines the amount of time that any coordinator must wait to start forging without bidding, provided that the coordinator that won the current slot action hasn't forged anything during that time.
 
-This mechanism ensures that as long as there is one honest working coordinator, Hermez network will be running and all funds will be recoverable. 
+This mechanism ensures that as long as there is one honest working coordinator, Hermez Network will be running and all funds will be recoverable. 
 
 #### Boot Coordinator
 Hermez includes the role of Boot coordinator managed by the network. The Boot coordinator acts as the bootstrap mechanism and its mission is to guarantee that there is always coordinator available in the early stages of the project.
@@ -141,7 +141,7 @@ When the minimum bidding price is set to **0 HEZ value** for a given slot index,
 ## Withdrawal
 Funds are recovered from Hermez network by executing two transactions back-to-back:
 1. **Exit transaction**: Funds are transferred from the state tree to the exit tree.
-2. **Withdrawal**: Funds are transferred from Hermez smart contract to the user ethereum address. The limit and rate at which funds can be transferred from the smart contract is regulated by a [`leaky bucket`](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm. Depending on the amount of available credits in the smart contract, withdrawal may be instantaneous or delayed.
+2. **Withdrawal**: Funds are transferred from Hermez smart contract to the user Ethereum address. The limit and rate at which funds can be transferred from the smart contract is regulated by a [`leaky bucket`](https://en.wikipedia.org/wiki/Leaky_bucket) algorithm. Depending on the amount of available credits in the smart contract, withdrawal may be instantaneous or delayed.
 
 ### Hermez Withdrawal Limit
 Withdrawals are classified in one of several buckets depending on the USD amount to be withdrawn. Every bucket contains some amount of credits indicating the maximum amount that can be withdrawn at any point in time. Buckets are re-filled with credits at a specific rate (depending on bucket). When a user attempts to withdraw funds, credits in the selected bucket are subtracted. If the withdrawal amount exceeds the existing value of credits, the instant withdrawal cannot be performed and a delayed withdrawal will be done instead. Delayed withdrawal is handled by the WithdrawalDelayer smart contract.
