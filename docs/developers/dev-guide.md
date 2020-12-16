@@ -157,12 +157,11 @@ The WithdrawalDelayer smart contract can be in one of two states:
 1. **Normal Mode**: Amount above withdrawal limit is available for withdrawal, but with a delay D. This is the standard state.
 2. **Emergency Mode**: The Hermez Foundation is the only body that may change the 
 WithdrawalDelayer mode to Emergency in case of an attack. In this scenario, funds can only be 
-withdrawn by the governance under the tutelage of a emergency council that will return the funds to the users. 
+withdrawn by the governance under the tutelage of an emergency council that will return the funds to the users. 
 
 ## Adding New Tokens
 Hermez contains a list with all tokens supported. The following list includes some requirements on the token listing:
 - Tokens must be ERC20
-- Only the governance can add new tokens.
 - There can be up to 2^{32} different tokens.
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it.
 - The token 0 will be reserved for `eth`
