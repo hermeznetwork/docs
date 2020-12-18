@@ -1,5 +1,5 @@
 # SDK
-HermezJS is an open source SDK to interact with Hermez Rollup network.  It can be downloaded as a npm package `@hermeznetwork/hermezjs`.
+HermezJS is an open source SDK to interact with Hermez Rollup network.  It can be downloaded as an npm package `@hermeznetwork/hermezjs`.
 
 ## SDK Howto
 In this tutorial we will walk through the process of using the SDK to:
@@ -109,7 +109,7 @@ Before being able to operate on the Hermez Network, we must ensure that the toke
 ```
 
 ## Deposit Tokens from Ethereum into Hermez Network
-Creating an Hermez account and depositing tokens is done simultaneously as an L1 transaction.  In this example we are going to deposit 100 `ERC20_2` tokens to the newly created Hermez account. The steps are:
+Creating an Hermez account and depositing tokens is done simultaneously as an L1 transaction. In this example we are going to deposit 100 `ERC20_2` tokens to the newly created Hermez account. The steps are:
 1. Select amount to deposit from Ethereum into Hermez using `getTokenAmountBigInt()`
 2. Select the token denomination of the deposit. 
 
@@ -161,7 +161,7 @@ A token balance can be obtained by querying a Hermez node and passing the `herme
 Alternatively, an account query can be filtered using the `accountIndex`
 
 ```js
-    const account1ByIdx = await hermez.CoordinatorAPI.getAccount(`hez:${tokenERC20.symbol}:256`)
+    const account1ByIdx = await hermez.CoordinatorAPI.getAccount(account1.accountIndex)
     console.log(account1ByIdx)
 
 >>>>>
@@ -337,8 +337,8 @@ First, we compute the fees for the transaction. For this we consult the recommen
 ```
 
 The returned fees are the suggested fees for different transactions:
-- existingAccount : Make a transfer to an existing account.
-- createAccount   : Make a transfer to an non-existent account, and create a regular account
+- existingAccount : Make a transfer to an existing account
+- createAccount   : Make a transfer to a non-existent account, and create a regular account
 - createAccountInternal : Make a transfer to an non-existent account and create internal account
 
 The fee amounts are given in USD. However, fees are payed in the token of the transaction. So, we need to do a conversion.
