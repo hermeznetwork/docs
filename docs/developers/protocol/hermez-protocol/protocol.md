@@ -153,7 +153,7 @@ Below is a summary of each transaction field and its explaination:
 ```
 signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 ```
-- `chainId`: ethereum chain identifier in order to prevent replay attacks in case of hardforks, we use only 2 bytes because according to EIP-155, v is used to set the CHAIN_ID according to this formula: `v = CHAIN_ID * 2 + 35|36` . Since `v` is 1 byte, there are only 110 safe different options of `CHAIN_ID`. Any network that has a value higher than this one will be overflowing v, so it’ll be susceptible to replay attacks (16 bits)
+- `chainId`: Ethereum chain identifier in order to prevent replay attacks in case of hardforks, we use only 2 bytes because according to EIP-155, v is used to set the CHAIN_ID according to this formula: `v = CHAIN_ID * 2 + 35|36` . Since `v` is 1 byte, there are only 110 safe different options of `CHAIN_ID`. Any network that has a value higher than this one will be overflowing v, so it’ll be susceptible to replay attacks (16 bits)
 - `amountFloat16`: number of tokens to transfer inside the zkRollup (16 bits) 
 - `tokenID`: token identifier (32 bits)
 - `nonce`: nonce (40 bits)
@@ -163,7 +163,7 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `newAccount`: mark transaction to create new account (1 bit)
 - `fromIdx`: sender account index (NLevels bits)
 - `fromBjjCompressed`: sender babyjubjub public key compressed (256 bits)
-- `fromEthAddr`: sender ethereum address (160 bits)
+- `fromEthAddr`: sender Ethereum address (160 bits)
 - `toIdx`: recipient account index (NLevels bits)
 - `toEthAddr`: recipient Ethereum address (160 bits)
 - `toBjjSign`: recipient babyjubjub sign (1 bits)
@@ -226,8 +226,8 @@ User will need to prove that it owns a leaf in the exit tree in order to perform
 ### Regular rollup account
 
 
-Regular accounts contain an Ethereum address and a babyjubjub public key.  Accounts are always indexed by Ethereum address in the UX, so it is a requirement that the ethereum address authorizes the account keys.  Once the account is created, the ethereum key is used to authorize L1 txs and the babyjubjub key is used to authorize L2 txs.
-There are two ways to authorize an account creation (that is, an Ethereum address authorizes the creation of an account containing that same ethereum address and a babyjubjub public key):
+Regular accounts contain an Ethereum address and a babyjubjub public key.  Accounts are always indexed by Ethereum address in the UX, so it is a requirement that the Ethereum address authorizes the account keys.  Once the account is created, the Ethereum key is used to authorize L1 txs and the babyjubjub key is used to authorize L2 txs.
+There are two ways to authorize an account creation (that is, an Ethereum address authorizes the creation of an account containing that same Ethereum address and a babyjubjub public key):
 - Via Ethereum transaction, which has an implicit signature of the Ethereum address.  This requires the owner of the Ethereum address to sign the smart contract transaction call
 - Via an authorization signature (`AccountCreationAuthSig`) that can be used by any party to create accounts on behalf of the user
 
@@ -325,7 +325,7 @@ All L1 txs that perform a transfer or exit must be approved by the Ethereum addr
 
 CreateAccount actions must be authorized by the `fromEthAddr`.  To allow other parties to create accounts on behalf of the user, a special smart contract function (`CreateAccountDepositFromRelayer`) is added that requires the same signature authorization used in L1CoordinatorTxs to create regular accounts.
 
-Internal rollup accounts do not have an ethereum address.  For this case, the `CreateAccountDepositFromRelayer` function can be called with a `AccountCreationAuthMsg = 0xffff..` and the account will be created with an `EthAddr = 0xffff..`.
+Internal rollup accounts do not have an Ethereum address.  For this case, the `CreateAccountDepositFromRelayer` function can be called with a `AccountCreationAuthMsg = 0xffff..` and the account will be created with an `EthAddr = 0xffff..`.
 
 #### CreateAccountDepositFromRelayer
 - Inputs:
@@ -607,7 +607,7 @@ Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-pr
 
 
 #### TransferToEthAddr
-Sender sends the transaction to a ethereum address recipient in the state tree. 
+Sender sends the transaction to a Ethereum address recipient in the state tree.
 If the recipient does not exist and coordinator wants to process the transaction, it should create a new account with the recipient Ethereum address. 
 
 It is assumed that the `toIdx` is set to the special index 0.
@@ -786,7 +786,7 @@ feeTxsData = idx[0] || ... || ... || L2Tx[MAX_FEE_TX - 1]
 ```
 
 ### Forging
-When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retrieved by querying the arguments of the function call.  To allow this data retrieval from a regular ethereum node, we must force that the call is not made from a smart contract:
+When the coordinator calls the `forging` function, the L1CoordinatorTxs, L2Txs and feeTxsData data is sent as input to the smart contract function.  This data can be retrieved by querying the arguments of the function call.  To allow this data retrieval from a regular Ethereum node, we must force that the call is not made from a smart contract:
 ```
 assert(msg.sender == tx.origin)
 ```
@@ -794,7 +794,7 @@ assert(msg.sender == tx.origin)
 For every `forging` call, an event will be sent with the following information:
 - BatchNum
 
-The rollup `forging` function will be private, and will be called internally in the smart contract by a wrapper that adds a consensus mechanism to decide if the caller is allowed to forge or not at that ethereum block.
+The rollup `forging` function will be private, and will be called internally in the smart contract by a wrapper that adds a consensus mechanism to decide if the caller is allowed to forge or not at that Ethereum block.
 
 Contract will compute the hash of all pretended public inputs of the circuit in order to force these private signals to be processed by the coordinator.
 
@@ -877,7 +877,7 @@ In order to ensure that the coordinator receives the correct amount of fees, the
 - Constraints:
   - A fee will be applied at the time to register tokens in order to prevent flooding attack
     - this fee could be modified by the governance and it is paid in HEZ tokens 
-  - Two tokens with the same ethereum address cannot be added twice in the system
+  - Two tokens with the same Ethereum address cannot be added twice in the system
 
 ## Emergency mechanism
 
