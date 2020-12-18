@@ -153,7 +153,7 @@ Below is a summary of each transaction field and its explaination:
 ```
 signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 ```
-- `chainId`: set by the contract in order to prevent replay attacks in case of hardforks (16 bits)
+- `chainId`: ethereum chain identifier in order to prevent replay attacks in case of hardforks, we use only 2 bytes because according to EIP-155, v is used to set the CHAIN_ID according to this formula: `v = CHAIN_ID * 2 + 35|36` . Since `v` is 1 byte, there are only 110 safe different options of `CHAIN_ID`. Any network that has a value higher than this one will be overflowing v, so it’ll be susceptible to replay attacks (16 bits)
 - `amountFloat16`: number of tokens to transfer inside the zkRollup (16 bits) 
 - `tokenID`: token identifier (32 bits)
 - `nonce`: nonce (40 bits)
