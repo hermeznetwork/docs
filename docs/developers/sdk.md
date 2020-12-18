@@ -4,7 +4,7 @@ HermezJS is an open source SDK to interact with Hermez Rollup network.  It can b
 ## SDK Howto
 In this tutorial we will walk through the process of using the SDK to:
 1. Creating a wallet
-2. Making a deposit from Ethereum into the Hermez network
+2. Making a deposit from Ethereum into the Hermez Network
 3. Making transfers
 4. Checking transactions' status
 5. Withdrawing funds back to Ethereum network.
@@ -25,7 +25,7 @@ Initialize the storage where user transactions are stored. This needs to be init
 ```
 
 ## Connect to Ethereum Network
-Some of the operations in Hermez network, such as sending L1 transactions, require interacting with smart contracts. It is thus necessary to initialize an Ethereum provider.
+Some of the operations in Hermez Network, such as sending L1 transactions, require interacting with smart contracts. It is thus necessary to initialize an Ethereum provider.
 During this example, we have deployed the contracts in our local blockchain.
 
 ```js
@@ -33,7 +33,7 @@ During this example, we have deployed the contracts in our local blockchain.
 ```
 
 ## Create a Wallet 
-We can create a new Hermez wallet by providing the Ethereum account index associated with the provider initialized. This wallet will store the Ethereum and BabyJubJub keys for the Hermez account. The Ethereum address is used to authorize L1 transactions, and the BabyJubJub key is used to authorize L2 transactions. We will create two wallets
+We can create a new Hermez wallet by providing the Ethereum account index associated with the provider initialized. This wallet will store the Ethereum and Baby JubJub keys for the Hermez account. The Ethereum address is used to authorize L1 transactions, and the Baby JubJub key is used to authorize L2 transactions. We will create two wallets
 
 ```js
   // Create 1st wallet
@@ -109,7 +109,7 @@ Before being able to operate on the Hermez Network, we must ensure that the toke
 ```
 
 ## Deposit Tokens from Ethereum into Hermez Network
-Creating an Hermez account and depositing tokens is done simultaneously as an L1 transaction.  In this example we are going to deposit 100 `ERC20_2` tokens to the newly created Hermez account. The steps are:
+Creating a Hermez account and depositing tokens is done simultaneously as an L1 transaction.  In this example we are going to deposit 100 `ERC20_2` tokens to the newly created Hermez account. The steps are:
 1. Select amount to deposit from Ethereum into Hermez using `getTokenAmountBigInt()`
 2. Select the token denomination of the deposit. 
 
@@ -188,7 +188,7 @@ Alternatively, an account query can be filtered using the `accountIndex`
 ```
 ### Force Exit
 
-This is the L1 equivalent of an Exit. With this option, the Smart Contract forces Coordinators to pick up these transactions before they pick up L2 transactions. Meaning that these transactions will always be picked up.
+This is the L1 equivalent of an Exit. With this option, the smart contract forces Coordinators to pick up these transactions before they pick up L2 transactions. Meaning that these transactions will always be picked up.
 
 This is a security measure. We don't expect users to need to make a Force Exit.
 An `Exit` transaction is the first of two transactions used to recover the tokens from Hermez Network to Ethereum. The second transaction is a `withdraw` wich we will see later on.
@@ -300,9 +300,9 @@ The `Exit` transaction status can be verified using the API.
 
 The information reported will be necessary to complete the `withdraw` stage.
 
-### Withdrawing funds from Hermez
+### Withdrawing Funds from Hermez
 
-After doing any type of `Exit` transaction, which moves the user's funds from their token account to a specific Exit merkle tree, one needs to do a `withdraw` of those funds to an Ethereum L1 account.
+After doing any type of `Exit` transaction, which moves the user's funds from their token account to a specific Exit Merkle tree, one needs to do a `withdraw` of those funds to an Ethereum L1 account.
 To do a `withdraw` we need to indicate the `accountIndex` the includes the Ethereum address where the funds will be transferred, the amount and type of tokens, and some information
 to verify the ownership of those tokens. Additionally, there is one boolean flag. If set to true, the `withdraw` will be instantaneous.
 
@@ -373,7 +373,7 @@ The last part is to make the actual transfer.
 ```
 The result status 200 shows that transaction has been correctly received. Additionally, we receive the nonce matching the transaction we sent, and an id that we can use to verify the status of the transaction.
 
-## Verifying Transaction status
+## Verifying Transaction Status
 Transactions received by the Coordinator will be stored in its transaction pool while they haven't been processed. To check a transaction in the transaction pool we make a query to the coordinator node.
 
 ```js
