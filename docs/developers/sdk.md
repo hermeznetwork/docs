@@ -196,7 +196,7 @@ A token balance can be obtained by querying a Hermez node and passing the `herme
   }
 
 ```
-We can see that the field `accountIndex` is formed by the token symbol it holds and and index. A Hermez account can only hold one type of token.
+We can see that the field `accountIndex` is formed by the token symbol it holds and an index. A Hermez account can only hold one type of token.
 Account indexes start at 256. Indexes 0-255 are resered for internal use.
 
 > Note that the `bjj` reported by some of the API endpoints is the same as the one included in the `Hermez Wallet` object, but they are represented in a different format.
@@ -583,7 +583,7 @@ We can also check directly with the Coordinator in the database of forged transa
 }
 ```
 
-At this point, the balances in both accounts will be updated with the result of transfer
+At this point, the balances in both accounts will be updated with the result of the transfer
 
 ```
 
