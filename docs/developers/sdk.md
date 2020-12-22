@@ -256,7 +256,7 @@ Alternatively, an account query can be filtered using the `accountIndex`
 The `Exit` transaction is used as a first step to retrieve the funds from `Hermez Network` back to Ethereum.
 There are two types of `Exit` transactions:
 - Normal Exit, referred as `Exit` from now on. This is a L2 transaction type.
-- `Force Exit` it is an L1 transaction type which has extended guarantees that will be processed by the Coordinator. We will
+- `Force Exit`, an L1 transaction type which has extended guarantees that will be processed by the Coordinator. We will
 talk more about `Force Exit` in the next sections.
 
 The `Exit` is requested as follows:
