@@ -1,4 +1,4 @@
-# Withdrawal delayer protocol
+# Withdrawal Delayer Protocol
 
 ## Goal
 
@@ -36,7 +36,7 @@ Actions that will be taken if an attack is detected are the following ones:
 
 There will be a delay time `D` to decide if there has been an attack or not:
 
-- Not attack:
+- No attack:
     - `WithdrawalDelayer` remains in `NORMAL_MODE`, and users will be able to withdraw their tokens normally but with a delay
 - Attack:
     - `WithdrawalDelayer` change to `EMERGENCY_MODE`, then only `GovernanceDAO` will be able to withdraw the funds
@@ -48,5 +48,5 @@ There will be a delay time `D` to decide if there has been an attack or not:
 ## Parameters
 
 - `D`: delay to withdraw from `WithdrawalDelayer` measured in seconds
-- `MAX_WITHDRAWAL_DELAY`: maximum delay time to decide if it was an attack or not measured in weeks --> 2 weeks
-- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract measured in weeks --> 6 months (~ 26 weeks)
+- `MAX_WITHDRAWAL_DELAY`: maximum delay time to decide if it was an attack or not, measured in weeks --> 2 weeks
+- `MAX_EMERGENCY_MODE_TIME`: maximum time that funds can stay in the contract, measured in weeks --> 6 months (~ 26 weeks)

@@ -5,10 +5,10 @@ the network. These assumptions are based on several design and architectural dec
 
 Hermez is a Layer2 solution running on top of Ethereum 1.0. This means that the security of Hermez depends
  on the security assumptions and guarantees provided by Ethereum.
- In addition, Hermez is a zk-rollup protocol:
- on top of Ethereum blockchain, Hermez adds another layer of security borrowed from Zcash. Following their work, Hermez integrates a zk-SNARK prover/verifier module to validate in constant time the execution of a series of transactions.
+ In addition, Hermez is a ZK-Rollup protocol:
+ on top of Ethereum blockchain, Hermez adds another layer of security borrowed from Zcash. Following their work, Hermez integrates a ZK-SNARK prover/verifier module to validate in constant time the execution of a series of transactions.
 
- These zk-SNARKs make use of certain cryptographic primitives such as hashes and signatures that make further security assumptions as it will be reviewed later.  Finally, Hermez embeds operating rules in different smart contracts to guarantee that user's transactions cannot be blocked by operators and can withdraw their assets at all times.
+ These ZK-SNARKs make use of certain cryptographic primitives such as hashes and signatures that make further security assumptions as it will be reviewed later.  Finally, Hermez embeds operating rules in different smart contracts to guarantee that user's transactions cannot be blocked by operators and can withdraw their assets at all times.
 
 As a summary, Hermez makes the following security assumptions:
 1. Security assumptions of Ethereum.
@@ -19,9 +19,9 @@ As a summary, Hermez makes the following security assumptions:
 ## Ethereum
 Hermez runs on top of Ethereum. All Hermez data is available on Ethereum and borrows layer 1 security too.
 
-## zk-Proofs
-User transactions are always verified by an Ethereum smart contract by verifying the zk-Proof supplied by the coordinator.
-The specific zk-SNARK that is used in these zk-Proofs is [`Groth16`](https://eprint.iacr.org/2016/260.pdf).
+## ZK-Proofs
+User transactions are always verified by an Ethereum smart contract by verifying the ZK-Proof supplied by the coordinator.
+The specific ZK-SNARK that is used in these ZK-Proofs is [`Groth16`](https://eprint.iacr.org/2016/260.pdf).
 This protocol has been widely used and tested by the Zcash team of researchers and it is currently
 considered mature enough to be used in production.
 
@@ -36,7 +36,7 @@ At this point Baby Jubjub will be substituted by [`Jubjub curve`](https://z.cash
 Baby Jubjub curve satisfies security standards as shown [`here`](https://safecurves.cr.yp.to/) and [`here`](https://github.com/barryWhiteHat/baby_jubjub).
 
 ### Multi-party Computation for the Trusted Setup
-The proving and verification keys of the zk-SNARK protocol require the generation
+The proving and verification keys of the ZK-SNARK protocol require the generation
 of some random values that need to be eliminated. This elimination process is a
 crucial step: if these values are ever exposed, the security of the whole scheme is
 compromised.
@@ -46,7 +46,7 @@ trusted setup. With MPC, it is enough that one single participant deletes its se
 contribution in order to keep the whole scheme secure.
 
 The construction of the trusted setup has two phases:
-1. General MPC ceremony that is valid for any circuit (also known as powers of tau ceremony)
+1. General MPC ceremony that is valid for any circuit (also known as Powers of Tau ceremony)
 2. Phase 2 that is constructed for each specific circuit.
 
 Anyone can contribute with their randomness to the MPC ceremonies and typically, before getting the final
@@ -54,7 +54,7 @@ parameters, a random beacon is applied.
 
 To contribute to the robustness of the setup, Hermez implemented an independent
  [`snarkjs`](https://github.com/iden3/snarkjs) module for computing and validating the MPC ceremonies.
- The software is compatible with current [`powers of tau`](https://github.com/kobigurk/phase2-bn254), and it
+ The software is compatible with current [`Powers of Tau`](https://github.com/kobigurk/phase2-bn254), and it
 allows one to see the list of contributions of a given setup, to import a response, export a challenge of the
 ceremony, or to verify if the whole process has been correctly computed. Hermez’ contribution can be
  found [`here`](https://github.com/weijiekoh/perpetualpowersoftau/blob/master/0049_jordi_response/README.md)).
@@ -66,7 +66,7 @@ function.
  on Baby Jubjub (after the migration, it will use EdDSA on Jubjub). This protocol was implemented making use of
  the circuit language [`circom`](https://docs.circom.io) and following the circuit design of Zcash.
 2. The hash function used is [`Poseidon`](https://eprint.iacr.org/2019/458.pdf),
-a similar hash to [`MiMC`](https://eprint.iacr.org/2016/492.pdf) but with a mixing layer. These hashinh functions
+a similar hash to [`MiMC`](https://eprint.iacr.org/2016/492.pdf) but with a mixing layer. These hash functions
  have been used in projects such as [`TornadoCash`](https://tornado.cash/) (MiMC) and
 [`Semaphore`](https://docs.zkproof.org/pages/standards/accepted-workshop3/proposal-semaphore.pdf) (Poseidon)
 
@@ -90,7 +90,7 @@ BVI 2043757 in Wickhams Cay II, Road Town, Tortola, VG1110, British Virgin Islan
  increase the chances that transactions are forged by Boot coordinator.
 
 ### Security Audits
-Smart contracts and circuits designed for zk-proof system are being audited by different entities. The results will be published here as
+Smart contracts and circuits designed for ZK-proof system are being audited by different entities. The results will be published here as
 soon as they are available.
 
 Results from the first audit performed by [`Solidified`](https://solidified.io/) can be found

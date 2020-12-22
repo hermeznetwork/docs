@@ -7,16 +7,16 @@ img[alt~="center"] {
 </style>
 ## Overview
 
-All rules a transaction must follow in order to be valid are designed and coded in the circuits. Those rules could be seen as constraints that a transaction must accomplish in order to be able to modify the state tree or the exit tree.
+All of the rules a transaction must follow in order to be valid are designed and coded in the circuits. Those rules could be seen as constraints that a transaction must accomplish in order to be able to modify the state tree or the exit tree.
 
 Circuits are built from the bottom up. Hence, small circuits are first introduced and are referenced in advanced ones for the sake of clarity.
 
 Circuits would be split into three modules:
 - library: basic Hermez circuits and structs commonly used across the rest of the circuits
 - withdraw: specific circuit to allow a user to withdraw funds from Hermez contract
-- rollup-main: main circuit that contains all the logic described in [zkRollup protocol](developers/protocol/hermez-protocol/protocol)
+- rollup-main: main circuit that contains all the logic described in [ZK-Rollup protocol](developers/protocol/hermez-protocol/protocol)
 
-> withdraw: user could perform a withdrawal by submitting a zkProof or a merkle tree proof. Both methods are equivalent in terms of functionality. 
+> withdraw: user could perform a withdrawal by submitting a ZK Proof or a Merkle tree proof. Both methods are equivalent in terms of functionality. 
 
 - Global variables:
   - `nTx`: absolute maximum of L1 or L2 transactions allowed
@@ -24,7 +24,7 @@ Circuits would be split into three modules:
   - `maxL1Tx`: absolute maximum of L1 transaction allowed
   - `maxFeeTx`: absolute maximum of fee transactions allowed
 
-### Circuits organization
+### Circuits Organization
 - Library:
   - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state) 
   - [decode-float](developers/protocol/hermez-protocol/circuits/circuits?id=decode-float)
@@ -47,8 +47,8 @@ Circuits would be split into three modules:
 ![center](circuit-dependencies.png)
 
 ## Assumptions
-### L1 transactions
-Some assumptions must be taken into account in L1 transactions. They are performed by users which interact with the smart contract. Hence, smart contract perform checks and force some parameters that are assumed in the circuit implementation:
+### L1 Transactions
+Some assumptions must be taken into account in L1 transactions. They are performed by users which interact with the smart contract. Hence, the smart contract performs checks and forces some parameters that are assumed in the circuit implementation:
 - `tokenID` must exist
 - `loadAmount` < 2^128
 - `amount` < 2^192
@@ -190,7 +190,7 @@ Implements two functionalities to be used for further circuits:
 
 ### decode-tx
 #### Description
-Take the transaction data, decodes it and build data structures to be used in further circuits. Besides, it does checks on transactions fields. It is listed below all the built data and all the checks that this circuit performs.
+Takes the transaction data, decodes it and builds data structures to be used in further circuits. Additionally, it performs checks on transactions fields. Listed below is all the built data and all the checks that this circuit performs.
 
 - Decoders/Build
   - decodes `txCompressedData` as specified [here](developers/protocol/hermez-protocol/protocol?id=l2)
@@ -289,7 +289,7 @@ Updates the fees accumulated by each transaction given its fee.
 #### Description
 Required transaction offset `rqTxOffset` is the relative index of the transaction that would be linked. This implementation adds atomics swaps support since one transaction is linked to another by this relative index meaning that a transaction can only be processed if the linked transaction is processed too.
 
-Next circuit aims to check the past and future data transactions to match the required data signed.
+The next circuit aims to check the past and future data transactions to match the required data signed.
 
 Data to be signed in order to link transactions can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-fields)
 
@@ -322,7 +322,7 @@ None
 
 ### hash-inputs
 #### Description
-Take all the pretended public inputs and hash them all together to build a single public input for the circuit. The pretended public inputs will turn into private inputs of the circuit.
+Take all the intended public inputs and hash them all together to build a single public input for the circuit. The intended public inputs will turn into private inputs of the circuit.
 
 Note that this single input will be built by the smart contract. Therefore, proof must match all the data hashed in the `input hash` which is built inside the circuit from private signals.
 
@@ -356,7 +356,7 @@ Specification for computing `hashInputs` can be found [here](developers/protocol
 #### Ouputs
 |    Output     | type  |              Description               |
 |:-------------:|:-----:|:--------------------------------------:|
-| hashInputsOut | field | sha256 hash of pretended public inputs |
+| hashInputsOut | field | sha256 hash of intended public inputs |
 
 ### fee-tx
 #### Description
@@ -438,7 +438,7 @@ This circuit checks if there is enough balance in the sender account to do the t
 It computes the new balances for the sender and the receiver. Besides, returns the fee that will be charged and if the amount to transfer is 0 (`isP2Nop` signal). These signals will be used in further circuits.
 
 It should be noted that in L1 tx, no errors are allowed but the circuit needs to process them. Hence, in case it is not enough balance on the sender account, it will process the transaction as a 0 amount transfer. Hence, signal `isAmountNullified` will notify if a L1 transaction has been nullified if it is invalid. This `isAmountNullified` will be used to compute data-availability where the amount used would not be inserted in [`L1L2TxsData`](developers/protocol/hermez-protocol/protocol?id=l1-l2-transactions) since L1Tx is not valid or triggers underflow.
-In case of an L2 tx, the protocol does not allow to do a transaction if there is not enough balance on the sender account.
+In case of an L2 tx, the protocol does not allow to do a transaction if there is not enough balance in the sender account.
 
 - The following assumptions have been taken:
   - smart contract filters `loadAmount` above 2^128
@@ -485,7 +485,7 @@ Transaction states are computed depending on transaction's type. All transaction
 
 > Note that L1 coordinator transactions are treated as L1 user `createAccountDeposit` inside the circuit. Circuit does not differentiate transactions taking into account its source, either launched by user or by coordinator.
 
-Sender and receiver accounts have their own Merkle tree processors inside the circuit in order to perform actions on their leafs:
+Sender and receiver accounts have their own Merkle tree processors inside the circuit in order to perform actions on their leaves:
   - sender: processor 1
   - receiver: processor 2
 
@@ -685,13 +685,13 @@ For the sake of clarity, this circuit could be split internally into phases:
 ### rollup-main
 #### Description
 
-Join all transactions and process them. This includes decode all possible transactions, process them and distribute all the fees through fee transactions.
+Join all transactions and process them. This includes, decode all possible transactions, process them and distribute all the fees through fee transactions.
 
-It is important to note that the templates included in this main circuit are pretended to be computed in parallel. Meaning that the output of the very first transaction could be computed as its output it is not necessary to compute the next transaction. Then, all transactions could be computed in parallel. In order to achieve that, it is needed to supply intermediate signals to allow modules parallelization. 
+It is important to note that the templates included in this main circuit are intended to be computed in parallel. Meaning that the output of the very first transaction could be computed as it's output is not necessary to compute the next transaction. Then, all transactions could be computed in parallel. In order to achieve that, it is needed to supply intermediate signals to allow modules parallelization. 
 
 All signals prefixed with `im` are intermediary signals. Note that in circuit phases, there are specific phases to check integrity of intermediary signals. This adds constraints to the circuit, since it is needed to provided transactions output in advance, but it allows high parallelization at the time to compute the witness.
 
-Note that there is only one public input, `hashGlobalInputs`, which is a sha256 hash of all the pretended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input. 
+Note that there is only one public input, `hashGlobalInputs`, which is a sha256 hash of all the intended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input. 
 
 - Global variables:
   - `nTx`
@@ -699,7 +699,7 @@ Note that there is only one public input, `hashGlobalInputs`, which is a sha256 
   - `maxL1Tx`
   - `maxFeeTx`
 
-Main circuit could be splitted in the following phases:
+Main circuit could be split in the following phases:
 - A: decode transactions
 - B: check binary signals
 - C: check integrity decode intermediary signals
@@ -782,12 +782,12 @@ In section H, only bits associated to `amountF` in `L1L2TxsData` are multiplied 
 #### Outputs
 |      Output      | type  |             Description             |
 |:----------------:|:-----:|:-----------------------------------:|
-| hashGlobalInputs | field | hash of all pretended input signals |
+| hashGlobalInputs | field | hash of all intended input signals |
 
-## Withdraw
+## withdraw
 #### Description
 This circuit is used to prove that a leaf exist on the exit tree. If its existence is proved, user will be able to withdraw funds from the Hermez contract.
-All pretended public inputs are hashed together as described [here](developers/protocol/hermez-protocol/protocol?id=hermezwithdraw).
+All intended public inputs are hashed together as described [here](developers/protocol/hermez-protocol/protocol?id=hermezwithdraw).
 
 - Steps:
   - compute hash-state
@@ -817,4 +817,4 @@ All pretended public inputs are hashed together as described [here](developers/p
 #### Outputs
 |      Output      | type  |             Description             |
 |:----------------:|:-----:|:-----------------------------------:|
-| hashGlobalInputs | field | hash of all pretended input signals |
+| hashGlobalInputs | field | hash of all intended input signals |

@@ -877,7 +877,7 @@ In order to ensure that the coordinator receives the correct amount of fees, the
 - Constraints:
   - A fee will be applied at the time to register tokens in order to prevent flooding attack
     - this fee could be modified by the governance and it is paid in HEZ tokens 
-  - Two tokens with the same ethereum address cannot be added twice in the system
+  - Two tokens with the same Ethereum address cannot be added twice in the system
 
 ## Emergency Mechanism
 
