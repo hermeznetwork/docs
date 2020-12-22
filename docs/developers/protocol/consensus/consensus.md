@@ -1,25 +1,25 @@
-# Forging consensus protocol
+# Forging Consensus Protocol
 
 Hermez will run an auction to incentivize efficiency of coordinators, meaning that they need to be very effective and include as many transactions as they can in the slots in order to compensate for their bidding costs, gas costs and operations costs.
 
 The general purpose of this protocol is to describe the rules to coordinate this auction where the bids will be placed only in HEZ utility token.
 
-## General goals
+## General Goals
 
 - Select a single coordinator for a given slot to forge a batch
-- Avoid stops of zkRollup
-- Incentivize coordinators to participate on zkRollup
+- Avoid stops of ZK-Rollup
+- Incentivize coordinators to participate on ZK-Rollup
 
 ## Scenario
 
-- zkRollup is divided into slots of a certain duration:
-  - Block ethereum = ~ 15s
+  - ZK-Rollup is divided into slots of a certain duration:
+  - Ethereum Block = ~ 15s
   - Slot = 40 Ethereum Blocks = 40 \* 15s = 600s = 10 min
   - [Slot deadline](#free-coordinator-override) = 20
 
 ![](consensus-1.png)
 
-_**Note:** The number of blocks per slot is a parameter that is hardcoded on the smartcontracts, so in order to change this parameter we need to make an upgrade on consensus smart contracts_
+_**Note:** The number of blocks per slot is a parameter that is hardcoded on the smart contracts, so in order to change this parameter we need to make an upgrade on consensus smart contracts_
 
 ## Auction
 
@@ -37,7 +37,7 @@ When a slot number in the series gets **0 HEZ value**, it will be locked and gov
 
 ![](consensus-3.png)
 
-### HEZ token bidding allocation
+### HEZ Token Bidding Allocation
 
 In the moment of placement, all bids in form of HEZ token placed in the auction will be stored in the smart contract, and will pay the gas to send the previous bidder their HEZ back.
 
@@ -47,13 +47,13 @@ Once the slot is forged, the tokens are assigned to **three** different accounts
 - A part will be assigned to the **donations account**. Governance process will decide how to allocate this funds into different projects.
 - The rest will will be allocated as Hermez Network usage incentives, compensating active engagement and network adoption, e.g. rewarding transaction and rewarding the holding of specific tokens in Hermez L2 addresses, instead of on L1 Ethereum addresses. 
 
-## Boot coordinator
+## Boot Coordinator
 
 This element has the mission to support the network bootstrap and at some moment will disappear if network gets traction. This event of the boot coordinator disappearing will be a governance decision.
 
 Basically its role is to forge any slot where there are no winner in the auction without the need of make a bid.
 
-## Free coordinator override
+## Free Coordinator Override
 
 There is a situation where any coordinator can forge batches without bidding.
 
@@ -63,7 +63,7 @@ This mechanism responds to the need of the network for the efficiency of coordin
 
 It also provides a guarantee to users that all funds will be recoverable from the L2 network because there is a deadline after which a batch MUST include L1 pending transactions, which includes L2 (funds) exit operations.
 
-## System parameters
+## System Parameters
 
 - **slotDeadline**
   - Number of blocks after the beginning of a slot after which any coordinator can forge if the winner has not forged any batch in that slot
