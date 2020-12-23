@@ -279,7 +279,7 @@ The `Exit` is requested as follows:
   console.log('exitResponse: ', exitResponse)
 
 >>>>
-```
+
 exitResponse:  { status: 200, id: '0x020000000001000000000000', nonce: 0 }
 ```
 
@@ -287,7 +287,7 @@ After submitting our `Exit` request to the Coordinator, we can check the status 
 the Coordinator's Transaction Pool. The Coordinator's transaction pool stores all those transactions 
 that are waiting to be forged.
 
-```
+```js
   const txPool = await hermez.CoordinatorAPI.getPoolTransaction(exitResponse.id)
   console.log(txPool)
 
@@ -379,12 +379,11 @@ that have been forged by the Coordinator.
   type: 'Exit'
 }
 
-
 ```
 
 And we can confirm our account status and check that the correct amount has been transfered out of the account.
 
-```
+```js
   console.log((await hermez.CoordinatorAPI.getAccounts(hermezEthereumAddress, [tokenERC20.id]))
     .accounts[0])
 
@@ -499,7 +498,7 @@ As we saw with the `Exit` transaction, every transaction includes a ´nonce´. T
 ## Verifying Transaction Status
 Transactions received by the Coordinator will be stored in its transaction pool while they haven't been processed. To check a transaction in the transaction pool we make a query to the Coordinator node.
 
-```
+```js
   const txXferPool = await hermez.CoordinatorAPI.getPoolTransaction(transferResponse.id)
   console.log(txXferPool)
 
@@ -545,7 +544,7 @@ Transactions received by the Coordinator will be stored in its transaction pool 
 
 We can also check directly with the Coordinator in the database of forged transactions.
 
-```
+```js
   const transferConf = await hermez.CoordinatorAPI.getHistoryTransaction(transferResponsel.id)
   console.log(transferConf)
 
@@ -585,7 +584,7 @@ We can also check directly with the Coordinator in the database of forged transa
 
 At this point, the balances in both accounts will be updated with the result of the transfer
 
-```
+```js 
 
   console.log((await hermez.CoordinatorAPI.getAccounts(hermezEthereumAddress, [tokenERC20.id]))
   console.log((await hermez.CoordinatorAPI.getAccounts(hermezEthereumAddress2, [tokenERC20.id]))
@@ -677,7 +676,7 @@ Once the transaction has been forged by a Coordinator, we can check the account 
 
 The last step to recover the funds will be to send a new `Withdraw` request to the Coordinator as we did after the regular `Exit` request.
 
-```
+```js 
   // get exit information
   const exitInfo = (await hermez.CoordinatorAPI.getExits(infoAccount.hezEthereumAddress, true)).exits[0]
   // set to perform instant withdraw
