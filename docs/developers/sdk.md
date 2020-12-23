@@ -631,7 +631,7 @@ At this point, the balances in both accounts will be updated with the result of 
   }
 }
 
-
+```
 ### Force Exit
 
 This is the L1 equivalent of an Exit. With this option, the smart contract forces Coordinators to pick up these transactions before they pick up L2 transactions. Meaning that these transactions will always be picked up.
@@ -653,7 +653,7 @@ Once the transaction has been forged by a Coordinator, we can check the account 
   console.log((await hermez.CoordinatorAPI.getAccounts(hermezEthereumAddress, [tokenERC20.id]))
 
 >>>>>>
-```
+
 {
   accountIndex: 'hez:20_2:256',
   balance: '76999999999999999962',
