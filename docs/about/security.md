@@ -94,8 +94,8 @@ Smart contracts and circuits designed for ZK-proof system are being audited by d
 soon as they are available.
 
 Results from the first audit performed by [`Solidified`](https://solidified.io/) can be found
-[`here`](https://github.com/solidified-platform/audits/blob/master/Audit%20Report%20-%20Hermez%20%5B31.10.2020%5D.pdf)
+[`here`](https://github.com/hermeznetwork/contracts/blob/master/audits/Solidified%20-%20Audit%20Report%20-%20Hermez%20%5B31.10.2020%5D.pdf)
 
 Results from the second audit performed by [`Trail of Bits`](https://trailofbits.com/) can be found
-[`here`](https://github.com/hermeznetwork/audits/blob/main/Final%20Report%20-%20Hermez%20audit%20Trail%20of%20Bits.pdf)
+[`here`](https://github.com/hermeznetwork/contracts/blob/master/audits/Trail%20of%20Bits%20-%20Audit%20Report%20-%20Hermez%20%5B23.12.2020%5D.pdf)
 
