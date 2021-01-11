@@ -2,7 +2,7 @@
 
 ## What is Hermez Wallet
 
-It is the first wallet to interact with the Hermez network. It supports depositing, transferring and withdrawing ETH and ERC-20 tokens in Hermez. Wallet provides a simple UI to get started.
+Hermez Wallet provides a simple UI to get started with the Hermez network. It supports depositing, transferring and withdrawing ETH and ERC-20 tokens in Hermez. Wallet provides a simple UI to get started.
 
 ## Onboarding
 
@@ -32,7 +32,7 @@ Then there's a form to select the amount:
 
 ![](wallet/hw-deposit-form.png)
 
-In case of a `Transfer`, there will also be a **receiver** input. This input also supports scanning a QR code or pasting the Receiver's address directly.
+In the case of a `Transfer`, there will also be a **receiver** input. This input also supports scanning a QR code or pasting the Receiver's address directly.
 
 ![](wallet/hw-tx-form.png)
 
@@ -54,13 +54,13 @@ Opening an account shows all the transactions related to that account.
 
 ![](wallet/hw-account.png)
 
-And opening a transaction shows information in regard to that transaction. There's also a button to open the Batch Explorer with all the information.
+Opening a transaction shows information related to that transaction. There's also a button to open the Batch Explorer with all the information.
 
 ![](wallet/hw-tx.png)
 
-## Withdraws
+## Withdrawals
 
-They are a 2 part process. After doing the first part as explained above, a card appears in the Home or in the respective account page. When ready, it will show a button to finalise the withdrawal.
+Withdrawals are a two-part process. After completing the first part explained above, a card appears on the Home screen or on the respective account page. When ready, it will show a button to finalise the withdrawal.
 
 ![](wallet/hw-withdraw.png)
 
