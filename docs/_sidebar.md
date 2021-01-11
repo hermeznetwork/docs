@@ -14,6 +14,7 @@
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Batch Explorer](developers/batch-explorer.md)
+    - [Wallet](developers/hermez-wallet.md)
     - [Glossary](developers/glossary.md)
 - FAQ
     - [Coordinators](faq/coordinators.md)
