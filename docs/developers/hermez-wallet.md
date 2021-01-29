@@ -1,8 +1,8 @@
 # Hermez Wallet
 
-## What is Hermez Wallet
+## What is Hermez Wallet?
 
-Hermez Wallet provides a simple UI to get started with the Hermez network. It supports depositing, transferring and withdrawing ETH and ERC-20 tokens in Hermez. Wallet provides a simple UI to get started.
+Hermez Wallet provides a simple UI to get started with the Hermez Network. It supports depositing, transferring, and withdrawing ETH and ERC-20 tokens in Hermez. 
 
 ## Onboarding
 
@@ -22,7 +22,7 @@ There are 3 kinds of transactions:
 
 - Deposits. Sends ETH or an ERC-20 token (must be registered in Hermez) from your Ethereum account to your Hermez account.
 - Transfers. Sends ETH or an ERC-20 token from a Hermez account to another Hermez account.
-- Withdraws. Sends ETH or an ERC-20 token rom a Hermez account to its corresponding Ethereum account.
+- Withdrawals. Sends ETH or an ERC-20 token from a Hermez account to its corresponding Ethereum account.
 
 They all follow a similar flow. First, we select a token. If it's a `Deposit`, the token must be in the Ethereum account. Otherwise, it must be in the Hermez account.
 
@@ -36,7 +36,7 @@ In the case of a `Transfer`, there will also be a **receiver** input. This input
 
 ![](wallet/hw-tx-form.png)
 
-If everything is valid, the next step is the confirmation with a look of all the transaction parameters. If it's a `Deposit`, as it is a Layer 1 transaction, it will require signing with your Ethereum Wallet (e.g. Metamask).
+If everything is valid, the next step is the confirmation with a look at all of the transaction parameters. With a `Deposit`, as it is a Layer 1 transaction, it will require signing with your Ethereum Wallet (e.g. Metamask).
 
 ![](wallet/hw-deposit-overview.png)
 
@@ -46,7 +46,7 @@ This leads to the confirmation screen if everything went well:
 
 ## Accounts
 
-Making `Deposits` creates accounts that now appear in the home screen.
+Making `Deposits` creates accounts that now appear on the home screen.
 
 ![](wallet/hw-home.png)
 
