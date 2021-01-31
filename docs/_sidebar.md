@@ -16,6 +16,8 @@
     - [Batch Explorer](developers/batch-explorer.md)
     - [Wallet](developers/hermez-wallet.md)
     - [Glossary](developers/glossary.md)
+- Users
+    - [Wallet](users/hermez-wallet.md)
 - FAQ
     - [Coordinators](faq/coordinators.md)
     - [End-Users](faq/end-users.md)
