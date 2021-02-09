@@ -112,27 +112,24 @@ dataBuffer: [48 bits] fromIdx
 - `MAX_TOKENS`: maximum amount of tokens allowed to be registered in the ZK-Rollup
 
 ## Data Types
-### Floating Point Format (Float16)
-A custom half float precision, 16 bits, codification internally called Float16
+### Floating Point Format (Float40)
+A custom floating point, 40 bits, codification internally called Float40
 has been adopted to encode large integers. This is done in order to save bits
 when L2 transactions are published.
 
 Formula is as follows:
 
-$v = m \times 10^e \text{ if } e = 0$
-
-$v = (m + 0.5 h) \times 10^e \text{ if } e > 0$
+$v = m \times 10^e$
 
 where:
 - `v`: large integer value to encode
-- `m`: mantissa (10 bits)
+- `m`: mantissa (35 bits)
 - `e`: exponent (5 bits)
-- `h`: half exponent flag (1 bit)
 
 bit position:
 ```
-[   e    |   h    |    m   ]
-[ 5 bits | 1 bits | 10 bits]
+[   e    |    m   ]
+[ 5 bits | 35 bits]
 ```
 
 ### Account
@@ -154,7 +151,7 @@ Below is a summary of each transaction field and its explaination:
 signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 ```
 - `chainId`: Ethereum chain identifier in order to prevent replay attacks in case of hardforks, we use only 2 bytes since Hermez is only expected to be deployed in the Ethereum mainnet or one of its tesnets, so only 2 bytes are needed (16 bits)
-- `amountFloat16`: number of tokens to transfer inside the ZK-Rollup (16 bits) 
+- `amountFloat40`: number of tokens to transfer inside the ZK-Rollup (40 bits) 
 - `tokenID`: token identifier (32 bits)
 - `nonce`: nonce (40 bits)
 - `feeSelector`: select %fee to apply (8 bits)
@@ -168,8 +165,8 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `toEthAddr`: recipient Ethereum address (160 bits)
 - `toBjjSign`: recipient Baby Jubjub sign (1 bits)
 - `toAy`: recipient Baby Jubjub public key Y coordinate (253 bits)
-- `loadAmountFloat16`: L1 amount transfered to L2 (16 bits)
-- `txCompressedData`: transaction fields joined together that fits into a single field element (253 bits) [See L2Tx specification](#l2)
+- `loadAmountFloat40`: L1 amount transfered to L2 (40 bits)
+- `txCompressedData`: transaction fields joined together that fit into a single field element (253 bits) [See L2Tx specification](#l2)
 - `txCompressedDataV2`: transaction fields joined together used for other transactions when using atomic transactions feature (193 bits) [See L2Tx specification](#l2) 
 - `rqOffset`: relative transaction position to be linked. Used to perform atomic transactions (3 bits)
 - `rqTxCompressedDataV2`: requested `txCompressedDataV2`
@@ -311,12 +308,12 @@ Data of the transaction that is concatenated, hashed with sha256 and used as a p
 L1TxFullData: [     160 bits     ] fromEthAddr
               [     256 bits     ] fromBjj-compressed
               [ MAX_NLEVELS bits ] fromIdx
-              [      16 bits     ] loadAmountFloat16
-              [      16 bits     ] amountFloat16
+              [      40 bits     ] loadAmountFloat40
+              [      40 bits     ] amountFloat40
               [      32 bits     ] tokenID
               [ MAX_NLEVELS bits ] toIdx
 
-L1TxFullData length: 576 bits / 72 bytes
+L1TxFullData length: 624 bits / 78 bytes
 
 L1TxsFullData = L1TxFullData[0] || L1TxFullData[1] || ... || L1TxFullData[len(L1Txs) - 1] || zero[(len(L1Txs)] || ... || zero[MAX_L1_TX - 1]
 ```
@@ -332,13 +329,13 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `AccountCreationAuthSig`: user parameter
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
-  - `loadAmountFloat16`: user parameter
-  - `amountFloat16`: 0 
+  - `loadAmountFloat40`: user parameter
+  - `amountFloat40`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
-  - deposit `loadAmountFloat16` into the sender `auxFromIdx`
+  - deposit `loadAmountFloat40` into the sender `auxFromIdx`
     - new account data:
         - `ax`: `fromBjj-compressed -> ax`
         - `ay`: `fromBjj-compressed -> ay`
@@ -353,13 +350,13 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
-  - `loadAmountFloat16`: user parameter
-  - `amountFloat16`: 0 
+  - `loadAmountFloat40`: user parameter
+  - `amountFloat40`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
-  - deposit `loadAmountFloat16` into the sender `auxFromIdx`
+  - deposit `loadAmountFloat40` into the sender `auxFromIdx`
     - new account data:
         - `ax`: `fromBjj-compressed -> ax`
         - `ay`: `fromBjj-compressed -> ay`
@@ -374,13 +371,13 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
-  - `loadAmountFloat16`: user parameter
-  - `amountFloat16`: user parameter 
+  - `loadAmountFloat40`: user parameter
+  - `amountFloat40`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
-  - deposit `loadAmountFloat16` into the sender `auxFromIdx`
+  - deposit `loadAmountFloat40` into the sender `auxFromIdx`
     - new account data:
         - `ax`: `fromBjj-compressed -> ax`
         - `ay`: `fromBjj-compressed -> ay`
@@ -388,8 +385,8 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
         - `tokenID`: `tokenId`
         - `balance`: `loadAmount`
         - `nonce`: 0
-  - subtract `amountFloat16` from sender `auxFromIdx`
-  - add `amountFloat16` to recipient `toIdx`
+  - subtract `amountFloat40` from sender `auxFromIdx`
+  - add `amountFloat40` to recipient `toIdx`
 - Requirements:
   - receiver `toIdx` account must exist
 - Checks NULL:
@@ -403,12 +400,12 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: 0
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
-  - `loadAmountFloat16`: user parameter
-  - `amountFloat16`: 0 
+  - `loadAmountFloat40`: user parameter
+  - `amountFloat40`: 0 
   - `tokenId`: user parameter 
   - `toIdx`: 0
 - Actions:
-  - deposit `loadAmountFloat16` into the account
+  - deposit `loadAmountFloat40` into the account
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
 - Checks NULL: 
@@ -419,14 +416,14 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
-  - `loadAmountFloat16`: user parameter
-  - `amountFloat16`: user parameter
+  - `loadAmountFloat40`: user parameter
+  - `amountFloat40`: user parameter
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
 - Actions:
-  - deposit `loadAmountFloat16` into the account
-  - subtract `amountFloat16` from sender `fromIdx`
-  - add `amountFloat16` to recipient `toIdx`
+  - deposit `loadAmountFloat40` into the account
+  - subtract `amountFloat40` from sender `fromIdx`
+  - add `amountFloat40` to recipient `toIdx`
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
   - receiver `toIdx` account must exist
@@ -441,13 +438,13 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
-  - `loadAmountFloat16`: 0
-  - `amountFloat16`: user parameter 
+  - `loadAmountFloat40`: 0
+  - `amountFloat40`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: user parameter
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - add `amountFloat16` to recipient `toIdx`
+  - subtract `amountFloat40` from sender `fromIdx`
+  - add `amountFloat40` to recipient `toIdx`
 - Requirements:
   - sender `fromIdx` must exist
   - receiver `toIdx` account must exist
@@ -463,15 +460,15 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
-  - `loadAmountFloat16`: 0
-  - `amountFloat16`: user parameter 
+  - `loadAmountFloat40`: 0
+  - `amountFloat40`: user parameter 
   - `tokenId`: user parameter 
   - `toIdx`: 1
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - If does not exit `fromIdx` account on the exit tree:
+  - subtract `amountFloat40` from sender `fromIdx`
+  - If it does not exit `fromIdx` account on the exit tree:
     - new account `fromIdx` inserted into the exit tree 
-  - add `amountFloat16` to the exit tree recipient `fromIdx`
+  - add `amountFloat40` to the exit tree recipient `fromIdx`
 - Requirements:
   - sender `fromIdx` must exist
 - Checks NULL: 
@@ -490,8 +487,8 @@ Account could be created for a given:
   - `fromEthAddr`: coordinator parameter
   - `fromBjj-compressed`: coordinator parameter (from ecdsa signed message)
   - `fromIdx`: 0
-  - `loadAmountFloat16`: 0
-  - `amountFloat16`: 0 
+  - `loadAmountFloat40`: 0
+  - `amountFloat40`: 0 
   - `tokenId`: coordinator parameter 
   - `toIdx`: 0
 - Actions:
@@ -512,8 +509,8 @@ Account could be created for a given:
   - `fromEthAddr`: `0xffff..`
   - `fromBjj-compressed`: coordinator parameter
   - `fromIdx`: 0
-  - `loadAmountFloat16`: 0
-  - `amountFloat16`: 0 
+  - `loadAmountFloat40`: 0
+  - `amountFloat40`: 0 
   - `tokenId`: coordinator parameter 
   - `toIdx`: 0
 - Actions:
@@ -538,13 +535,12 @@ L2 transaction data in the signature:
 txCompressedData: [      32 bits     ] signatureConstant
                   [      16 bits     ] chainId
                   [ MAX_NLEVELS bits ] fromIdx
-                  [ MAX_NLEVELS bits ] toIdx 
-                  [      16 bits     ] amountFloat16
+                  [ MAX_NLEVELS bits ] toIdx
                   [      32 bits     ] tokenID
                   [      40 bits     ] nonce
                   [       8 bits     ] userFee
                   [       1 bits     ] toBjjSign  
-Total bits compressed data:  241
+Total bits compressed data:  225
 
 toEthAddr                  
 toBjjAy
@@ -552,27 +548,28 @@ toBjjAy
 **Field element notation**                  
 txCompressedDataV2: [ MAX_NLEVELS bits ] fromIdx
                       [ MAX_NLEVELS bits ] toIdx
-                      [      16 bits     ] amountFloat16
+                      [      40 bits     ] amountFloat40
                       [      32 bits     ] tokenID
                       [      40 bits     ] nonce
                       [      8 bits      ] userFee
                       [      1 bits      ] toBjjSign                         
-Total bits txCompressedDataV2: 193
+Total bits txCompressedDataV2: 217 
 
 **Field element notation**
 element_1:[      160 bits    ] toEthAddr
+          [      40 bits     ] amountFloat40
           [      32 bits     ] maxNumBatch
-Total bits element_1: 192
+Total bits element_1: 232
 
 rqToEthAddr                  
 rqToBjjAy
 
 messageToSign = H(e_0, e_1, e_2, e_3, e_4, e_5)
 
-e_0: [ 241 bits ] txCompressedData
-e_1: [ 192 bits ] element_1
+e_0: [ 225 bits ] txCompressedData
+e_1: [ 232 bits ] element_1
 e_2: [ 253 bits ] toBjjAy
-e_3: [ 193 bits ] rqTxCompressedDataV2
+e_3: [ 217 bits ] rqTxCompressedDataV2
 e_4: [ 160 bits ] rqToEthAddr
 e_5: [ 253 bits ] rqToBjjAy
 ```
@@ -582,8 +579,8 @@ Standard transaction of tokens between two accounts inside the rollup, L2 --> L2
 It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
 
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - add `amountFloat16` to recipient `toIdx`
+  - subtract `amountFloat40` from sender `fromIdx`
+  - add `amountFloat40` to recipient `toIdx`
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - recipient `toIdx` exist on the state tree
@@ -592,13 +589,13 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
   - sender `fromIdx` has the correct `nonce`
 
 #### Exit
-Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
+Transfer tokens from an acccount to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
 
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - If does not exit `fromIdx` account on the exit tree:
+  - subtract `amountFloat40` from sender `fromIdx`
+  - If it does not exit `fromIdx` account on the exit tree:
     - new account `fromIdx` inserted into the exit tree
-  - add `amountFloat16` to the exit tree recipient `fromIdx`
+  - add `amountFloat40` to the exit tree recipient `fromIdx`
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - `tokenID` match with `fromIdx` token
@@ -608,18 +605,18 @@ Transfer tokens from an acccunt to the [exit tree](developers/protocol/hermez-pr
 
 #### TransferToEthAddr
 Sender sends the transaction to a Ethereum address recipient in the state tree. 
-If the recipient does not exist and coordinator wants to process the transaction, it should create a new account with the recipient Ethereum address. 
+If the recipient does not exist and coordinator wants to process the transaction, coordinator should create a new account with the recipient Ethereum address. 
 
 It is assumed that the `toIdx` is set to the special index 0.
-`toEthAddr` would be used to choose a recipient to transfer the `amountFloat16`. 
-Hence, coordinator would select the recipient `idx` to add `amountFloat16` (called `auxToIdx`).
+`toEthAddr` would be used to choose a recipient to transfer the `amountFloat40`. 
+Hence, coordinator would select the recipient `idx` to add `amountFloat40` (called `auxToIdx`).
 
-> Note that this transaction encourages the coordinator to create new accounts through L1 coordinator transaction [CreateAccountEth](#createaccounteth).
-> It is important to mention that this kind on transactions allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
+> Note that this transaction encourages the coordinator to create new accounts through the L1 coordinator transaction [CreateAccountEth](#createaccounteth).
+> It is important to mention that this kind of transaction allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
 
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - add `amountFloat16` to the recipient `auxToIdx`
+  - subtract `amountFloat40` from sender `fromIdx`
+  - add `amountFloat40` to the recipient `auxToIdx`
     - it must match with `toEthAddr` and `tokenID` signed by sender
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
@@ -629,19 +626,19 @@ Hence, coordinator would select the recipient `idx` to add `amountFloat16` (call
 
 #### TransferToBjj
 Sender sends the transaction to a Baby Jubjub address recipient in the state tree. 
-If the recipient does not exist and coordinator wants to process the transaction, it should create a new account with the recipient Baby Jubjub address.
+If the recipient does not exist and coordinator wants to process the transaction, coordinator should create a new account with the recipient Baby Jubjub address.
 
 It is assumed that the `toIdx` is set to the special index 0.
-`toBjjAy` + `toBjjSign` would be used to choose the recipeint to transfer the `amountFloat16`.
-`toEthAddr` will be set to `0xff..fff` which is a special case of an Ethereum address that no one can control and it will be check that the recipient account has its Ethereum address set to `0xff..ff`.  This value allows account creation without Ethereum address authorization.
-Hence, coordinator would select the recipient `idx` to add `amountFloat16` (called `auxToIdx`).
+`toBjjAy` + `toBjjSign` would be used to choose the recipient to transfer the `amountFloat40`.
+`toEthAddr` will be set to `0xff..fff` which is a special case of an Ethereum address that no one can control and it will check that the recipient account has its Ethereum address set to `0xff..ff`.  This value allows account creation without Ethereum address authorization.
+Hence, coordinator would select the recipient `idx` to add `amountFloat40` (called `auxToIdx`).
 
-> Note that this transaction encourage coordinador to create new accounts through L1 coordinator transaction [CreateAccountBjj](#createaccountbjj).
-> It is important to mention that this kind on transactions allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
+> Note that this transaction encourages the coordinator to create new accounts through the L1 coordinator transaction [CreateAccountBjj](#createaccountbjj).
+> It is important to mention that this kind of transaction allows for the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
 
 - Actions:
-  - subtract `amountFloat16` from sender `fromIdx`
-  - add `amountFloat16` to the recipient `auxToIdx`
+  - subtract `amountFloat40` from sender `fromIdx`
+  - add `amountFloat40` to the recipient `auxToIdx`
     - it must match with `toBjjAy` + `toBjjSign` and `tokenID` signed by sender
     - it must match `ethAddr` with `0xff..ff`
 - Valid transaction:
@@ -719,7 +716,7 @@ When a user calls a function that adds an `L1UserTx`, the following happens:
         - The `L1UserTxs` has a position in this queue: `L1UserTxs[lastL1UserTxs][position]`
 - Event
     - `toForgeL1TxsNumber`
-    - [`L1UserTx`](#l1-user-transactions) data (68 bytes)
+    - [`L1UserTx`](#l1-user-transactions) data (78 bytes)
     - `position`
 
 ### L1 Coordinator Transactions
@@ -755,7 +752,7 @@ L2 transactions data-availability struct `L2TxData`:
 **Buffer bytes notation**
 L2TxData: [ NLevels  bits ] fromIdx
           [ NLevels  bits ] finalToIdx
-          [    16  bits   ] amountF
+          [    40  bits   ] amountF
           [     8  bits   ] fee
 ```
 > note that `nopTxData` is a `L2TxData` struct where all the fields are set to 0
@@ -766,11 +763,11 @@ L1 transactions data-availability struct `L1TxData`:
 **Buffer bytes notation**
 L1TxData: [ NLevels  bits ] fromIdx
           [ NLevels  bits ] toIdx
-          [    16  bits   ] effectiveAmountF = amounF * (1 - isNullified)
+          [    40  bits   ] effectiveAmountF = amounF * (1 - isNullified)
           [     8  bits   ] fee = 0
 ```
 
-> Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 16 + 8 = 88 bits = 11 bytes
+> Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 40 + 8 = 112 bits = 14 bytes
 
 `L1L2TxsData` is the all the L1-L2 transaction data concatenated:
 ```
@@ -818,8 +815,8 @@ hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx
                 [                256 bits              ] oldStRoot
                 [                256 bits              ] newStRoot
                 [                256 bits              ] newExitRoot
-                [ MAX_L1_TX*(2*MAX_NLEVELS + 480) bits ] L1TxsFullData
-                [     MAX_TX*(2*NLevels + 24) bits     ] L1L2TxsData
+                [ MAX_L1_TX*(2*MAX_NLEVELS + 528) bits ] L1TxsFullData
+                [     MAX_TX*(2*NLevels + 48) bits     ] L1L2TxsData
                 [       NLevels * MAX_TOKENS_FEE       ] feeTxsData
                 [                 16 bits              ] chainID
                 [                 32 bits              ] currentNumBatch
