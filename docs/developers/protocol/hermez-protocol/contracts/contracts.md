@@ -80,7 +80,7 @@ In order to force the coordinator to forge the L1 transactions, but also allow h
 
 #### L1 Coordinator Transactions
 
-In the global spec all of the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)  are specified 
+In the global spec all of the [L1 coordinator transactions](developers/protocol/hermez-protocol/protocol?id=l1-coordinator)  are specified
 
 #### Data availability
 
