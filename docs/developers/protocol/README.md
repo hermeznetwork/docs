@@ -4,4 +4,4 @@
     - [Smart contracts](developers/protocol/hermez-protocol/contracts/contracts.md)
     - [Circuits](developers/protocol/hermez-protocol/circuits/circuits.md)
 - [Forging consensus protocol](developers/protocol/consensus/consensus.md)
-- [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)   
+- [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)

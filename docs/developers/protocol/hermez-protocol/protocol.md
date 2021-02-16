@@ -1,7 +1,7 @@
 # Hermez ZK-Rollup Protocol
 
 ## Overview
-The core protocol ensures that state transitions are valid through a validity proof which will assure that certain rules have been fulfilled. 
+The core protocol ensures that state transitions are valid through a validity proof which will assure that certain rules have been fulfilled.
 This collection of rules are determined by a smart contract which will validate a proof of state transition. This verification will check that each state transitioning is made correctly. This is achieved by using a ZK-SNARK circuit and it will make sure that all rules for state transition are being followed.
 Any prover must submit a proof in order to demonstrate the correctness of the state transition computation.
 
@@ -76,14 +76,14 @@ dataField:  [16 bits] tokenID
 ### Buffer Bytes
 - first value corresponds to the first byte of the array
 ```
-dataBuffer: [48 bits] fromIdx 
+dataBuffer: [48 bits] fromIdx
             [32 bits] tokenID
-            [16 bit ] amountFloat  
+            [16 bit ] amountFloat
 ```
 
 > Example:
 > ```
-> dataBufferExample:  [48 bits] fromIdx = 5 
+> dataBufferExample:  [48 bits] fromIdx = 5
                     [32 bits] tokenID = 4
                     [16 bit ] amountFloat = 20
 > dataBufferExample (hexadecimal) = 0x000000000005000000040014;
@@ -151,12 +151,12 @@ Below is a summary of each transaction field and its explaination:
 signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 ```
 - `chainId`: Ethereum chain identifier in order to prevent replay attacks in case of hardforks, we use only 2 bytes since Hermez is only expected to be deployed in the Ethereum mainnet or one of its tesnets, so only 2 bytes are needed (16 bits)
-- `amountFloat40`: number of tokens to transfer inside the ZK-Rollup (40 bits) 
+- `amountFloat40`: number of tokens to transfer inside the ZK-Rollup (40 bits)
 - `tokenID`: token identifier (32 bits)
 - `nonce`: nonce (40 bits)
 - `feeSelector`: select %fee to apply (8 bits)
 - `maxNumBatch`: maximum allowed batch number when the transaction can be processed (32 bits)
-- `onChain`: mark transaction as L1 transaction (1 bit) 
+- `onChain`: mark transaction as L1 transaction (1 bit)
 - `newAccount`: mark transaction to create new account (1 bit)
 - `fromIdx`: sender account index (NLevels bits)
 - `fromBjjCompressed`: sender Baby Jubjub public key compressed (256 bits)
@@ -167,11 +167,11 @@ signature_constant = sha256("I authorize this hermez rollup transaction")[:32/8]
 - `toAy`: recipient Baby Jubjub public key Y coordinate (253 bits)
 - `loadAmountFloat40`: L1 amount transfered to L2 (40 bits)
 - `txCompressedData`: transaction fields joined together that fit into a single field element (253 bits) [See L2Tx specification](#l2)
-- `txCompressedDataV2`: transaction fields joined together used for other transactions when using atomic transactions feature (193 bits) [See L2Tx specification](#l2) 
+- `txCompressedDataV2`: transaction fields joined together used for other transactions when using atomic transactions feature (193 bits) [See L2Tx specification](#l2)
 - `rqOffset`: relative transaction position to be linked. Used to perform atomic transactions (3 bits)
 - `rqTxCompressedDataV2`: requested `txCompressedDataV2`
 - `rqToEthAddr`: requested `toEthAddr`
-- `rqToBjjAy`: requested `toBjj` 
+- `rqToBjjAy`: requested `toBjj`
 
 Fields to perform atomic transactions:
 - `rqTxCompressedDataV2`
@@ -186,7 +186,7 @@ Fields to perform atomic transactions:
 ![](state-tree.png)
 
 ### State tree
-Sparse Merkle tree is used to represent the whole ZK-Rollup state which is identified by its root. 
+Sparse Merkle tree is used to represent the whole ZK-Rollup state which is identified by its root.
 Each leaf of the state tree (account) contains the following data:
 
 - Key: Merkle tree index (`idx`)
@@ -330,8 +330,8 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
   - `loadAmountFloat40`: user parameter
-  - `amountFloat40`: 0 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: 0
+  - `tokenId`: user parameter
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
@@ -351,8 +351,8 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
   - `loadAmountFloat40`: user parameter
-  - `amountFloat40`: 0 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: 0
+  - `tokenId`: user parameter
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
@@ -367,13 +367,13 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
 - Requirements:
 
 #### CreateAccountDepositTransfer
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: user parameter
   - `fromIdx`: 0
   - `loadAmountFloat40`: user parameter
-  - `amountFloat40`: user parameter 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: user parameter
+  - `tokenId`: user parameter
   - `toIdx`: user parameter
 - Actions:
   - new account inserted into the state tree with idx = `auxFromIdx`
@@ -396,29 +396,29 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - sender `fromIdx` should have enough balance
 
 #### Deposit
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: 0
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
   - `loadAmountFloat40`: user parameter
-  - `amountFloat40`: 0 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: 0
+  - `tokenId`: user parameter
   - `toIdx`: 0
 - Actions:
   - deposit `loadAmountFloat40` into the account
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
-- Checks NULL: 
+- Checks NULL:
   - `tokenID` should match state1 update account
 
 #### DepositTransfer
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
   - `loadAmountFloat40`: user parameter
   - `amountFloat40`: user parameter
-  - `tokenId`: user parameter 
+  - `tokenId`: user parameter
   - `toIdx`: user parameter
 - Actions:
   - deposit `loadAmountFloat40` into the account
@@ -427,20 +427,20 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
 - Requirements:
   - recipient `fromIdx` account to receive L1 funds must exist
   - receiver `toIdx` account must exist
-- Checks NULL: 
+- Checks NULL:
   - `tokenID` should match state1 update account
   - `tokenID` should match state2 update account
   - sender `fromIdx` should have enough balance
   - `fromEthAddr` should match state1 update account
 
 #### ForceTransfer
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
   - `loadAmountFloat40`: 0
-  - `amountFloat40`: user parameter 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: user parameter
+  - `tokenId`: user parameter
   - `toIdx`: user parameter
 - Actions:
   - subtract `amountFloat40` from sender `fromIdx`
@@ -448,7 +448,7 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
 - Requirements:
   - sender `fromIdx` must exist
   - receiver `toIdx` account must exist
-- Checks NULL: 
+- Checks NULL:
   - sender `fromIdx` and receiver should have the same `tokenID`
   - `tokenID` should match state1 update account
   - `tokenID` should match state2 update account
@@ -456,22 +456,22 @@ Internal rollup accounts do not have an Ethereum address.  For this case, the `C
   - `fromEthAddr` should match state1 update account
 
 #### ForceExit
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: message.sender
   - `fromBjj-compressed`: 0
   - `fromIdx`: user parameter
   - `loadAmountFloat40`: 0
-  - `amountFloat40`: user parameter 
-  - `tokenId`: user parameter 
+  - `amountFloat40`: user parameter
+  - `tokenId`: user parameter
   - `toIdx`: 1
 - Actions:
   - subtract `amountFloat40` from sender `fromIdx`
   - If it does not exit `fromIdx` account on the exit tree:
-    - new account `fromIdx` inserted into the exit tree 
+    - new account `fromIdx` inserted into the exit tree
   - add `amountFloat40` to the exit tree recipient `fromIdx`
 - Requirements:
   - sender `fromIdx` must exist
-- Checks NULL: 
+- Checks NULL:
   - `tokenID` should match state1 update account
   - sender should have enough balance
   - `fromEthAddr` should match state1 update account
@@ -483,13 +483,13 @@ Account could be created for a given:
 - Baby Jubjub public key (internal rollup account)
 
 #### CreateAccountEth
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: coordinator parameter
   - `fromBjj-compressed`: coordinator parameter (from ecdsa signed message)
   - `fromIdx`: 0
   - `loadAmountFloat40`: 0
-  - `amountFloat40`: 0 
-  - `tokenId`: coordinator parameter 
+  - `amountFloat40`: 0
+  - `tokenId`: coordinator parameter
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree
@@ -505,13 +505,13 @@ Account could be created for a given:
     - `ecdsa signature`: R,S,V signature of [AccountCreationAuthMsg](#regular-rollup-account)
 
 #### CreateAccountBjj
-- Inputs: 
+- Inputs:
   - `fromEthAddr`: `0xffff..`
   - `fromBjj-compressed`: coordinator parameter
   - `fromIdx`: 0
   - `loadAmountFloat40`: 0
-  - `amountFloat40`: 0 
-  - `tokenId`: coordinator parameter 
+  - `amountFloat40`: 0
+  - `tokenId`: coordinator parameter
   - `toIdx`: 0
 - Actions:
   - new account inserted into the state tree
@@ -524,7 +524,7 @@ Account could be created for a given:
         - `nonce`: 0
 
 ### L2
-All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it. 
+All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it.
 The coordinator must check that it collects valid transactions that must not perform an invalid transition state. Otherwise, the proof computed by the coordinator will not be valid.
 The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is in the users' benefit to provide a valid transaction if they want it to be inserted in the ZK-Rollup.
 
@@ -539,21 +539,21 @@ txCompressedData: [      32 bits     ] signatureConstant
                   [      32 bits     ] tokenID
                   [      40 bits     ] nonce
                   [       8 bits     ] userFee
-                  [       1 bits     ] toBjjSign  
+                  [       1 bits     ] toBjjSign
 Total bits compressed data:  225
 
-toEthAddr                  
+toEthAddr
 toBjjAy
 
-**Field element notation**                  
+**Field element notation**
 txCompressedDataV2: [ MAX_NLEVELS bits ] fromIdx
                       [ MAX_NLEVELS bits ] toIdx
                       [      40 bits     ] amountFloat40
                       [      32 bits     ] tokenID
                       [      40 bits     ] nonce
                       [      8 bits      ] userFee
-                      [      1 bits      ] toBjjSign                         
-Total bits txCompressedDataV2: 217 
+                      [      1 bits      ] toBjjSign
+Total bits txCompressedDataV2: 217
 
 **Field element notation**
 element_1:[      160 bits    ] toEthAddr
@@ -561,7 +561,7 @@ element_1:[      160 bits    ] toEthAddr
           [      32 bits     ] maxNumBatch
 Total bits element_1: 232
 
-rqToEthAddr                  
+rqToEthAddr
 rqToBjjAy
 
 messageToSign = H(e_0, e_1, e_2, e_3, e_4, e_5)
@@ -584,7 +584,7 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
   - recipient `toIdx` exist on the state tree
-  - `tokenID` match with `fromIdx` and `toIdx` token 
+  - `tokenID` match with `fromIdx` and `toIdx` token
   - sender `fromIdx` has enough funds
   - sender `fromIdx` has the correct `nonce`
 
@@ -604,15 +604,15 @@ Transfer tokens from an acccount to the [exit tree](developers/protocol/hermez-p
 
 
 #### TransferToEthAddr
-Sender sends the transaction to a Ethereum address recipient in the state tree. 
-If the recipient does not exist and coordinator wants to process the transaction, coordinator should create a new account with the recipient Ethereum address. 
+The sender sends the transaction to an Ethereum address recipient in the state tree.
+If the recipient does not exist and the coordinator wants to process the transaction, coordinator should create a new account with the recipient's Ethereum address.
 
 It is assumed that the `toIdx` is set to the special index 0.
-`toEthAddr` would be used to choose a recipient to transfer the `amountFloat40`. 
+`toEthAddr` would be used to choose a recipient to transfer the `amountFloat40`.
 Hence, coordinator would select the recipient `idx` to add `amountFloat40` (called `auxToIdx`).
 
 > Note that this transaction encourages the coordinator to create new accounts through the L1 coordinator transaction [CreateAccountEth](#createaccounteth).
-> It is important to mention that this kind of transaction allows the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
+> It is important to mention that this kind of transaction allows for the creation of new accounts in the state tree without needing to have any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction.
 
 - Actions:
   - subtract `amountFloat40` from sender `fromIdx`
@@ -625,7 +625,7 @@ Hence, coordinator would select the recipient `idx` to add `amountFloat40` (call
   - sender `fromIdx` has the correct `nonce`
 
 #### TransferToBjj
-Sender sends the transaction to a Baby Jubjub address recipient in the state tree. 
+Sender sends the transaction to a Baby Jubjub address recipient in the state tree.
 If the recipient does not exist and coordinator wants to process the transaction, coordinator should create a new account with the recipient Baby Jubjub address.
 
 It is assumed that the `toIdx` is set to the special index 0.
@@ -634,7 +634,7 @@ It is assumed that the `toIdx` is set to the special index 0.
 Hence, coordinator would select the recipient `idx` to add `amountFloat40` (called `auxToIdx`).
 
 > Note that this transaction encourages the coordinator to create new accounts through the L1 coordinator transaction [CreateAccountBjj](#createaccountbjj).
-> It is important to mention that this kind of transaction allows for the creation of new accounts in the state tree without the need of having any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction. 
+> It is important to mention that this kind of transaction allows for the creation of new accounts in the state tree without the needing to have any `ether` on L1. Hence, users could create new accounts and deposit tokens just through an L2 transaction.
 
 - Actions:
   - subtract `amountFloat40` from sender `fromIdx`
@@ -665,7 +665,7 @@ Pretended public inputs are hashed following the next specification:
 
 ```
 **Buffer bytes notation**
-globalInputsData: [ 256 bits ] rootExit 
+globalInputsData: [ 256 bits ] rootExit
                   [ 160 bits ] ethAddr
                   [  32 bits ] tokenID
                   [ 192 bits ] balance
@@ -810,7 +810,7 @@ Contract will compute the hash of all pretended public inputs of the circuit in 
 
 ```
 **Buffer bytes notation**
-hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx 
+hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx
                 [            MAX_NLEVELS bits          ] newLastIdx
                 [                256 bits              ] oldStRoot
                 [                256 bits              ] newStRoot
@@ -831,7 +831,7 @@ Fee is represented as a percentage of the total amount sent:
 
 $Fee_{amount} = amount * Fee_{percentage}$
 
-$TotalTxCost = amount + Fee_{amount}$  
+$TotalTxCost = amount + Fee_{amount}$
 
 Since there are 8 reserved bits for this field, there will be 256 different fee
 percentages that the user could choose to perform its transaction.
@@ -862,7 +862,7 @@ In order to ensure that the coordinator receives the correct amount of fees, the
 - ERC20 tokens are supported by the rollup and it could be added up to $2^{32}$ different tokens
 - Ether is supported by the rollup and it has an assigned `tokenID = 0`
 - Contracts maintain a list of all tokens registered in the rollup and each token needs to be listed before using it
-- `tokenID` is assigned (sequentially) each time a token is listed in the system and this identifier will be used for any rollup transaction, either L1 or L2, that modifies the state tree 
+- `tokenID` is assigned (sequentially) each time a token is listed in the system and this identifier will be used for any rollup transaction, either L1 or L2, that modifies the state tree
 - TokenInfo:
     - TokenID
     - Address
@@ -873,7 +873,7 @@ In order to ensure that the coordinator receives the correct amount of fees, the
         - TokenInfo
 - Constraints:
   - A fee will be applied at the time to register tokens in order to prevent flooding attack
-    - this fee could be modified by the governance and it is paid in HEZ tokens 
+    - this fee could be modified by the governance and it is paid in HEZ tokens
   - Two tokens with the same Ethereum address cannot be added twice in the system
 
 ## Emergency Mechanism

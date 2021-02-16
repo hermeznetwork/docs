@@ -16,7 +16,7 @@ Circuits would be split into three modules:
 - withdraw: specific circuit to allow a user to withdraw funds from Hermez contract
 - rollup-main: main circuit that contains all the logic described in [ZK-Rollup protocol](developers/protocol/hermez-protocol/protocol)
 
-> withdraw: user could perform a withdrawal by submitting a ZK Proof or a Merkle tree proof. Both methods are equivalent in terms of functionality. 
+> withdraw: user could perform a withdrawal by submitting a ZK Proof or a Merkle tree proof. Both methods are equivalent in terms of functionality.
 
 - Global variables:
   - `nTx`: absolute maximum of L1 or L2 transactions allowed
@@ -26,7 +26,7 @@ Circuits would be split into three modules:
 
 ### Circuits Organization
 - Library:
-  - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state) 
+  - [hash-state](developers/protocol/hermez-protocol/circuits/circuits?id=hash-state)
   - [decode-float](developers/protocol/hermez-protocol/circuits/circuits?id=decode-float)
   - [mux256](developers/protocol/hermez-protocol/circuits/circuits?id=mux256)
   - [utils-bjj](developers/protocol/hermez-protocol/circuits/circuits?id=utils-bjj)
@@ -41,7 +41,7 @@ Circuits would be split into three modules:
   - [rollup-tx-states](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx-states)
   - [rollup-tx](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-tx)
   - [rollup-main](developers/protocol/hermez-protocol/circuits/circuits?id=rollup-main)
-- [withdraw](developers/protocol/hermez-protocol/circuits/circuits?id=withdraw) 
+- [withdraw](developers/protocol/hermez-protocol/circuits/circuits?id=withdraw)
 
 #### Dependencies
 ![center](circuit-dependencies.png)
@@ -105,14 +105,13 @@ Gets the inputs of the state and computes its hash as described [here](developer
 
 ### decode-float
 #### Description
-Gets an input representing a `float16` format and decode it to a large integer value as described [here](developers/protocol/hermez-protocol/protocol?id=floating-point-format-float16)
+Gets an input representing a `float40` format and decode it to a large integer value as described [here](developers/protocol/hermez-protocol/protocol?id=floating-point-format-float40)
 
 - Steps:
-  - get the 16 less significant bits
+  - get the 40 less significant bits
   - compute exponent
-  - compute half exponent flag
   - compute mantissa
-  - compute final large integer 
+  - compute final large integer
 
 #### Schematic
 ![center](decode-float.png)
@@ -120,12 +119,12 @@ Gets an input representing a `float16` format and decode it to a large integer v
 #### Inputs
 | Input |  type  |  Description   |
 |:-----:|:------:|:--------------:|
-|  in   | uint16 | float16 encode |
+|  in   | uint40 | float40 encode |
 
 #### Outputs
 | Output | type  |  Description   |
 |:------:|:-----:|:--------------:|
-|  out   | field | float16 decode |
+|  out   | field | float40 decode |
 
 ### mux256
 #### Description
@@ -201,7 +200,7 @@ Takes the transaction data, decodes it and builds data structures to be used in 
 - Checks
   - L1 transactions must be processed before L2 transactions
     - only switching from L1 to L2 is allowed
-  - checks `newAccount` is set to true only when it is an L1 transaction and `fromIdx` is 0  
+  - checks `newAccount` is set to true only when it is an L1 transaction and `fromIdx` is 0
   - `idx` to be assigned to a new account creation is incremented and checked only if the transaction involves an account creation
   - checks `chainID` transaction field matches `globalChainID` forced by the smart contract
   - checks `signatureConstant` transaction field matches the hardcoded value `CONST_SIG` set in the circuit
@@ -215,17 +214,18 @@ Takes the transaction data, decodes it and builds data structures to be used in 
 #### Inputs
 |         Input          |     type      |                            Description                             |
 |:----------------------:|:-------------:|:------------------------------------------------------------------:|
-|    previousOnChain     |     bool      |             determines if previous transaction is L1               |
+|    previousOnChain     |     bool      |              determines if previous transaction is L1              |
 |    txCompressedData    |    uint241    |                 encode transaction fields together                 |
 |      maxNumBatch       |    uint32     | maximum allowed batch number when the transaction can be processed |
+|        amountF         |    uint40     |        amount to transfer from L2 to L2 encoded as float40         |
 |       toEthAddr        |    uint160    |                     ethereum address receiver                      |
-|        toBjjAy         |     field     |                 babyjubjub y coordinate receiver                   |
+|        toBjjAy         |     field     |                  babyjubjub y coordinate receiver                  |
 |  rqTxCompressedDataV2  |    uint193    |       requested encode transaction fields together version 2       |
 |      rqToEthAddr       |    uint160    |                requested ethereum address receiver                 |
 |       rqToBjjAy        |     field     |                 requested babyjubjub y coordinate                  |
 |      fromEthAddr       |    uint160    |                      ethereum address sender                       |
 | fromBjjCompressed[256] | boolean array |                    babyjubjub compressed sender                    |
-|      loadAmountF       |    uint16     |         amount to deposit from L1 to L2 encoded as float16         |
+|      loadAmountF       |    uint40     |         amount to deposit from L1 to L2 encoded as float40         |
 |     globalChainID      |    uint16     |                      global chain identifier                       |
 |    currentNumBatch     |    uint32     |                        current batch number                        |
 |        onChain         |     bool      |             determines if the transaction is L1 or L2              |
@@ -252,7 +252,7 @@ Takes the transaction data, decodes it and builds data structures to be used in 
 
 ### fee-accumulator
 #### Description
-Updates the fees accumulated by each transaction given its fee. 
+Updates the fees accumulated by each transaction given its fee.
 
 - Definitions:
   - `tokenID`: token to update
@@ -261,7 +261,7 @@ Updates the fees accumulated by each transaction given its fee.
   - `fee2Charge`: effective fee charged in a transaction
   - `accFeeOut[numTokens]`: final array of all fees accumulated
 - Steps:
-  - find the position on the array `feePlanTokenID[numTokens]` where its element matches the current transaction `tokenID`  
+  - find the position on the array `feePlanTokenID[numTokens]` where its element matches the current transaction `tokenID`
     - if no match found, no fee would be accumulated and `accFeeIn[0..numTokens] == accFeeOut[0..numTokens]`
   - if a match is found:
     - accumulate the fee `fee2Charge` inside its position `i` on `accFeeOut[i]`
@@ -293,7 +293,7 @@ The next circuit aims to check the past and future data transactions to match th
 
 Data to be signed in order to link transactions can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-fields)
 
-> Note that setting `rqTxOffset` to 0 means that no transaction is linked 
+> Note that setting `rqTxOffset` to 0 means that no transaction is linked
 
 - Steps:
   - get data of future/past transactions
@@ -334,7 +334,7 @@ Specification for computing `hashInputs` can be found [here](developers/protocol
   - `nLevels`
   - `nTx`
   - `maxL1Tx`
-  - `maxFeeTx`   
+  - `maxFeeTx`
 
 #### Schematic
 ![center](hash-inputs.png)
@@ -347,8 +347,8 @@ Specification for computing `hashInputs` can be found [here](developers/protocol
 |                          oldStateRoot                           |     field     |                 old state root                  |
 |                          newStateRoot                           |     field     |                 new state root                  |
 |                           newExitRoot                           |     field     |                  new exit root                  |
-| L1TxsFullData[maxL1Tx * (2*nLevels + 32 + 16 + 16 + 256 + 160)] | boolean array |                bits L1 full data                |
-|             L1L2TxsData[nTx * (2*nLevels + 16 + 8)]             | boolean array |    bits L1-L2 transaction data-availability     |
+| L1TxsFullData[maxL1Tx * (2*nLevels + 32 + 40 + 40 + 256 + 160)] | boolean array |                bits L1 full data                |
+|             L1L2TxsData[nTx * (2*nLevels + 40 + 8)]             | boolean array |    bits L1-L2 transaction data-availability     |
 |                      feeTxsData[maxFeeTx]                       | uint48 array  | all index accounts to  receive accumulated fees |
 |                          globalChainID                          |    uint16     |             global chain identifier             |
 |                         currentNumBatch                         |    uint32     |         current batch number processed          |
@@ -444,13 +444,13 @@ In case of an L2 tx, the protocol does not allow to do a transaction if there is
   - smart contract filters `loadAmount` above 2^128
   - smart contract filters `amount` above 2^192
   - circuit reserves 192 bits for the balance of an account
-  - overflow applies only if more than 2^64 transactions are done  
+  - overflow applies only if more than 2^64 transactions are done
   - assume overflow is not feasible
 - Steps:
   - compute fee to be applied(`fee2Charge`)
   - compute effective amount (`effectiveAmount1` and `effectiveAmount2`)
   - check underflow (`txOk`)
-  - compute new balances from sender and receiver (`newStBalanceSender` and `newStBalanceReceiver`) 
+  - compute new balances from sender and receiver (`newStBalanceSender` and `newStBalanceReceiver`)
 
 #### Schematic
 ![center](balance-updater.png)
@@ -499,7 +499,7 @@ The following table summarizes all the processor actions:
 |    1    |    1    |  DELETE  |
 
 Therefore, given the transaction type, it is needed to specify certain signals that would be used in `rollup-tx` circuit:
-  - `isP1Insert`: determines if processor 1 performs an INSERT function (sender) 
+  - `isP1Insert`: determines if processor 1 performs an INSERT function (sender)
   - `isP2Insert`: determines if processor 2 performs an INSERT function (receiver)
   - `key1`: set key to be used in processor 1
   - `key2`: set key to be used in processor 2
@@ -650,7 +650,7 @@ For the sake of clarity, this circuit could be split internally into phases:
 |             r8y             |     field     |                   eddsa signature field                   |
 |         fromEthAddr         |    uint160    |                  ethereum address sender                  |
 |   fromBjjCompressed[256]    | boolean array |               babyjubjub compressed sender                |
-|         loadAmountF         |    uint16     |    amount to deposit from L1 to L2 encoded as float16     |
+|         loadAmountF         |    uint40     |    amount to deposit from L1 to L2 encoded as float40     |
 |          tokenID1           |    uint32     |                tokenID of the sender leaf                 |
 |           nonce1            |    uint40     |                 nonce of the sender leaf                  |
 |            sign1            |     bool      |                  sign of the sender leaf                  |
@@ -669,8 +669,8 @@ For the sake of clarity, this circuit could be split internally into phases:
 |          ethAddr2           |    uint160    |               ethAddr of the receiver leaf                |
 |   siblings2[nLevels + 1]    |  field array  |        siblings merkle proof of the receiver leaf         |
 |          isOld0_2           |     bool      |              flag to require old key - value              |
-|           oldKey2           |    uint48     |                old key of the sender leaf                 |
-|          oldValue2          |     field     |               old value of the sender leaf                |
+|           oldKey2           |    uint48     |                old key of the receiver leaf               |
+|          oldValue2          |     field     |               old value of the receiver leaf              |
 |        oldStateRoot         |     field     |                    initial state root                     |
 |         oldExitRoot         |     field     |                     initial exit root                     |
 
@@ -687,11 +687,11 @@ For the sake of clarity, this circuit could be split internally into phases:
 
 Join all transactions and process them. This includes, decode all possible transactions, process them and distribute all the fees through fee transactions.
 
-It is important to note that the templates included in this main circuit are intended to be computed in parallel. Meaning that the output of the very first transaction could be computed as it's output is not necessary to compute the next transaction. Then, all transactions could be computed in parallel. In order to achieve that, it is needed to supply intermediate signals to allow modules parallelization. 
+It is important to note that the templates included in this main circuit are intended to be computed in parallel. Meaning that the output of the very first transaction could be computed as it output is not necessary to compute the next transaction. Then, all transactions could be computed in parallel. In order to achieve that, it is needed to supply intermediate signals to allow modules parallelization.
 
 All signals prefixed with `im` are intermediary signals. Note that in circuit phases, there are specific phases to check integrity of intermediary signals. This adds constraints to the circuit, since it is needed to provided transactions output in advance, but it allows high parallelization at the time to compute the witness.
 
-Note that there is only one public input, `hashGlobalInputs`, which is a sha256 hash of all the intended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input. 
+Note that there is only one public input, `hashGlobalInputs`, which is a sha256 hash of all the intended public inputs of the circuit. This is done in order to save gas in the contract by just passing one public input.
 
 - Global variables:
   - `nTx`
@@ -732,6 +732,7 @@ In section H, only bits associated to `amountF` in `L1L2TxsData` are multiplied 
 |        imInitStateRootFee        |        field        |    intermediary signals: final state root of all rollup transactions    |
 |     imFinalAccFee[maxFeeTx]      |     field array     | intermediary signals: final fees accumulated of all rollup transactions |
 |      txCompressedData[nTx]       |    uint241 array    |                   encode transaction fields together                    |
+|           amountF[nTx]           |    uint40 array     |           amount to transfer from L2 to L2 encoded as float40           |
 |     txCompressedDataV2[nTx]      |    uint193 array    |              encode transaction fields together version 2               |
 |           fromIdx[nTx]           |    uint48 array     |                              index sender                               |
 |         auxFromIdx[nTx]          |    uint48 array     |                   auxiliary index to create accounts                    |
@@ -748,7 +749,7 @@ In section H, only bits associated to `amountF` in `L1L2TxsData` are multiplied 
 |              s[nTx]              |     field array     |                          eddsa signature field                          |
 |             r8x[nTx]             |     field array     |                          eddsa signature field                          |
 |             r8y[nTx]             |     field array     |                          eddsa signature field                          |
-|         loadAmountF[nTx]         |    uint16 array     |           amount to deposit from L1 to L2 encoded as float16            |
+|         loadAmountF[nTx]         |    uint40 array     |           amount to deposit from L1 to L2 encoded as float40            |
 |         fromEthAddr[nTx]         |    uint160 array    |                         ethereum address sender                         |
 |   fromBjjCompressed[nTx][256]    | boolean array array |                      babyjubjub compressed sender                       |
 |          tokenID1[nTx]           |    uint32 array     |                       tokenID of the sender leaf                        |
@@ -794,10 +795,10 @@ All intended public inputs are hashed together as described [here](developers/pr
   - verify state exist in the exit tree root given the siblings
   - compute `hashGlobalInputs`
 
-> It should be noted that this circuit is heavily attach with the [hermez smart contract](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-smart-contracts) 
+> It should be noted that this circuit is heavily attached to the [hermez smart contract](developers/protocol/hermez-protocol/contracts/contracts?id=hermez-smart-contracts)
 
 - Global variables
-  - `nLevels` 
+  - `nLevels`
 
 #### Schematic
 ![center](withdraw.png)
