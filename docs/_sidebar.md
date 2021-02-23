@@ -3,6 +3,8 @@
     - [Hermez Value Proposition](about/value-proposition.md)
     - [Hermez Network Model](about/model.md)
     - [Security](about/security.md)
+- Users
+    - [Hermez Wallet](users/hermez-wallet.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
@@ -14,10 +16,7 @@
     - [SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Batch Explorer](developers/batch-explorer.md)
-    - [Wallet](developers/hermez-wallet.md)
     - [Glossary](developers/glossary.md)
-- Users
-    - [Wallet](users/hermez-wallet.md)
 - FAQ
     - [Coordinators](faq/coordinators.md)
     - [End-Users](faq/end-users.md)
