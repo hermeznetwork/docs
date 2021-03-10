@@ -2,7 +2,7 @@
 Hermez testnet is now live on the Ethereum Rinkeby network. Checkout our [blogpost](https://blog.hermez.io/hermez-testnet-is-now-public/) announcing the launch of Hermez Testnet for additional information.
 
 ## Tools
-- [Web wallet](https://wallet.testnet.hermez.io/login) to interact with Hermez zk-rollup user accounts
+- [Web wallet](https://wallet.testnet.hermez.io/login) to interact with Hermez ZK-Rollup user accounts
 - Hermez L2 [batch explorer](https://explorer.testnet.hermez.io/)
 - Hermez [SDK](https://github.com/hermeznetwork/hermezjs)
 - Hermez [API](https://api.testnet.hermez.io/)
