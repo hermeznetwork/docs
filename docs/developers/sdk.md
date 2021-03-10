@@ -6,7 +6,7 @@ In this tutorial we will walk through the process of using the SDK to:
 1. Creating a wallet
 2. Making a deposit from Ethereum into the Hermez Network
 3. Making transfers
-4. Checking transactions' status
+4. Checking a transactions' status
 5. Withdrawing funds back to Ethereum network.
 
 ## Install Hermezjs
