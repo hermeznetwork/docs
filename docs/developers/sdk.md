@@ -1,14 +1,18 @@
 # SDK
-HermezJS is an open source SDK to interact with Hermez Rollup network.  It can be downloaded as an npm package `@hermeznetwork/hermezjs`.
+HermezJS is an open-source SDK to interact with Hermez Rollup network.  It can be downloaded as an [npm package](https://www.npmjs.com/package/@hermeznetwork/hermezjs), or via [github](https://github.com/hermeznetwork/hermezjs).
 
-## SDK Howto
+## SDK How-To
 In this tutorial we will walk through the process of using the SDK to:
 1. Creating a wallet
 2. Making a deposit from Ethereum into the Hermez Network
 3. Making transfers
-4. Checking transactions' status
+4. Checking a transactions' status
 5. Withdrawing funds back to Ethereum network.
 
+## Install Hermezjs
+```bash
+npm i @hermeznetwork/hermezjs
+```
 
 ## Import modules
 Load hermezjs library
@@ -694,5 +698,3 @@ The last step to recover the funds will be to send a new `Withdraw` request to t
   )
 
 ```
-
-

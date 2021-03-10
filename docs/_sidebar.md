@@ -5,6 +5,7 @@
     - [Security](about/security.md)
 - Users
     - [Hermez Wallet](users/hermez-wallet.md)
+    - [Hermez Testnet](users/testnet.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
