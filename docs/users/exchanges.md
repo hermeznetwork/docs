@@ -10,10 +10,10 @@ This example shows a possible flow of how an exchange would use Hermez.
 Existing accounts are regular Hermez accounts, consisting of an L2 account linked to an Ethereum account where funds can be withdrawn.
 
 ## User Transfers Tokens to Exchange
-User wants to transfer 10 ETH from his Hermez account to the exchange for the first time. To do so, the user requests to transfer some funds via some sort of front end provided by the exchange.
+A User wants to transfer 10 ETH from his Hermez account to the exchange for the first time. To do so, the user requests to transfer some funds via some sort of front end provided by the exchange.
 After the request is done, the exchange provides the address of an internal Hermez account where the user can deposit his tokens. This account doesn't have an Ethereum counterpart account, 
-so the creation is really cheap in terms of gas cost. Once the user has received the L2 account address, he can perform the transfer normally.
-In the meantime, the exchange is monitoring the status of this account, and once the transfer is completed, the exchange can transfer the funds to its main account. This process is depicted in the diagram below.
+and thus the creation is really cheap. Once the user has received the L2 account address, he can perform the transfer normally.
+In the meantime, the exchange is monitoring the status of this account, and once the user transfer is completed, the exchange can transfer the funds to its main account. This process is depicted in the diagram below.
 
 The creation of this user account by the exchange is only done once. 
 
@@ -59,7 +59,7 @@ The creation of this user account by the exchange is only done once.
   // send tx to hermez network
   await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenERC20);
 ```
-4. Exchange monitors balance of the account `L2ExUser-ETH`, and once transfer has completed, exchange performs transfer from `L2ExUser-ETH` to `L2Ex-ETH` for 10 ETH, and updates user account balances.
+4. Exchange monitors balance of the account `L2ExUser-ETH`, and once transfer has completed, exchange performs transfer from `L2ExUser-ETH` to `L2Ex-ETH` for 10 ETH.
 ```js
   const pollingExchangeAddr = true;
   while (pollingExchangeAddr){
@@ -76,6 +76,20 @@ The creation of this user account by the exchange is only done once.
 
   const infoAccountExchangeUser = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenERC20.id]))
    .accounts[0];
+
+
+  // Transfer funds to main exchange account
+  // generate L2 transaction
+  const l2TxTransfer = {
+    from: infoAccountExchangeUser.accountIndex,
+    to:  infoAccountExchange.accountIndex,
+    amount: compressedUserDepositToExchange,
+    fee: fee
+  };
+  console.log(l2TxTransfer)
+
+  const transferResponse = await hermez.Tx.generateAndSendL2Tx(l2TxTransfer, hermezExchangeUserWallet, tokenERC20).catch(console.log);
+  console.log("transferResponse: ", transferResponse);
 ```
 
 ### Full Example
