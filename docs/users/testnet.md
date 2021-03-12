@@ -18,3 +18,5 @@ Hermez uses 4 main smart contracts:
 - HermezAddress: [0x14A3B6f3328766c7421034e14472F5c14C5Ba090](https://rinkeby.etherscan.io/address/0x14A3B6f3328766c7421034e14472F5c14C5Ba090)
 - HermezWithdrawalDelayeAddress: [0x6eA0aBF3EF52D24427043cAd3ec26Aa4f2c8E8fd](https://rinkeby.etherscan.io/address/0x6eA0aBF3EF52D24427043cAd3ec26Aa4f2c8E8fd)
 - HEZTokenAddress: [0x2521Bc90B4f5Fb9a8D61278197e5FF5cDbc4FBF2](https://rinkeby.etherscan.io/address/0x2521Bc90B4f5Fb9a8D61278197e5FF5cDbc4FBF2)
+
+To get the latest smart contracts configuration, you can consult the [API](https://api.testnet.hermez.io/config)
