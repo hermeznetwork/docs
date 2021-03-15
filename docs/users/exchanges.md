@@ -178,7 +178,7 @@ async function main(){
 
   // USER ACTION
   // - the following code could be done through the web wallet provided by hermez network
-  // - it is assumed that the user has already ether in hermez network
+  // - it is assumed that the user has already Ether in Hermez Network
   
   const infoAccountUser = (await hermez.CoordinatorAPI.getAccounts(hermezUserWallet.hermezEthereumAddress, [tokenERC20.id]))
     .accounts[0];
