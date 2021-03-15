@@ -59,7 +59,7 @@ The creation of this user account by the exchange is only done once.
   // send tx to hermez network
   await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenERC20);
 ```
-4. Exchange monitors balance of the account `L2ExUser-ETH`, and once transfer has completed, exchange performs transfer from `L2ExUser-ETH` to `L2Ex-ETH` for 10 ETH.
+4. Exchange monitors balance of the account `L2ExUser-ETH`, and once transfer is complete, exchange performs transfer from `L2ExUser-ETH` to `L2Ex-ETH` for 10 ETH.
 ```js
   const pollingExchangeAddr = true;
   while (pollingExchangeAddr){
