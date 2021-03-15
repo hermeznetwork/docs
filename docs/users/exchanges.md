@@ -4,7 +4,7 @@ This example shows a possible flow of how an exchange would use Hermez.
 
 ## Pre-requisites
 -  Exchange already has some Hermez accounts for each trading token (`HEZEx-ETH`, `HEZEx-DAI`,...). 
--  User has an Hermez account (`HEZUser-ETH`)
+-  User has a Hermez account (`HEZUser-ETH`)
 ![](exchanges/Exchange-init.jpg)
 
 Existing accounts are regular Hermez accounts, consisting of an L2 account linked to an Ethereum account where funds can be withdrawn.
