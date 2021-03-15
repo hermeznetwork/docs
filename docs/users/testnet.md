@@ -8,7 +8,7 @@ Hermez testnet is now live on the Ethereum Rinkeby network. Checkout our [blogpo
 - Hermez [API](https://api.testnet.hermez.io/)
 
 ## Useful Links
-- To interact with the Testent, you'll need a [Metamask](https://metamask.io/) wallet and some Rinkeby tokens.
+- To interact with the Testnet, you'll need a [Metamask](https://metamask.io/) wallet and some Rinkeby tokens.
 - Get Rinkeby ETH using this [faucet](ttps://faucet.rinkeby.io/).
 - If you want to swap some of your Rinkeby ETH for Rinkeby HEZ, you can use Rinkeby [Uniswap pair](https://app.uniswap.org/#/swap?outputCurrency=0x2521Bc90B4f5Fb9a8D61278197e5FF5cDbc4FBF2).
 
