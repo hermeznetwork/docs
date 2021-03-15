@@ -12,7 +12,7 @@ Existing accounts are regular Hermez accounts, consisting of an L2 account linke
 ## User Transfers Tokens to Exchange
 A User wants to transfer 10 ETH from his Hermez account to the exchange for the first time. To do so, the user requests to transfer some funds via some sort of front end provided by the exchange.
 After the request is done, the exchange provides the address of an internal Hermez account where the user can deposit his tokens. This account doesn't have an Ethereum counterpart account, 
-and thus the creation is really cheap. Once the user has received the L2 account address, he can perform the transfer normally.
+and thus the creation is very inexpensive. Once the user has received the L2 account address, he can perform the transfer normally.
 In the meantime, the exchange is monitoring the status of this account, and once the user transfer is completed, the exchange can transfer the funds to its main account. This process is depicted in the diagram below.
 
 The creation of this user account by the exchange is only done once. 
