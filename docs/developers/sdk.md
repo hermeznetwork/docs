@@ -43,9 +43,9 @@ Hermez Testnet API URL is deployed at https://api.testnet.hermez.io.
 
 >**NOTE:** In order to interact with Hermez Testnet, you will need to supply your own Rinkeby Ethereum node. You can check these links to help you set up a Rinkeby node (https://blog.infura.io/getting-started-with-infura-28e41844cc89, https://blog.infura.io/getting-started-with-infuras-ethereum-api).
 
-Currently, Testnet Hermez smart contract is deployed at address `0x14a3b6f3328766c7421034e14472f5c14c5ba090` and Withdrawal Delayer contract is deployed at address `0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd`. These addresses could change in the futlre. so you should check these addresses with a query of the [API](https://api.testnet.hermez.io/config) using the browser.
+Currently, Testnet Hermez smart contract is deployed at address `0x14a3b6f3328766c7421034e14472f5c14c5ba090` and Withdrawal Delayer contract is deployed at address `0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd`. These addresses could change in the future, so you should check these addresses with a query of the [API](https://api.testnet.hermez.io/config) using the browser.
 
-For the reminder of the examples, we will configure the basic Hermezjs parameters
+For the remainder of the examples, we will configure the basic Hermezjs parameters
 
 ```js
 const EXAMPLES_WEB3_URL = "https://rinkeby.infura.io/v3/80496a41d0a134ccbc6e856ffd034696"
@@ -67,7 +67,7 @@ hermez.Environment.setEnvironment({
 ## Check token exists in Hermez Network
 Before being able to operate on the Hermez Network, we must ensure that the token we want to operate with is listed. For that we make a call to the Hermez Coordinator API that will list all available tokens. All tokens in Hermez Network must be ERC20.
 
-We can see there are 2 tokens registered. `ETH` will always be configured at index 0. The second token is `HEZ`. For the rest of the examples we will work with `ETH`.
+We can see there are 2 tokens registered. `ETH` will always be configured at index 0. The second token is `HEZ`. For the rest of the examples we will work with `ETH`. In the future, more tokens will be included in Hermez.
 
 ```js
   const token = await hermez.CoordinatorAPI.getTokens();
@@ -107,7 +107,7 @@ We can see there are 2 tokens registered. `ETH` will always be configured at ind
 ## Create a Wallet 
 We can create a new Hermez wallet by providing the Ethereum private key of an Ethereum account. This wallet will store the Ethereum and Baby JubJub keys for the Hermez account. The Ethereum address is used to authorize L1 transactions, and the Baby JubJub key is used to authorize L2 transactions. We will create two wallets.
 
-> **NOTE** You will need to supply two Rinkeby private keys to initialize both accounts. The ones provided here are invalid and are shwn as an example.
+> **NOTE** You will need to supply two Rinkeby private keys to initialize both accounts. The ones provided here are invalid and are shown as an example.
 
 ```js
   const EXAMPLES_PRIVATE_KEY1 = 0x705d123e707e25fa37ca84461ac6eb83eb4921b65680cfdc594b60bea1bb4e52;
@@ -284,7 +284,7 @@ The `Exit` is requested as follows:
 
 ```js
   // set amount to exit
-  const amountExit = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt('1', 18));
+  const amountExit = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt("1.0", 18));
 
   // set fee in transaction
   const state = await hermez.CoordinatorAPI.getState();
@@ -420,7 +420,7 @@ This is a security measure. We don't expect users to need to make a Force Exit.
 
 ```js
   // set amount to force-exit
-  const amountForceExit = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt('1', 18));
+  const amountForceExit = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt("1.0", 18));
 
   // perform force-exit
   await hermez.Tx.forceExit(
@@ -431,7 +431,7 @@ This is a security measure. We don't expect users to need to make a Force Exit.
   );
 ```
 
-The last step to recover the funds will be to send a new `Withdraw` request to the Coordinator as we did after the regular `Exit` request.
+The last step to recover the funds will be to send a new `Withdraw` request to the smart contract as we did after the regular `Exit` request.
 
 ```js 
   ```js
@@ -488,7 +488,7 @@ Finally we make the final transfer transaction.
 
 ```js
   // set amount to transfer
-  const amountTransfer = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt('1', 18));
+  const amountTransfer = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt("1.0", 18));
   // generate L2 transaction
   const l2TxTransfer = {
     from: infoAccountSender.accountIndex,
@@ -650,7 +650,7 @@ At this point, the balances in both accounts will be updated with the result of 
 ```
 ## Create Account Authorization
 Imagine that Bob wants to send a transfer of Ether to Mary using Hermez, but Mary only has an Ethereum account but no Hermez account. To complete this transfer, Mary could open a Hermez account and proceed as the previous transfer example.
-Alternatively, Mary could authorize the Coordinator the creation of a Hermez account so that she can receive Bob's transfer. 
+Alternatively, Mary could authorize the Coordinator to create a Hermez account on her behalf so that she can receive Bob's transfer. 
 
 First we create a wallet for Mary:
 ```js
@@ -660,7 +660,7 @@ First we create a wallet for Mary:
   const hermezEthereumAddress3 = wallet3.hermezEthereumAddress
 ```
 
-The authorization for the creation of a Hermez account is done using the private key storder in the newly created Hermez wallet. 
+The authorization for the creation of a Hermez account is done using the private key stored in the newly created Hermez wallet. 
 > Note that the account is not created at this moment. The account will be created when Bob performs the transfer. Also, it is Bob  that pays for the fees associated in the account creation.
 
 ```js
@@ -694,7 +694,7 @@ Once we verify the receiving Ethereum account has authorized the creation of a H
 
 ```js
   // set amount to transfer
-  const amountTransferAuth = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt('1', 18));
+  const amountTransferAuth = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt("1.0", 18));
   // generate L2 transaction
   const l2AuthTxTransfer = {
     from: infoAccountSender.accountIndex,
@@ -760,7 +760,7 @@ The advantage of these accounts is that are much cheaper to create than a `norma
   const hermezWallet4 = wallet4.hermezWallet
 
   // set amount to transfer
-  const amountTransferInternal = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt('1.0', 18));
+  const amountTransferInternal = hermez.HermezCompressedAmount.compressAmount(hermez.Utils.getTokenAmountBigInt("1.0", 18));
   // generate L2 transaction
   const transferToInternal = {
     from: infoAccountSender.accountIndex,
