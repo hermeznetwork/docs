@@ -6,6 +6,7 @@
 - Users
     - [Hermez Wallet](users/hermez-wallet.md)
     - [Hermez Testnet](users/testnet.md)
+    - [Exchanges](users/exchanges.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
