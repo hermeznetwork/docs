@@ -1,15 +1,15 @@
 # Exchanges
 
-This example shows a possible flow of how an exchange would use Hermez.
+This example shows a possible flow of how an exchange would use Hermez. To get a complete tutorial on other functionalities, check out the SDK [documentation](../developers/sdk.md)
 
 ## Pre-requisites
 -  Exchange already has some Hermez accounts for each trading token (`HEZEx-ETH`, `HEZEx-DAI`,...). 
 -  User has a Hermez account (`HEZUser-ETH`)
 ![](exchanges/Exchange-init.jpg)
 
-Both exchange and user p pre-existing accounts are regular Hermez accounts, consisting of an L2 account linked to an Ethereum account where funds can be withdrawn.
-The following is an example of code used to initialize hermezjs` with `Hermez testnet` deployment and create both user and exchange accounts. You need to supply your
-own WEB3_URL (Ethereum Node URL) and two Rinkeby Ethereum Provate Keys.
+Both exchange and user pre-existing accounts are regular Hermez accounts, consisting of an L2 account linked to an Ethereum account where funds can be withdrawn.
+The following is an example of code used to initialize hermezjs with `Hermez testnet` deployment and create both user and exchange accounts. You need to supply your
+own WEB3_URL (Ethereum Node URL) and two Rinkeby Ethereum Private Keys.
 
 Note that the latest smart contract addresses can always be found [here](https://api.testnet.hermez.io/config)
 
@@ -21,9 +21,9 @@ const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = "0x14a3b6f3328766c7421034e14472f5c14c5ba0
 const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = "0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd";
 
 // Provide your own values
-const EXAMPLES_WEB3_URL = ""
-const EXAMPLES_PRIVATE_KEY1 = ""
-const EXAMPLES_PRIVATE_KEY2 = ""
+const EXAMPLES_WEB3_URL = "http://----";
+const EXAMPLES_PRIVATE_KEY1 = "0x----";
+const EXAMPLES_PRIVATE_KEY2 = "0x----";
 
 async function sleep (timeout) {
   await new Promise(resolve => setTimeout(resolve, timeout));
@@ -54,9 +54,9 @@ async function main(){
   const userPrivKey = EXAMPLES_PRIVATE_KEY2;
 
   // load token to deposit information
-  const tokenIndex = 0;
+  const tokenEthIndex = 0;
   const token = await hermez.CoordinatorAPI.getTokens();
-  const tokenERC20 = token.tokens[tokenIndex];
+  const tokenETH = token.tokens[tokenEthIndex];
 
   // load first account
   const wallet = await hermez.HermezWallet.createWalletFromEtherAccount(EXAMPLES_WEB3_URL, { type: "WALLET", privateKey: exchangePrivKey });
@@ -77,7 +77,7 @@ async function main(){
   await hermez.Tx.deposit(
     compressedDepositAmount,
     hermezExchangeEthereumAddress,
-    tokenERC20,
+    tokenETH,
     hermezExchangeWallet.publicKeyCompressedHex,
     { type: "WALLET", privateKey: exchangePrivKey }
   );
@@ -86,7 +86,7 @@ async function main(){
   await hermez.Tx.deposit(
     compressedDepositAmount,
     hermezUserEthereumAddress,
-    tokenERC20,
+    tokenETH,
     hermezUserWallet.publicKeyCompressedHex,
     { type: "WALLET", privateKey: userPrivKey }
   );
@@ -94,7 +94,7 @@ async function main(){
   // WAIT until accounts are created
   const pollingAccountCreate = true;
   while (pollingAccountCreate){
-    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeEthereumAddress, [tokenERC20.id]);
+    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeEthereumAddress, [tokenETH.id]);
     if (accountExchangeInfo.accounts.length === 0){
       console.log("Waiting for deposits to be forged...");
       await sleep(10000);
@@ -104,21 +104,22 @@ async function main(){
     }
   }
 
-  const infoAccountExchange = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeWallet.hermezEthereumAddress, [tokenERC20.id]))
+  const infoAccountExchange = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeWallet.hermezEthereumAddress, [tokenETH.id]))
     .accounts[0];
+  console.log(infoAccountExchange);
 
 }
 
 main();
 ```
 
-## User Transfers Tokens to Exchange
+## Deposit to Exchange
 A User wants to transfer 10 ETH from his Hermez account to the exchange for the first time. To do so, the user requests to transfer some funds via some sort of front end provided by the exchange.
 After the request is done, the exchange provides the address of an internal Hermez account where the user can deposit his tokens. This account doesn't have an Ethereum counterpart account, 
 and thus the creation is very inexpensive. Once the user has received the L2 account address, he can perform the transfer normally.
 In the meantime, the exchange is monitoring the status of this account, and once the user transfer is completed, the exchange can transfer the funds to its main account. This process is depicted in the diagram below.
 
-The creation of this user account by the exchange is only done once. 
+The creation of this user account by the exchange needs to only done once per user and token.
 
 ![](exchanges/Exchange-transfer.jpg)
 
@@ -138,11 +139,11 @@ The creation of this user account by the exchange is only done once.
 ```
 3. User does a L2 transfer from his account to the destination account using the web wallet
 ```js
-  const infoAccountUser = (await hermez.CoordinatorAPI.getAccounts(hermezUserWallet.hermezEthereumAddress, [tokenERC20.id]))
+  const infoAccountUser = (await hermez.CoordinatorAPI.getAccounts(hermezUserWallet.hermezEthereumAddress, [tokenETH.id]))
     .accounts[0];
 
   const state = await hermez.CoordinatorAPI.getState();
-  const usdTokenExchangeRate = tokenERC20.USD;
+  const usdTokenExchangeRate = tokenETH.USD;
   const fee = usdTokenExchangeRate ? state.recommendedFee.createAccountInternal / usdTokenExchangeRate : 0;
 
   // user creates transaction to deposit 10 ether into exchange account
@@ -160,13 +161,13 @@ The creation of this user account by the exchange is only done once.
   };
   console.log("transferToExchange: ", transferToExchange, fee);
   // send tx to hermez network
-  await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenERC20);
+  await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenETH);
 ```
 4. Exchange monitors balance of the account `L2ExUser-ETH`, and once transfer is complete, exchange performs transfer from `L2ExUser-ETH` to `L2Ex-ETH` for 10 ETH.
 ```js
   const pollingExchangeAddr = true;
   while (pollingExchangeAddr){
-    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenERC20.id]);
+    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenETH.id]);
     if (accountExchangeInfo.accounts.length === 0){
       console.log("Waiting for user deposit to be forged...");
       await sleep(10000);
@@ -177,9 +178,8 @@ The creation of this user account by the exchange is only done once.
     }
   }
 
-  const infoAccountExchangeUser = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenERC20.id]))
+  const infoAccountExchangeUser = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenETH.id]))
    .accounts[0];
-
 
   // Transfer funds to main exchange account
   // generate L2 transaction
@@ -190,7 +190,7 @@ The creation of this user account by the exchange is only done once.
     fee: fee
   };
 
-  const transferResponse = await hermez.Tx.generateAndSendL2Tx(l2TxTransfer, hermezExchangeUserWallet, tokenERC20).catch(console.log);
+  const transferResponse = await hermez.Tx.generateAndSendL2Tx(l2TxTransfer, hermezExchangeUserWallet, tokenETH).catch(console.log);
   console.log("transferResponse: ", transferResponse);
 ```
 
@@ -237,9 +237,9 @@ async function main(){
   const userPrivKey = EXAMPLES_PRIVATE_KEY2;
 
   // load token to deposit information
-  const tokenIndex = 0;
+  const tokenEthIndex = 0;
   const token = await hermez.CoordinatorAPI.getTokens();
-  const tokenERC20 = token.tokens[tokenIndex];
+  const tokenETH = token.tokens[tokenEthIndex];
 
   // load first account
   const wallet = await hermez.HermezWallet.createWalletFromEtherAccount(EXAMPLES_WEB3_URL, { type: "WALLET", privateKey: exchangePrivKey });
@@ -259,7 +259,7 @@ async function main(){
   await hermez.Tx.deposit(
     compressedDepositAmount,
     hermezExchangeEthereumAddress,
-    tokenERC20,
+    tokenETH,
     hermezExchangeWallet.publicKeyCompressedHex,
     { type: "WALLET", privateKey: exchangePrivKey }
   );
@@ -268,7 +268,7 @@ async function main(){
   await hermez.Tx.deposit(
     compressedDepositAmount,
     hermezUserEthereumAddress,
-    tokenERC20,
+    tokenETH,
     hermezUserWallet.publicKeyCompressedHex,
     { type: "WALLET", privateKey: userPrivKey }
   );
@@ -277,7 +277,7 @@ async function main(){
   // WAIT until accounts are created
   const pollingAccountCreate = true;
   while (pollingAccountCreate){
-    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeEthereumAddress, [tokenERC20.id]);
+    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeEthereumAddress, [tokenETH.id]);
     if (accountExchangeInfo.accounts.length === 0){
       console.log("Waiting for deposits to be forged...");
       await sleep(10000);
@@ -287,7 +287,7 @@ async function main(){
     }
   }
 
-  const infoAccountExchange = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeWallet.hermezEthereumAddress, [tokenERC20.id]))
+  const infoAccountExchange = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeWallet.hermezEthereumAddress, [tokenETH.id]))
     .accounts[0];
 
   // EXCHANGE ACTION
@@ -305,11 +305,11 @@ async function main(){
   // - the following code could be done through the web wallet provided by hermez network
   // - it is assumed that the user has already Ether in Hermez Network
   
-  const infoAccountUser = (await hermez.CoordinatorAPI.getAccounts(hermezUserWallet.hermezEthereumAddress, [tokenERC20.id]))
+  const infoAccountUser = (await hermez.CoordinatorAPI.getAccounts(hermezUserWallet.hermezEthereumAddress, [tokenETH.id]))
     .accounts[0];
 
   const state = await hermez.CoordinatorAPI.getState();
-  const usdTokenExchangeRate = tokenERC20.USD;
+  const usdTokenExchangeRate = tokenETH.USD;
   const fee = usdTokenExchangeRate ? state.recommendedFee.createAccountInternal / usdTokenExchangeRate : 0;
 
   // user creates transaction to deposit some ether into exchange account
@@ -325,13 +325,13 @@ async function main(){
   };
   console.log("transferToExchange: ", transferToExchange, fee);
   // send tx to hermez network
-  await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenERC20);
+  await hermez.Tx.generateAndSendL2Tx(transferToExchange, hermezUserWallet, tokenETH);
 
   // EXCHANGE ACTION
   // polling exchange account to check deposit from user is received
   const pollingExchangeAddr = true;
   while (pollingExchangeAddr){
-    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenERC20.id]);
+    const accountExchangeInfo = await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenETH.id]);
     if (accountExchangeInfo.accounts.length === 0){
       console.log("Waiting for user deposit to be forged...");
       await sleep(10000);
@@ -341,7 +341,7 @@ async function main(){
       break;
     }
   }
-  const infoAccountExchangeUser = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenERC20.id]))
+  const infoAccountExchangeUser = (await hermez.CoordinatorAPI.getAccounts(hermezExchangeUserWallet.publicKeyBase64, [tokenETH.id]))
    .accounts[0];
 
   // Transfer funds to main exchange account
@@ -353,7 +353,7 @@ async function main(){
     fee: fee
   };
 
-  const transferResponse = await hermez.Tx.generateAndSendL2Tx(l2TxTransfer, hermezExchangeUserWallet, tokenERC20).catch(console.log);
+  const transferResponse = await hermez.Tx.generateAndSendL2Tx(l2TxTransfer, hermezExchangeUserWallet, tokenETH).catch(console.log);
   console.log("transferResponse: ", transferResponse);
 }
 
