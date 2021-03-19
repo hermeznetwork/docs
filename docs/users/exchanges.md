@@ -1,6 +1,7 @@
 # Exchanges
 
-This example shows a possible flow of how an exchange would use Hermez. To get a complete tutorial on other functionalities, check out the SDK [documentation](../developers/sdk.md)
+This example shows a possible flow of how an exchange would use Hermez. This example requires npm version `1.0.0-beta.15` or later of `@hermeznetwork/hermezjs` SDK.
+To get a complete tutorial on other functionalities, check out the SDK [documentation](../developers/sdk.md)
 
 ## Pre-requisites
 -  Exchange already has some Hermez accounts for each trading token (`HEZEx-ETH`, `HEZEx-DAI`,...). 
@@ -17,8 +18,8 @@ Note that the latest smart contract addresses can always be found [here](https:/
 const hermez = require("@hermeznetwork/hermezjs");
 
 const EXAMPLES_HERMEZ_API_URL = "https://api.testnet.hermez.io/";
-const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = "0x14a3b6f3328766c7421034e14472f5c14c5ba090";
-const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = "0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd";
+const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = "0x679b11E0229959C1D3D27C9d20529E4C5DF7997c";
+const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = "0xeFD96CFBaF1B0Dd24d3882B0D6b8D95F85634724";
 
 // Provide your own values
 const EXAMPLES_WEB3_URL = "http://----";
