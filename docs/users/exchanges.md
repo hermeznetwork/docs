@@ -12,12 +12,12 @@ Both exchange and user pre-existing accounts are regular Hermez accounts, consis
 The following is an example of code used to initialize hermezjs with `Hermez testnet` deployment and create both user and exchange accounts. You need to supply your
 own WEB3_URL (Ethereum Node URL) and two Rinkeby Ethereum Private Keys.
 
-Note that the latest smart contract addresses can always be found [here](https://api.testnet.hermez.io/config)
+Note that the latest smart contract addresses can always be found [here](https://api.testnet.hermez.io/v1/config)
 
 ```js
 const hermez = require("@hermeznetwork/hermezjs");
 
-const EXAMPLES_HERMEZ_API_URL = "https://api.testnet.hermez.io/";
+const EXAMPLES_HERMEZ_API_URL = "https://api.testnet.hermez.io/v1";
 const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = "0x679b11E0229959C1D3D27C9d20529E4C5DF7997c";
 const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = "0xeFD96CFBaF1B0Dd24d3882B0D6b8D95F85634724";
 
@@ -199,7 +199,7 @@ The creation of this user account by the exchange needs to only done once per us
 ```js
 const hermez = require("@hermeznetwork/hermezjs");
 
-const EXAMPLES_HERMEZ_API_URL = "https://api.testnet.hermez.io/";
+const EXAMPLES_HERMEZ_API_URL = "https://api.testnet.hermez.io/v1";
 const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = "0x14a3b6f3328766c7421034e14472f5c14c5ba090";
 const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = "0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd";
 

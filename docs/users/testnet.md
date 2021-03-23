@@ -5,7 +5,7 @@ Hermez testnet is now live on the Ethereum Rinkeby network. Checkout our [blogpo
 - [Web wallet](https://wallet.testnet.hermez.io/login) to interact with Hermez ZK-Rollup user accounts
 - Hermez L2 [batch explorer](https://explorer.testnet.hermez.io/)
 - Hermez [SDK](https://github.com/hermeznetwork/hermezjs)
-- Hermez [API](https://api.testnet.hermez.io/)
+- Hermez [API](https://api.testnet.hermez.io/v1)
 
 ## Useful Links
 - To interact with the Testnet, you'll need a [Metamask](https://metamask.io/) wallet and some Rinkeby tokens.
@@ -19,4 +19,4 @@ Hermez uses 4 main smart contracts:
 - HermezWithdrawalDelayeAddress: [0xeFD96CFBaF1B0Dd24d3882B0D6b8D95F85634724](https://rinkeby.etherscan.io/address/0xeFD96CFBaF1B0Dd24d3882B0D6b8D95F85634724)
 - HEZTokenAddress: [0x2521Bc90B4f5Fb9a8D61278197e5FF5cDbc4FBF2](https://rinkeby.etherscan.io/address/0x2521Bc90B4f5Fb9a8D61278197e5FF5cDbc4FBF2)
 
-To get the latest smart contracts configuration, you can consult the [API](https://api.testnet.hermez.io/config)
+To get the latest smart contracts configuration, you can consult the [API](https://api.testnet.hermez.io/v1/config)

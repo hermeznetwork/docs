@@ -9,4 +9,5 @@ Example of these apps include:
 
 
 The documentation of the API can be found [here](https://apidoc.hermez.network/)
+Hermez Testnet API can be found [here](https://api.testnet.hermez.io/v1)
 
