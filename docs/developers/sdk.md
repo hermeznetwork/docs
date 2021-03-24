@@ -39,17 +39,17 @@ Initialize the storage where user transactions are stored. This needs to be init
 ### Configure Hermez Environment
 In these examples, we are going to connect to `Hermez Testnet` which is deployed in Rinkeby Ethereum Network. To configure `Hermezjs` to work with the Testnet, we need to configure a Rinkeby Ethereum node, the Hermez API URL, and the addresses of the Hermez and Withdrawal Delayer smart contracts.
 
-Hermez Testnet API URL is deployed at https://api.testnet.hermez.io. 
+Hermez Testnet API URL is deployed at https://api.testnet.hermez.io/v1. 
 
 >**NOTE:** In order to interact with Hermez Testnet, you will need to supply your own Rinkeby Ethereum node. You can check these links to help you set up a Rinkeby node (https://blog.infura.io/getting-started-with-infura-28e41844cc89, https://blog.infura.io/getting-started-with-infuras-ethereum-api).
 
-Currently, Testnet Hermez smart contract is deployed at address `0x14a3b6f3328766c7421034e14472f5c14c5ba090` and Withdrawal Delayer contract is deployed at address `0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd`. These addresses could change in the future, so please check these addresses with a query of the [API](https://api.testnet.hermez.io/config) using the browser.
+Currently, Testnet Hermez smart contract is deployed at address `0x14a3b6f3328766c7421034e14472f5c14c5ba090` and Withdrawal Delayer contract is deployed at address `0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd`. These addresses could change in the future, so please check these addresses with a query of the [API](https://api.testnet.hermez.io/v1/config) using the browser.
 
 For the remainder of the examples, we will configure the basic Hermezjs parameters
 
 ```js
 const EXAMPLES_WEB3_URL = 'https://rinkeby.infura.io/v3/80496a41d0a134ccbc6e856ffd034696'
-const EXAMPLES_HERMEZ_API_URL = 'https://api.testnet.hermez.io'
+const EXAMPLES_HERMEZ_API_URL = 'https://api.testnet.hermez.io/v1'
 const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = '0x14a3b6f3328766c7421034e14472f5c14c5ba090'
 const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = '0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd'
 

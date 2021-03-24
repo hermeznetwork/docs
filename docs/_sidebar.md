@@ -5,6 +5,7 @@
     - [Security](about/security.md)
 - Users
     - [Hermez Wallet](users/hermez-wallet.md)
+    - [Hermez Mainnet](users/mainnet.md)
     - [Hermez Testnet](users/testnet.md)
     - [Exchanges](users/exchanges.md)
 - Developers
