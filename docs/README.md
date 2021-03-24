@@ -1,11 +1,11 @@
 # Hermez network docs
 
-> Hermez is currently under development. Some of the details in the documentation can be modified before mainnet network launch.
-
 Welcome to the [Hermez](https://hermez.io) documentation.
 
 Hermez is a ZK-Rollup, powered by iden3, focused on scaling payments and token transfers on top of Ethereum.
-Check out [Hermez Testnet](users/testnet.md) now!!
+Check [Hermez](users/mainnet.md) out now!!
+
+Hermez is also available in Rinkeby testnet [here](users/testnet.md) now!!
 
 ![](imgs/Common-good.png)
 
