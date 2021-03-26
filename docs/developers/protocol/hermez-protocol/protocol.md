@@ -320,31 +320,6 @@ L1TxsFullData = L1TxFullData[0] || L1TxFullData[1] || ... || L1TxFullData[len(L1
 
 All L1 txs that perform a transfer or exit must be approved by the Ethereum address of the account.  This is indicated by setting the `fromEthAddr` as the `message.sender`, which is the address that signs the L1 tx.
 
-CreateAccount actions must be authorized by the `fromEthAddr`.  To allow other parties to create accounts on behalf of the user, a special smart contract function (`CreateAccountDepositFromRelayer`) is added that requires the same signature authorization used in L1CoordinatorTxs to create regular accounts.
-
-Internal rollup accounts do not have an Ethereum address.  For this case, the `CreateAccountDepositFromRelayer` function can be called with a `AccountCreationAuthMsg = 0xffff..` and the account will be created with an `EthAddr = 0xffff..`.
-
-#### CreateAccountDepositFromRelayer
-- Inputs:
-  - `AccountCreationAuthSig`: user parameter
-  - `fromBjj-compressed`: user parameter
-  - `fromIdx`: 0
-  - `loadAmountFloat40`: user parameter
-  - `amountFloat40`: 0
-  - `tokenId`: user parameter
-  - `toIdx`: 0
-- Actions:
-  - new account inserted into the state tree with idx = `auxFromIdx`
-  - deposit `loadAmountFloat40` into the sender `auxFromIdx`
-    - new account data:
-        - `ax`: `fromBjj-compressed -> ax`
-        - `ay`: `fromBjj-compressed -> ay`
-        - `ethAddr`: `AccountCreationAuthSig.signer` OR `0xffff if TransferToBjj == 0xffff..`
-        - `tokenID`: `tokenId`
-        - `balance`: `loadAmount`
-        - `nonce`: 0
-- Requirements:
-
 #### CreateAccountDeposit
 - Inputs:
   - `fromEthAddr`: message.sender
