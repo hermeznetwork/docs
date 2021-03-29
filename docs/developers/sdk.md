@@ -33,7 +33,7 @@ const hermez = require('@hermeznetwork/hermezjs')
 Initialize the storage where user transactions are stored. This needs to be initialized at the start of your application.
 
 ```js
-  hermez.txPool.initializeTransactionPool()
+  hermez.TxPool.initializeTransactionPool()
 ```
 
 ### Configure Hermez Environment
@@ -49,7 +49,7 @@ For the remainder of the examples, we will configure the basic Hermezjs paramete
 
 ```js
 const EXAMPLES_WEB3_URL = 'https://rinkeby.infura.io/v3/80496a41d0a134ccbc6e856ffd034696'
-const EXAMPLES_HERMEZ_API_URL = 'https://api.testnet.hermez.io/v1'
+const EXAMPLES_HERMEZ_API_URL = 'https://api.testnet.hermez.io'
 const EXAMPLES_HERMEZ_ROLLUP_ADDRESS = '0x14a3b6f3328766c7421034e14472f5c14c5ba090'
 const EXAMPLES_HERMEZ_WDELAYER_ADDRESS = '0x6ea0abf3ef52d24427043cad3ec26aa4f2c8e8fd'
 
