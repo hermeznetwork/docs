@@ -1,5 +1,5 @@
 # Examples
-Some Golang and Javascript integration examples are provided as a reference. The can be found at:
+Some Golang and Javascript integration examples are provided as a reference. They can be found at:
 - [Hermez Golang examples](https://github.com/hermeznetwork/hermez-integration)
 - [Hermez Javascript examples](https://github.com/hermeznetwork/hermezjs/tree/main/examples)
 

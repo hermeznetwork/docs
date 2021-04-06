@@ -1,6 +1,6 @@
 # Developer Guide
 
-This document is an overview of the Hermez Protocol. Its objective is to provide an introduction to developers on the Hermez Protocol so that the use of tools to interact with Hermez Network, such as [`HermezJS`](../developers/sdk?id=sdk) (javascript SDK) and the [`REST API`](../developers/api?id=api), becomes simpler.  This document assumes you are familiar with Ethereum ecosystem and L2 Rollups (in particular zk-rollups). 
+This document is an overview of the Hermez Protocol. Its objective is to provide an introduction to developers on the Hermez Protocol so that the use of the tools which interact with Hermez Network, such as [`HermezJS`](../developers/sdk?id=sdk) (javascript SDK) and the [`REST API`](../developers/api?id=api), become simpler.  This document assumes you are familiar with the Ethereum ecosystem and L2 Rollups (in particular ZK-Rollups). 
 
 For a more in depth analysis, read the [`protocol`](../developers/protocol/README?id=protocol) section.
 
