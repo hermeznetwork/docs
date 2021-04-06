@@ -1,5 +1,3 @@
-> Hermez is currently under development. Some of the details in the documentation can be modified before network launch.
-
 # Developer Guide
 
 This document is an overview of the Hermez Protocol. Its objective is to provide an introduction to developers on the Hermez Protocol so that the use of tools to interact with Hermez Network, such as [`HermezJS`](../developers/sdk?id=sdk) (javascript SDK) and the [`REST API`](../developers/api?id=api), becomes simpler.  This document assumes you are familiar with Ethereum ecosystem and L2 Rollups (in particular zk-rollups). 
