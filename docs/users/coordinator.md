@@ -48,14 +48,14 @@ services:
     "--ws.origins", "*", "--ws.addr", "0.0.0.0", "--dev", "--datadir", "/geth_data$DEV_PERIOD"]
 ```
 
-To login to AWS public ECR to be able to download the geth docker image:
+Login to AWS public ECR to be able to download the geth docker image:
 
 ```shell
 export AWS_REGION=eu-west-3
 aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 811278125247.dkr.ecr.eu-west-3.amazonaws.com
 ```
 
-To start the database and the geth node:
+Start database and geth node:
 ```shell
 DEV_PERIOD=3 docker-compose -f docker-compose.sandbox.yaml up -d
 ```
@@ -139,7 +139,6 @@ Before starting the Coordinator node, you may want to wipe the pre-existing SQL 
 ```
 
 Once the Hermez node is launched, the API can be queried at `localhost:8086/v1`.
-
 
 
 
@@ -254,7 +253,7 @@ curl -X POST -d @inputs-256.json http://localhost:9080/input
 curl -X POST -d @input-344-32-256-64.json http://localhost:9080/input
 ```
 
-You check the status of the prover by querting the /status endpoint.
+You check the status of the prover by querying the /status endpoint.
 ```shell
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:9080/status
 ```
