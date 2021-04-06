@@ -228,7 +228,7 @@ npm install
 cd tools
 ```
 
-In this example we are working with `circuit-344-32-236-64_hez1.zkey`, which correspods to a circuit with 344 transactions, 32 levels, 256 maxL1Tx and 64 maxFeeTx.
+In this example we are working with `circuit-344-32-236-64_hez1.zkey`, which corresponds to a circuit with 344 transactions, 32 levels, 256 maxL1Tx and 64 maxFeeTx.
 
 - Generate an input file
 
@@ -273,5 +273,5 @@ MaxTx = 344
 NLevels = 32
 ```
 
-At this point you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080, 
-and the two end points are /status and /input
+At this point, you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080, 
+and the two endpoints are /status and /input
