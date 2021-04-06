@@ -128,11 +128,8 @@ The creation of this user account by the exchange needs to only done once per us
 1. User requests to do a transfer to the exchange from his Hermez account using some front-end.
 2. Exchange creates an L2 (internal) account on behalf of the user (`L2ExUser-ETH`) and provides the address via front-end. This account is controlled by the exchange. 
 ```js
-  // create new bjj private key to receive user transactions
-  const pvtBjjKey = Buffer.allocUnsafe(32).fill("1");
-
   // create rollup internal account from bjj private key
-  const resExchangeWallet = await hermez.HermezWallet.createWalletFromBjjPvtKey(pvtBjjKey);
+  const resExchangeWallet = await hermez.HermezWallet.createWalletFromBjjPvtKey();
   const hermezExchangeUserWallet = resExchangeWallet.hermezWallet;
 
   // share public bjj key with the user
@@ -292,11 +289,8 @@ async function main(){
     .accounts[0];
 
   // EXCHANGE ACTION
-  // create new bjj private key to receive user transactions
-  const pvtBjjKey = Buffer.allocUnsafe(32).fill("1");
-
   // create rollup internal account from bjj private key
-  const resExchangeWallet = await hermez.HermezWallet.createWalletFromBjjPvtKey(pvtBjjKey);
+  const resExchangeWallet = await hermez.HermezWallet.createWalletFromBjjPvtKey();
   const hermezExchangeUserWallet = resExchangeWallet.hermezWallet;
 
   // share public bjj key with the user
