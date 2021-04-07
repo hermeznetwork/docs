@@ -5,7 +5,7 @@ This tutorial focuses on how to launch a Hermez Coordinator node on localhost us
 
 ## Coordinator Node
 ### Dependencies
-- golang 1.14+
+- golang 1.16+
 - [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 - packr utility to bundle the database migrations. Make sure your `$PATH` contains `$GOPATH/bin`, otherwise the packr utility will not be found.
 ```shell
