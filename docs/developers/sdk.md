@@ -1,3 +1,10 @@
+# Examples
+Some Golang and Javascript integration examples are provided as a reference. They can be found at:
+- [Hermez Golang examples](https://github.com/hermeznetwork/hermez-integration)
+- [Hermez Javascript examples](https://github.com/hermeznetwork/hermezjs/tree/main/examples)
+
+Additionally, a full SDK is provided in Javascript. More information on the SDK [here](#sdk) 
+
 # SDK
 HermezJS is an open-source SDK to interact with Hermez Rollup network.  It can be downloaded as an [npm package](https://www.npmjs.com/package/@hermeznetwork/hermezjs), or via [github](https://github.com/hermeznetwork/hermezjs).
 

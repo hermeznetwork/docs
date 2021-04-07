@@ -16,7 +16,7 @@
             - [Circuits](developers/protocol/hermez-protocol/circuits/circuits.md)
         - [Forging consensus protocol](developers/protocol/consensus/consensus.md)
         - [Withdrawal delayer protocol](developers/protocol/withdrawal-delayer/withdrawal-delayer.md)   
-    - [SDK](developers/sdk.md)
+    - [Examples/SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Batch Explorer](developers/batch-explorer.md)
     - [Glossary](developers/glossary.md)
