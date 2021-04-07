@@ -21,7 +21,7 @@ The system is composed of L1 and L2 transactions:
 ![](zkSNARK-proof-2.png)
 
 
-L1 transactions are forced to be executed by the coordinator in the protocol. Therefore, these kind of transactions will be always forged at some time.
+L1 transactions are forced to be executed by the coordinator in the protocol. Therefore, these kinds of transactions will be always forged at some time.
 L2 transactions are generated off-chain by the users and they are sent to the coordinators. Coordinators will be in charge of gathering them.
 
 Some of the rollup functionality depends on a consensus mechanism to decide who
@@ -57,7 +57,7 @@ contract to update its own state and perform consensus actions if necessary.
 
 ### Field Element
 - the value encoded in a field element must be smaller than the field order
-- first value corresponds to less significant part of the field
+- first value corresponds to a less significant part of the field
 ```
 dataField:  [16 bits] tokenID
             [16 bits] nonce
@@ -291,8 +291,8 @@ Summary:
 ZK-SNARK proof.
 
 **HermezWithdraw** is a transaction performed through the smart contract to get
-funds back from smart contract to Ethereum address. This is done by
-demonstating the existence of a leaf in the exit tree.
+funds back from the smart contract to Ethereum address. This is done by
+demonstrating the existence of a leaf in the exit tree.
 
 **NOP transaction** is an empty transaction that does not perform any action.  Used in the circuit inputs when the coordinator does not have enough transactions to fill maximum number of transactions in a batch.
 **NULL transaction** is a transaction that is forced to use the value 0 for amount or loadAmount.  Used to nullify an `L1UserTx` that is found to be invalid, so that it does not do any update to the state tree.
@@ -501,7 +501,7 @@ Account could be created for a given:
 ### L2
 All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it.
 The coordinator must check that it collects valid transactions that must not perform an invalid transition state. Otherwise, the proof computed by the coordinator will not be valid.
-The user could submit any transaction data to the coordinator but it will be rejected if the transaction could not be processed. Therefore, it is in the users' benefit to provide a valid transaction if they want it to be inserted in the ZK-Rollup.
+The user could submit any transaction data to the coordinator, but it will be rejected if the transaction could not be processed. Therefore, it is in the users' benefit to provide a valid transaction if they want it to be inserted in the ZK-Rollup.
 
 Signature used for L2 transactions is `eddsa` with Baby Jubjub key.
 L2 transaction data in the signature:
@@ -564,7 +564,7 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
   - sender `fromIdx` has the correct `nonce`
 
 #### Exit
-Transfer tokens from an acccount to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
+Transfer tokens from an account to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
 
 - Actions:
   - subtract `amountFloat40` from sender `fromIdx`
@@ -695,9 +695,9 @@ When a user calls a function that adds an `L1UserTx`, the following happens:
     - `position`
 
 ### L1 Coordinator Transactions
-Coordinator could perform some special transactions to trigger L1 transactions. These transactions are processed in the `forgeBatch` smart contract method, and all the neccesary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retieved by inspecting the Ethereum transaction.
+Coordinator could perform some special transactions to trigger L1 transactions. These transactions are processed in the `forgeBatch` smart contract method, and all the necessary data is provided in the method inputs. This means that like L2 transactions, the data availability can be retrieved by inspecting the Ethereum transaction.
 
-Data needed to perform this transactions will be encoded as:
+Data needed to perform these transactions will be encoded as:
 ```
 **Buffer bytes notation**
 L1CoordinatorTx:    [  8   bits  ] V (ecdsa signature)
@@ -801,7 +801,7 @@ hashGlobalInputs = SHA256(hashGlobalData) % rField
 
 ## Fee Model
 ### User
-Fees are paid on L2 transactions in the same token that they are done. So, if user send a token A, the fees will be paid in token A.
+Fees are paid on L2 transactions in the same token that they are done. So, if the user sends "Token A", the fees will be paid in "Token A".
 Fee is represented as a percentage of the total amount sent:
 
 $Fee_{amount} = amount * Fee_{percentage}$

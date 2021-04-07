@@ -1,7 +1,7 @@
 # Batch Explorer
 
 ## What is Hermez Block Explorer
-Hermez Block Explorer, as the name suggests is a block explorer for the Hermez network. It is a tool that allows anyone to search and lookup details about transactions, batches, coordinators, accounts or slots. It also provides basic information on the network performance.
+Hermez Block Explorer, as the name suggests is a block explorer for the Hermez Network. It is a tool that allows anyone to search and lookup details about transactions, batches, coordinators, accounts or slots. It also provides basic information on the network performance.
 
 ## Batches
 By searching for a particular batch number, or simply navigating to one, user is able to see the details of a given batch. Among other information the page displays:
