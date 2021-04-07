@@ -10,8 +10,8 @@ This tutorial focuses on how to launch a Hermez Coordinator node on localhost us
 ```shell
 cd /tmp && go get -u github.com/gobuffalo/packr/v2/packr2 && cd -
 ```
-- docker and docker-compose without sudo permission (optional if you want to use the provided postgresql and geth containers)
-- [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided postgresql and geth containers)
+- docker and docker-compose without sudo permission (optional if you want to use the provided postgresql and Geth containers)
+- [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided postgresql and Geth containers)
 
 ### Setup
 1. Clone [hermez-node](https://github.com/hermeznetwork/hermez-node.git) repo
@@ -27,7 +27,7 @@ cd ../../db && packr2 clean && cd -
 The executable can be found in cli/node/node
 
 
-3. Deploy postgresql database and geth node. For this step we provide a docker-compose file example. Copy contents to file named `docker-compose.sandbox.yaml`
+3. Deploy postgresql database and Geth node. For this step we provide a docker-compose file example. Copy contents to file named `docker-compose.sandbox.yaml`
 ```
 version: "3.3"
 services:
@@ -48,18 +48,18 @@ services:
     "--ws.origins", "*", "--ws.addr", "0.0.0.0", "--dev", "--datadir", "/geth_data$DEV_PERIOD"]
 ```
 
-Login to AWS public ECR to be able to download the geth docker image:
+Login to AWS public ECR to be able to download the Geth docker image:
 
 ```shell
 export AWS_REGION=eu-west-3
 aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 811278125247.dkr.ecr.eu-west-3.amazonaws.com
 ```
 
-Start database and geth node:
+Start database and Geth node:
 ```shell
 DEV_PERIOD=3 docker-compose -f docker-compose.sandbox.yaml up -d
 ```
-This command will start a geth node mining a block every 3 seconds. 
+This command will start a Geth node mining a block every 3 seconds. 
 Database is available at port 5432. Geth node is available at port 8545.
 
 To stop containers
@@ -67,7 +67,7 @@ To stop containers
 docker-compose -f docker-compose.sandbox.yaml down
 ```
 
-The geth container comes with Hermez contracts predeployed at the following addresses and with 200 funded accounts.
+The Geth container comes with Hermez contracts predeployed at the following addresses and with 200 funded accounts.
 ```
  "hermezAuctionProtocolAddress": "0x317113D2593e3efF1FfAE0ba2fF7A61861Df7ae5"
  "hermezAddress": "0x10465b16615ae36F350268eb951d7B0187141D3B"
