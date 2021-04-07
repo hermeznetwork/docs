@@ -6,12 +6,12 @@ This tutorial focuses on how to launch a Hermez Coordinator node on localhost us
 ## Coordinator Node
 ### Dependencies
 - golang 1.16+
-- [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 - packr utility to bundle the database migrations. Make sure your `$PATH` contains `$GOPATH/bin`, otherwise the packr utility will not be found.
 ```shell
 cd /tmp && go get -u github.com/gobuffalo/packr/v2/packr2 && cd -
 ```
-- docker and docker-compose without sudo permission
+- docker and docker-compose without sudo permission (optional if you want to use the provided postgresql and geth containers)
+- [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided postgresql and geth containers)
 
 ### Setup
 1. Clone [hermez-node](https://github.com/hermeznetwork/hermez-node.git) repo
@@ -256,13 +256,13 @@ or
 curl -X POST -d @input-344-32-256-64.json http://localhost:9080/input
 ```
 
-You check the status of the prover by querying the /status endpoint.
+You check the status of the prover by querying the `/status` endpoint.
 ```shell
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:9080/status
 ```
 `/status` returns if the prover is ready to accept a new input as well as the proof result and input data of the previous iteration. An example is shown below.
 
-```
+```json
 {"proof":"{\"pi_a\":[\"15669797899330531899539165505099185328127025552675136844487912123159422688332\",\"4169184787514663864223014515796569609423571145125431603092380267213494033234\",\"1\"],\"pi_b\":[[\"15897268173694161686615535760524608158592057931378775361036549860571955196024\",\"7259544064908843863227076126721939493856845778102643664527079112408898332246\"],[\"11114029940357001415257752309672127606595008143716611566922301064883221118673\",\"11641375208941828855753998380661873329613421331584366604363069099895897057080\"],[\"1\",\"0\"]],\"pi_c\":[\"3069279014559805068186938831761517403137936718184152637949316506268770388068\",\"17615095679439987436388060423042830905459966122501664486007177405315943656120\",\"1\"],\"protocol\":\"groth16\"}","pubData":"[\"18704199975058268984020790304481139232906477725400223723702831520660895945049\"]","status":"success"}
 ```
 
@@ -282,4 +282,4 @@ NLevels = 32
 ```
 
 At this point, you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080, 
-and the two endpoints are /status and /input
+and the two endpoints are `/status` and `/input`
