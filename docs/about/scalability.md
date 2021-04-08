@@ -1,9 +1,9 @@
 # Ethereum Scalability and ZK-Rollups
 
 ## Background
-During the last year, it has become clear that rollups will be the dominant scaling paradigm on the Ethereum public blockchain: with this in mind, Iden3 has developed and is preparing to launch Hermez, a **ZK-Rollup** focused on scaling payments and token transfers on Ethereum.
+During the last year, it has become clear that rollups will be the dominant scaling paradigm on the Ethereum public blockchain: with this in mind, Iden3 has developed and recently launched Hermez, a **ZK-Rollup** focused on scaling payments and token transfers on Ethereum.
 
-Why the focuse on transfers? It turns out that more than 50% of transactions on the Ethereum network are transfers, and a large percent of these are deposits and withdrawals from exchanges. Demand could be reduced by a significant amount if exchanges started using rollups, or (in the ideal case) even agreed to meet on the same rollup.
+Why the focus on transfers? It turns out that more than 50% of transactions on the Ethereum network are transfers, and a large percent of these are deposits and withdrawals from exchanges. Demand could be reduced by a significant amount if exchanges started using rollups, or (in the ideal case) even agreed to meet on the same rollup.
 
 In addition to significantly reducing transaction costs for users, this could have the added benefit of greatly reducing gas prices, and freeing up the base chain for more complex contracts.
 

@@ -18,7 +18,7 @@ Hermez approach determines that anyone can reconstruct the full tree state by ju
 Forging refers to the creation of a batch of layer 2 transactions (off-chain), creation of the proof and the subsequent (on-chain) verification of the attached zk-SNARK.
 
 ## Governance
-The Hermez network community intends to follow a strategy of “Governance minimization”. This model is intended to be a initially a bootstrap governance mechanism to adjust and manage some network parameters mainly for security and stability purposes until the network reaches enough a degree of maturity to become fully decentralized; at that stage the initial bootstrap Governance model will no longer be necessary and will eventually disappear.
+The Hermez Network community intends to follow a strategy of “Governance minimization”. This model is intended to initially be a bootstrap governance mechanism to adjust and manage some network parameters mainly for security and stability purposes until the network reaches a sufficient degree of maturity to become fully decentralized; at that stage, the initial bootstrap Governance model will no longer be necessary and will eventually disappear.
 
 The network will start with a governance based on a Community Council formed by some distributed and known Ethereum community members. This council will delegate some specific network parameters adjustments into a reduced Bootstrap Council, which is non custodial,  in order to be more operationally effective in the initial phase.
 
@@ -46,7 +46,7 @@ Bidding mechanism to select the coordinator for upcoming batches. A fraction of 
 Set of parameters defined in the system that allow certain configuration from governance in order to modify the behavior of the network. 
 
 ## Transactions
-Transactions is the generic name given to every operation in the Hermez network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen at L1 or L2. The coordinator node is in charge to collecting and processing transactions in batches generating a zk-SNARK to proofs that transactions have been carried out according to some rules.
+Transactions is the generic name given to every operation in the Hermez Network. Transactions may be initiated by a user or by the coordinator. Transactions may also happen on L1 or L2. The coordinator node is in charge of collecting and processing transactions in batches generating a ZK-SNARK to prove that the transactions have been carried out according to some rules.
 
 ### L1 Transactions
 L1 transactions are those that are executed through the smart contract and affect the L2 state tree. These transactions may be started by the user or by the coordinator. 
@@ -60,7 +60,7 @@ L2 transactions are those that are executed exclusively on L2 and affect the L2 
 Hermez provides the capability to for that some transaction are processed together. This feature is called Atomic Transactions.
 
 ## Trees
-Hermez uses Sparse Merkle Trees to store the state of the Hermez network. There are two main tree structures:
+Hermez uses Sparse Merkle Trees to store the state of the Hermez Network. There are two main tree structures:
 - State Tree
 - Exit Tree
 
@@ -72,11 +72,11 @@ Thee root node is called the state root, and it summarized the state of the comp
 ### Exit Tree
 Each batch has an associated exit tree with all the exits performed by the user, either L1 or L2 exit transactions. 
 
-User will need to prove that it owns a leaf in the exit tree in order to perform its withdrawal and get back the tokens from the contract. This verification could be done either by submitting a merkle tree proof or by submitting a zkProof.
+User will need to prove that it owns a leaf in the exit tree in order to perform its withdrawal and get back the tokens from the contract. This verification could be done either by submitting a Merkle tree proof or by submitting a zkProof.
 Thee root node is called the exit root, and it summarizes the state of the Exit Tree.
 
 ## Exit & Withdrawal
-In order to transfer funds from L2 account to ethereum account two separate transactions are invoked. The first transaction is Exit, where funds are transferred to a smart contract. The second transaction is Withdrawal. If conditions are met, Withdrawal can be instant. If funds to be withdrawn exceed certain limits, the Withdrawal is delayed until transaction is cleared.
+In order to transfer funds from the L2 account to the Ethereum account, two separate transactions are invoked. The first transaction is Exit, where funds are transferred to a smart contract. The second transaction is Withdrawal. If conditions are met, Withdrawal can be instant. If funds to be withdrawn exceed certain limits, the Withdrawal is delayed until the transaction is cleared.
 
 ## zk-Rollup
 A zk-Rollup is a layer 2 construction  which uses the Ethereum blockchain for data storage instead of computation. 

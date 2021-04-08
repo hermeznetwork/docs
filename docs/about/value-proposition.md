@@ -8,13 +8,13 @@ The first release starts with the specific scope of token transfers implemented 
 
 ## Decentralized
 Hermez is called a network because the model is natively decentralized.  
-It is a layer 2 construction and intends to transact at thousands per second, so the consensus algorithm has to be simple for one agent (coordinator) to process this amount of  transactions at any given time.
+It is a layer 2 construction and intends to transact at thousands per second, so the consensus algorithm has to be simple for one agent (coordinator) to process this amount of transactions at any given time.
 With this model, it still keeps the properties of being permissionless to participate and censorship resistant for user transactions.
 
 ## Efficient
 The decentralized model is implemented through a permissionless auction system for potential coordinators of the network to earn the right to process transactions during a slot of time.
 
-This auction model incentivizes the efficiency of coordinators since they need to process as many transactions as they can to collect the fees and compensate their investment and their operation expenses (and make money out of it).
+This auction model incentivises the efficiency of coordinators since they need to process as many transactions as they can to collect the fees and compensate their investment and their operation expenses (and make money out of it).
 
 Hermez implements a ZK-Rollup based on ZK-SNARK proofs, the most efficient in terms of batch cost in Ethereum.
 

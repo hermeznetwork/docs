@@ -60,7 +60,7 @@ Opening a transaction shows information related to that transaction. There's als
 
 ## Withdrawals
 
-Withdrawals are a two-part process. After completing the first part explained above, a card appears on the Home screen or on the respective account page. When ready, it will show a button to finalise the withdrawal.
+Withdrawals are a two-part process. After completing the first part explained above, a card appears on the Home screen or on the respective account page. When ready, it will show a button to finalize the withdrawal.
 
 ![](wallet/hw-withdraw.png)
 

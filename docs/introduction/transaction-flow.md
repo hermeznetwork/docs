@@ -8,7 +8,7 @@ Marta is based in Madrid, and has one burning wish right now, to send some crypt
 
 2\. Since this is her first time sending DAI, she calls the contract’s on-chain `deposit` function specifying both the token (DAI) and the amount (100) she wishes to deposit.
 
-3\. She’s now ready to send the transaction — containing Jessica’s address and the the amount she wishes to send — off-chain to a rollup block producer (what we call a **coordinator**).
+3\. She’s now ready to send the transaction — containing Jessica’s address and the amount she wishes to send — off-chain to a rollup block producer (what we call a **coordinator**).
 
 4\. Once the transaction is received, the coordinator applies the transaction locally, builds the new state tree, and computes the new state root (Merkle root).
 
@@ -32,7 +32,7 @@ And voila! It’s as simple as that.
 
 **A note on withdrawals**
 
-Jessica can withdraw the 100 DAI she’s received from Marta at any time. To withdraw her tokens, she can send a transaction (off-chain) to a coordinator signalling her intent to withdraw.
+Jessica can withdraw the 100 DAI she’s received from Marta at any time. To withdraw her tokens, she can send a transaction (off-chain) to a coordinator signaling her intent to withdraw.
 
 And then withdraw on-chain once the coordinator has calculated the new state root and sent it to the on-chain contract.
 

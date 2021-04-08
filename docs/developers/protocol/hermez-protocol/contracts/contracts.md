@@ -13,8 +13,8 @@
 - Forge batches
   - Ask consensus algorithm for coordinator approval
   - Add L1 Coordinator Transactions
-  - Ensures that state transitions are valid through a validity proof which will assure that certain rules has been fulfilled.
-  - Set a new state merkle root and exit merkle root
+  - Ensures that state transitions are valid through a validity proof which will assure that certain rules have been fulfilled.
+  - Set a new state Merkle root and exit Merkle root
 - Utility actions
   - Withdraw funds or add new tokens to the rollup
 
@@ -24,7 +24,7 @@
 
 All L1UserTx are encoded and added to a queue, when the queue is full or frozen, a new queue is created.
 Once a queue is frozen means that L1 transactions can't be added anymore.
-Each queue is identified by a index that grows incrementally.
+Each queue is identified by an index that grows incrementally.
 The queue index of the next L1-L2-batch is always frozen which is identified by `nextL1ToForgeQueue`
 
 When a user calls a function that adds an L1UserTx, the following happens:
@@ -54,7 +54,7 @@ A fee in HEZ must be payed to the governance address.
 
 #### Withdraw
 
-Transaction to get funds back from smart contract to Ethereum address. This is done by proving the existence of a leaf in the exit tree. Once the withdrawal is done a nullifier is set, so this only can happen once.
+Transaction to get funds back from the smart contract to Ethereum address. This is done by proving the existence of a leaf in the exit tree. Once the withdrawal is done a nullifier is set, so this only can happen once.
 
 > Remember withdraw is not a L1 transaction, it has no impact in the state or exit trees and it's not processed by the circuit.
 
@@ -114,7 +114,7 @@ The governance will be able to set the following parameters:
 
 #### Goal
 
-This logic is implemented during the bootstrapping phase of the network as an additional security measure in order to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez Network. The objective is to temporary enable this last resort measure while preserving decentralization.
+This logic is implemented during the bootstrapping phase of the network as an additional security measure to mitigate attacks that could potentially provide illegitimate access to user funds from Hermez Network. The objective is to temporarily enable this last-resort measure while preserving decentralization.
 
 The core mechanism is to set a withdrawal limit in order to avoid infinite withdrawal in case of illegitimate funds access. Therefore, it is assured that the attacker can only withdraw a certain amount of tokens.
 

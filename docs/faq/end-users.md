@@ -36,7 +36,7 @@ Most common tokens will be preloaded in the system. In any case, there is a roll
 
 Hermez will deliver a web wallet for users to operate with the network, and it will be connected to Metamask wallet for Ethereum key management.
 
-We expect integration with another wallets and independent implementations to appear.
+We expect integration with other wallets and independent implementations to appear.
 
 ## Can coordinators take my money?
 

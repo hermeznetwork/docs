@@ -57,7 +57,7 @@ Initially, users will access the Hermez Network through an interface based on a 
 
 Through this interface, users will be able to:
 
-- Register their Ethereum L1 address into the Hermez network and obtain an internal address - one for each type of token they wish to deposit;
+- Register their Ethereum L1 address into the Hermez Network and obtain an internal address - one for each type of token they wish to deposit;
 - Deposit L1 tokens into their Hermez Network addresses with a simple transaction;
 - Transfer tokens between Hermez addresses much faster and for very low fees;
 - Withdraw tokens from Hermez Network addresses back to their chosen L1 addresses.

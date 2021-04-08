@@ -31,7 +31,7 @@ The information stored on-chain (as part of [calldata](https://ethereum.stackexc
 
 They collect the transaction fees. They can expect a revenue per transaction and each coordinator will select to forge the more profitable transactions from the transaction pool.
 
-They make benefit from this fees minus the operational costs and the bid price for the slot.
+They profit from these fees minus the operational costs and the bid price for the slot.
 
 ## How bids can be placed in the auction?
 
