@@ -8,7 +8,6 @@
     - [Hermez Mainnet](users/mainnet.md)
     - [Hermez Testnet](users/testnet.md)
     - [Exchanges](users/exchanges.md)
-    - [Coordinator](users/coordinator.md)
 - Developers
     - [Developer Guide](developers/dev-guide.md)
     - [Protocol](developers/protocol/README.md)
@@ -20,6 +19,7 @@
     - [Examples/SDK](developers/sdk.md)
     - [API](developers/api.md)
     - [Batch Explorer](developers/batch-explorer.md)
+    - [Hermez Node](developers/coordinator.md)
     - [Glossary](developers/glossary.md)
 - FAQ
     - [Coordinators](faq/coordinators.md)
