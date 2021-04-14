@@ -1,6 +1,6 @@
 # Hermez Node
 This tutorial describes how to launch a Hermez node. It starts by explaining how to launch a Boot Coordinator in localhost.
-It follows by describing how to initialize a Proof Server and how to connect it to the Boot Coordinator.
+Next, it describes how to initialize a Proof Server and how to connect it to the Boot Coordinator.
 The next section describes how to spin up a second Hermez node in synchronizer mode to track the rollup status independently from the Boot Coordinator. This second node will be launched in Rinkeby testnet.
 The last part of the tutorial includes an explanation on how to add a second Coordinator node to Hermez testnet that bids for the right to forge batches.
  
@@ -11,7 +11,7 @@ The last part of the tutorial includes an explanation on how to add a second Coo
 5. [Launching a Second Coordinator](#launching-a-second-coordinator-node)
 
 ## Preparing the Environment
-Hermez node requires a PostgreSQL database and connectivity to an Ethereum node. In this part we describe how you can set this environment
+Hermez node requires a PostgreSQL database and connectivity to an Ethereum node. In this part, we describe how you can set this environment
 up using docker containers.
 
 ### Dependencies
@@ -123,7 +123,7 @@ ForgerAddress = "0xDcC5dD922fb1D0fd0c450a0636a8cE827521f0eD" # Non-Boot Coordina
 For more information on the parameters in the configuration file, see [this](https://github.com/hermeznetwork/hermez-node/blob/master/config/config.go#L57).
 
 ## Launching the Boot Coordinator
-1. Copy `cfg.buidler.toml` file. Configuration file can be found in `hermez-node/cli/node` folder
+1. Copy `cfg.buidler.toml` file. The configuration file can be found in `hermez-node/cli/node` folder
 ```shell
 cp cfg.buidler.toml cfg.boot-coordinator.cfg
 ```
@@ -330,7 +330,7 @@ You can use Infura or you can run your own node using Geth.
 - Ubuntu packages in our Launchpad PPA repository (https://launchpad.net/~ethereum/+archive/ubuntu/ethereum).
 - OSX packages in our Homebrew Tap repository (https://github.com/ethereum/homebrew-ethereum).
 
-Sync this node with Rinkeby testnet where all Hermez's smart contract are deployed. 
+Sync this node with Rinkeby testnet where all Hermez's smart contracts are deployed. 
 
 
 4. Get contract addresses
@@ -567,7 +567,7 @@ Once downloaded, follow the installation steps. `PRIVATE_KEY_CLI_BIDDING` corres
 
 2. Register Forger
 
-Using `CLI-bidding`, you need to register the new Coordinator API URL. In my case, we have the Coordinator node running at `http://134.255.190.114:8086`
+Using `CLI-bidding`, you need to register the new Coordinator API URL. In our case, we have the Coordinator node running at `http://134.255.190.114:8086`
 ```
 node src/biddingCLI.js register --url http://134.255.190.114:8086
 ```
@@ -605,6 +605,6 @@ You can check the allocated nextForgers using
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8086/v1/state
 ```
 
-When the time to forge acutioned slots comse, the node you supplied will be the one forging the upcoming batches.
+When the time to forge the acutioned slots comes, the node you supplied will be the one forging the upcoming batches.
 
 
