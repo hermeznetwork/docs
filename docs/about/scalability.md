@@ -12,7 +12,7 @@ In addition to significantly reducing transaction costs for users, this could ha
 A ZK-Rollup, such as Hermez, is a layer 2 construction which uses the Ethereum blockchain for data storage instead of computation:
 - All funds are held by a smart contract on the main-chain.
 
-- For every batch of transactions, a ZK-SNARK cryptographic proof is generated off-chain.
+- For every batch of transactions, a ZK-SNARK cryptographic proof is generated off-chain.dadasda
 
 - This ZK-SNARK proves the validity of every transaction in the batch which means it is not necessary to rely on the Ethereum main-chain to verify each signature transaction.
 
