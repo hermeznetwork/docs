@@ -1,4 +1,4 @@
-# Security
+adojaoidjaoidjaoidjao# Security
 
 Hermez relies on certain assumptions that guarantee users can always recover their assets deposited on
 the network. These assumptions are based on several design and architectural decisions that we will review here.
