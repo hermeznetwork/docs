@@ -170,12 +170,25 @@ It is recommended to run the proof server in servers with 32+ cores and 64 GB+ o
 
 ### Dependencies
 - node v12+
+- npm
+```shell
+apt install npm
+```
+- npx
+```shell
+npm i -g npx
+```
+
 - Install gcc, libsodium, gmp
 ```
 sudo apt install build-essential
 sudo apt-get install libgmp-dev
 sudo apt-get install libsodium-dev
 sudo apt-get install nasm
+```
+- cmake
+```shell
+apt install cmake
 ```
 
 ### Circuit Files
@@ -595,7 +608,7 @@ In our case, minimum bidding is set to 1.1 HEZ.
 Send a simple bid of 1.1x10^18 HEZ for slot 4200. Parameter `amount` is the amount to be transferred to the auction smart contract. Parameter `bidAmount` is the actual bid amount. Thus `amount` >= `bidAmount` unless there are some existing funds previously transferred.
 
 ```shell
-node src/biddingCLI.js bid --amount 1100000000000000000 --slot 4200 --bidAmount 1100000000000000000
+node src/biddingCLI.js bid --amount 1.1 --slot 4200 --bidAmount 1.1
 ```
 
 If the bidding process is sucessful, an Etherscan URL with the transaction id is returned to verify transaction.
@@ -606,5 +619,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 ```
 
 When the time to forge the acutioned slots comes, the node you supplied will be the one forging the upcoming batches.
+
+`CLI-bidding` provides additional mechanism to bid in multple slots at once. Check the [README file](https://github.com/hermeznetwork/CLI-bidding)
 
 
