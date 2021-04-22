@@ -15,12 +15,14 @@ Hermez node requires a PostgreSQL database and connectivity to an Ethereum node.
 up using docker containers.
 
 ### Dependencies
-- golang 1.16+
+- [golang 1.16+](https://golang.org/doc/install) 
 - packr utility to bundle the database migrations. Make sure your `$PATH` contains `$GOPATH/bin`, otherwise the packr utility will not be found.
 ```shell
 cd /tmp && go get -u github.com/gobuffalo/packr/v2/packr2 && cd -
 ```
 - docker and docker-compose without sudo permission (optional if you want to use the provided PostgreSQL and Geth containers)
+   - [docker](https://docs.docker.com/engine/install/ubuntu/)
+   - [docker-compose](https://docs.docker.com/compose/install/)
 - [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided Geth container)
 
 ### Setup
@@ -72,7 +74,7 @@ DEV_PERIOD=3 docker-compose -f docker-compose.sandbox.yaml up -d
 This command will start a Geth node mining a block every 3 seconds. 
 Database is available at port 5432. Geth node is available at port 8545.
 
-To stop containers
+To stop containers:
 ```shell
 docker-compose -f docker-compose.sandbox.yaml down
 ```
@@ -128,13 +130,13 @@ For more information on the parameters in the configuration file, see [this](htt
 cp cfg.buidler.toml cfg.boot-coordinator.cfg
 ```
 
-1. Import the Coordinator Ethereum private key into the keystore. 
+2. Import the Coordinator Ethereum private key into the keystore. 
 ```shell
 ./node importkey --mode coord --cfg cfg.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
 ```
 This private key corresponds to the Coordinator node (it has the index 4 of the pre-generated accounts). You only need to import the key once.
  
-2. Start a mock proof server. 
+3. Start a mock proof server. 
 ```shell
 cd ../../test/proofserver/cli
 go build .
@@ -144,14 +146,14 @@ The `hermez-node` repository provides a mock proof server that generates mock pr
 - GET /api/status: Queries the prover's status.
 - POST /api/input: Starts the generation of a new proof.
 
-3. Wipe SQL database
+4. Wipe SQL database
 
 Before starting the Coordinator node, you may want to wipe the pre-existing SQL database.
 ```shell
 ./node wipesql --mode coord --cfg cfg.boot-coordinator.toml 
 ```
 
-4. Launch `hermez-node`
+5. Launch `hermez-node`
 ```shell
 ./node run --mode coord --cfg cfg.boot-coordinator.toml
 ```
@@ -169,7 +171,7 @@ It is recommended to run the proof server in servers with 32+ cores and 64 GB+ o
 > rapidsnark requires a host CPU that supports ADX extensions. 
 
 ### Dependencies
-- node v12+
+- [node v12+](https://nodejs.org/en/download/)
 - npm
 ```shell
 apt install npm
@@ -458,11 +460,11 @@ In this part of the tutorial we will start a second Coordinator Node in testnet 
 docker run --rm --name hermez-db -p 5432:5432 -e POSTGRES_DB=hermez -e POSTGRES_USER=hermez -e POSTGRES_PASSWORD="yourpasswordhere" -d postgres
 ```
 3. Launch Prover as shown [here](#launching-a-proof-server)
-4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is `forger` account (needs to pay to forge batches), and the second is the `fee` account (receives the fees). 
+4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is `forger` account (needs to pay to forge batches), and the second is the `fee` account (receives the fees). The fees are collected in L2.
 
 5. Create a Wallet with `fee` account Ethereum Private Key. 
 
-This wallet is needed to generate a Baby JubJub address where fees will be collected. There is an example code in the [SDK](https://github.com/hermeznetwork/hermezjs/blob/main/examples/create-wallet.js) that can be used. Simply substitue `EXAMPLES_WEB3_URL` by your Rinkeby Node URL and EXAMPLES_PRIVATE_KEY1` by `fee` account private key.
+This wallet is needed to generate a Baby JubJub address where fees will be collected. There is an example code in the [SDK](https://github.com/hermeznetwork/hermezjs/blob/main/examples/create-wallet.js) that can be used. Simply substitue `EXAMPLES_WEB3_URL` by your Rinkeby Node URL and `EXAMPLES_PRIVATE_KEY1` by `fee` account private key.
 
 This script will generate a similar output:
 ```json
@@ -569,18 +571,18 @@ The node will start synchronizing with the Hermez Network in testnet. This may t
 ### Bidding Process
 Once the node is synchronized, you can start bidding for the right to forge a batch.
 
-1. Install CLI-bidding
+1. Install cli-bidding
 
-CLI-bidding is a tool that allows to register a Coordinator in Hermez Network and place bids in the auction.
+cli-bidding is a tool that allows to register a Coordinator in Hermez Network and place bids in the auction.
 
 ```shell
-git clone https://github.com/hermeznetwork/CLI-bidding.git
+git clone https://github.com/hermeznetwork/cli-bidding.git
 ```
-Once downloaded, follow the installation steps. `PRIVATE_KEY_CLI_BIDDING` corresponds the `forger` private key.
+Once downloaded, follow the installation steps. `PRIVATE_KEY_CLI_BIDDING` corresponds to the `forger` private key.
 
 2. Register Forger
 
-Using `CLI-bidding`, you need to register the new Coordinator API URL. In our case, we have the Coordinator node running at `http://134.255.190.114:8086`
+Using `cli-bidding`, you need to register the new Coordinator API URL. In our case, we have the Coordinator node running at `http://134.255.190.114:8086`
 ```
 node src/biddingCLI.js register --url http://134.255.190.114:8086
 ```
@@ -611,15 +613,15 @@ Send a simple bid of 1.1x10^18 HEZ for slot 4200. Parameter `amount` is the amou
 node src/biddingCLI.js bid --amount 1.1 --slot 4200 --bidAmount 1.1
 ```
 
-If the bidding process is sucessful, an Etherscan URL with the transaction id is returned to verify transaction.
+If the bidding process is successful, an Etherscan URL with the transaction id is returned to verify transaction.
 
 You can check the allocated nextForgers using 
 ```shell
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8086/v1/state
 ```
 
-When the time to forge the acutioned slots comes, the node you supplied will be the one forging the upcoming batches.
+When the time to forge the auctioned slots comes, the node you supplied will be the one forging the upcoming batches.
 
-`CLI-bidding` provides additional mechanism to bid in multple slots at once. Check the [README file](https://github.com/hermeznetwork/CLI-bidding)
+`cli-bidding` provides additional mechanism to bid in multple slots at once. Check the [README file](https://github.com/hermeznetwork/cli-bidding)
 
 
