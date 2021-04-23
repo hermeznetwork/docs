@@ -1,6 +1,6 @@
 # End users
 
-> Hermez is currently under development. Some of the details in the answers can be modified before network launch.
+
 
 ## How much is a transaction expected to cost?
 
