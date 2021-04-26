@@ -1,49 +1,90 @@
-# End users
+# End User FAQ
+<br>
+
+# Overview & Getting Started 
+
+## What exactly is Hermez?
+
+Hermez is a Layer 2 solution to scale payments on top of Ethereum.  It works by grouping transactions together to create SNARKs - succinct non-interactive arguments of knowledge.  These SNARKs then get settled on the Ethereum base layer, Layer 1, as one transaction. The transactions are executed by Coordinators (our version of block producers).  This means they are effectively running the network by computing the zero-knowledge proof of validity of the transactions made by users.  The results is low-cost token transfers, with all the security of Ethereum.  
+
+## How do I set up my Hermez Wallet? 
+
+From a desktop computer, please visit the <a href="https://hermez.io/wallet/"> Hermez Wallet </a> landing page and follow the instructions for setup. 
+
+<br>
+
+# Transactions
+
+## How long do transfers take on Hermez Network from start to finish? 
+
+We expect that transaction time should be between 45 seconds and 15 minutes. There are several factors that can effect the transaction time, including; coordinator configuration, backlogged transactions and the transaction type. Deposits and Withdrawals take place on both L2 (Hermez) and L1 (Ethereum), which can cause an increase in transaction time depending on L1 volume.  
 
 
+## Who can I transact with on Hermez Network? 
 
-## How much is a transaction expected to cost?
+For transfers on Hermez, both the sender and receiver must be on L2. However, the sender may transfer funds to a receiver who has not yet created account on Hermez L2 as long as the receiver has opened the Hermez Wallet app with their Metamask account.  
 
-While we don't yet have an exact figure, our best estimate is that a normal transaction should cost on the order few dollar cents. The price will be determined by the coordinators but this price will depend amongst other on the L1 gas price and the operation costs of coordinators but we estimate a reduction around 95% of the current L1 transaction cost.
 
-## Which tokens can I transact with?
+## When I send my funds to Hermez on Layer 2, how secure is it?  
 
-While Hermez can support any ERC-20 token, it's primarily designed with high-frequency tokens like ETH, DAI, Tether, and wBTC in mind.
+It is as secure as it would be on the Layer 1, Ethereum blockchain. Hermez has completed 3 security audits before launching the mainnet to ensure network security.   
+For more information on Hermez security please visit, https://docs.hermez.io/#/about/security
 
-## How long does a transaction take?
 
-While a coordinator will receive a transaction almost instantly, they need to forge the blocks and generate the zk-proofs as a first stage.
+## I'm getting an error message when I try to finalise my withdrawal, what's going on?
 
-Since both data and zk-proofs of correctness need to be included on the Ethereum base-chain, the time for data to be reliably included (ideally finalized) on-chain depends on the Ethereum block time.
+The most common reason for this error message is that there are not enough funds in your Ethereum L1 account to complete the withdrawal.  
 
-To quote [Vitalik](https://vitalik.ca/general/2019/12/26/mvb.html):
+Withdrawals take place first on the Hermez L2, where the fee is paid in the same token as the transaction.  Next, it needs to move back to L1 which requires "gas" to cover the L1 transaction fee (this amount is determined by current prices on Ethereum Network. Hermez has no control over this fee).  If your L1 Ethereum account does not have enough funds to cover the gas charge, then the withdrawal cannot be completed and will produce the error message.  
 
-> **The block time of the base layer sets the latency for anything whose confirmation depends things being included in the base layer.** This could be worked around with on-chain security deposits, aka "bonds", at the cost of high capital inefficiency, but such an approach is inherently imperfect because a malicious actor could trick an unlimited number of different people by sacrificing one deposit.
+To remedy this, please make sure you have enough funds in your L1 Ethereum account to cover the gas to complete the withdrawal.
 
-We expect that some systems can be developed as a new layer on top of zk-rollups where coordinators can guarantee finality of transactions with instant confirmations (a sort of economic finality for low-value transactions).
+## Why is my Deposit taking so long to process?
 
-## How are transaction fees paid by users?
+Deposits move funds from Ethereum  L1 to L2 (Hermez) and must be forged by the Coordinator.  Depending on where the Coordinator is in the forging process, deposits may be as fast as 45 seconds or could take up to 15 minutes maximum. 
 
-The default is to pay fees in the same token you’re sending,
+## Can I use my Ledger/Trezor hardware with my Hermez Wallet?
 
-But with two atomic (linked) transactions you can pay a fee in a different token.
+Currently hardware wallets are not supported on Hermez, but should be supported in the near future. 
 
-## What if the ERC-20 token I wish to transact with is not yet supported?
+<br>
 
-Most common tokens will be preloaded in the system. In any case, there is a rollup function for this. But you'll need to pay a small fee in order to add a token.
+# Fees and Tokens
 
-## Which interface will users have available?
+## Who makes money from the transaction fees?
 
-Hermez will deliver a web wallet for users to operate with the network, and it will be connected to Metamask wallet for Ethereum key management.
+Transaction fees are collected by the Coordinator who placed the highest bid in the Coordinator auction.
 
-We expect integration with other wallets and independent implementations to appear.
+## How much will transactions cost on Hermez?
 
-## Can coordinators take my money?
+Fees are used to pay for the infrastructure required to maintain the Hermez Coordinator plus the L1 costs involved in forging a new batch of transactions. Cost of the transaction will be split among the hundreds (or even thousands) of transactions in the batch, resulting in a lower cost compared to L1.
 
-No.
+## How will a new Hermez account cost?
 
-## Can coordinators censor transactions?
+Creating a new Hermez account involves an L1 transaction and an L2 transaction. L1 transactions
+need to pay for gas, and L2 transaction need to pay the Coordinator fees.
 
-Coordinators can decide which transactions they select to include in the batch to forge.
+## Which tokens can I use on Hermez Network?
 
-In case that a coordinator censures a transaction, users have the option to force coordinators to include their transaction. This is done by sending an on-chain transaction (`forceExit` or `forceTransfer`)
+For the current list of tokens registered in Hermez Network please visit: https://explorer.hermez.io/tokens
+
+## Why is the gas fee so high? I thought Hermez was supposed to lower the cost of transactions.
+
+The "gas" fee to move funds from L2 back to Ethereum mainnet (L1) is determined by current prices on the Ethereum Network. Hermez has no control over this fee.
+
+## Do I need HEZ tokens to use the Hermez Network?
+
+There's no need for HEZ tokens on the user side to send transactions.  HEZ is only required for coordinators to bid in the auction.
+For a list of the current list of tokens registered in Hermez please visit: https://explorer.hermez.io/tokens
+
+<br>
+
+# Troubleshooting 
+
+## Where can I submit a bug report?
+
+Please report bugs to hello@hermez.network 
+
+## What can I do if I still need help?
+
+To get support from our Communnity Support team, please contact us at hello@hermez.network 
