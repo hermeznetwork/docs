@@ -92,7 +92,7 @@ For the current list of tokens registered in Hermez Network please visit: https:
 
 ### Why is the gas fee so high? I thought Hermez was supposed to lower the cost of transactions.
 
-The "gas" fee to move funds from L2 back to Ethereum mainnet (L1) is determined by current prices on the Ethereum Network. Hermez has no control over this fee.
+The "gas" fee is charged to move funds from L2 back to Ethereum mainnet (L1). It is determined by current prices on the Ethereum Network and Hermez has no control over this fee.
 
 ### Do I need HEZ tokens to use the Hermez Network?
 
