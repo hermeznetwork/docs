@@ -6,6 +6,9 @@
 
 Hermez is a Layer 2 solution to scale payments on top of Ethereum.  It works by grouping transactions together to create SNARKs - succinct non-interactive arguments of knowledge.  These SNARKs then get settled on the Ethereum base layer, Layer 1, as one transaction. The transactions are executed by Coordinators (our version of block producers).  This means they are effectively running the network by computing the zero-knowledge proof of validity of the transactions made by users.  The results is low-cost token transfers, with all the security of Ethereum.  
 
+# Test questions
+bla bla bla
+
 # How do I set up my Hermez Wallet? 
 
 From a desktop computer, please visit the <a href="https://hermez.io/wallet/"> Hermez Wallet </a> landing page and follow the instructions for setup. 
