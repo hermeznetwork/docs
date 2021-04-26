@@ -73,7 +73,6 @@ The "gas" fee to move funds from L2 back to Ethereum mainnet (L1) is determined 
 There's no need for HEZ tokens on the user side to send transactions.  HEZ is only required for coordinators to bid in the auction.
 For a list of the current list of tokens registered in Hermez please visit: https://explorer.hermez.io/tokens
 
-
 # Troubleshooting 
 
 # Where can I submit a bug report?
