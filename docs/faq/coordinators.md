@@ -1,39 +1,69 @@
 #  Coordinators
 
-A coordinator is our term for rollup block producer. At any one time there is one coordinator responsible for creating blocks on the rollup chain.
-> Hermez is currently under development. Some of the details in the answers can be modified before network launch.
+## Overview
 
-## How many coordinators will there be?
+### What is a Hermez Coordinator?
+A Coordinator is our term for rollup block producer. At any one time there is one Coordinator responsible for creating blocks on the rollup chain selected among a number of registered nodes via an auction process.
 
-There is no limit to the number of coordinators. Becoming a coordinator is entirely permissionless and it will be enabled since the launch.
+### How many Coordinators are there?
 
-Although the first coordinator will be the Hermez Boot coordinator which will forge blocks when there's no alternative bids in the auction, it’s important for us that the market for coordinators becomes open over time.
+There is no limit to the number of registered Coordinators. Becoming a Coordinator is entirely permissionless via an auction process and it will be enabled shortly after launch.
 
-## Will there be a competitive market for coordinators?
+Although the first coordinator will be the Hermez Boot Coordinator which will forge blocks when there's no alternative bids in the auction, it’s important for us that the market for coordinators becomes open over time.
+
+### How is the Coordinator Node selected?
+
+The Coordinator Node is selected using an auction process, where registered nodes bid for the right to forge batches during a time slot. The highest bidder in a given slot will become the Coordinator
+
+### Will there be a competitive market for Coordinators?
 
 We are committed to creating a competitive market for coordinators and we will open source software to allow anyone to run a coordinator.
 
-## How do I become a coordinator?
+## Auction Process
 
-To become a coordinator you need to prepare the system infrastructure and take part in an auction and win a bid for a time slot.
+### How do I become a Coordinator?
 
-## How long are coordinator time slots?
+To become a coordinator you need to prepare the system infrastructure, take part in the auction and win a bid for a time slot.
 
-Slots will be 40 Ethereum blocks long (10 minutes).
+### How bids can be placed in the auction?
 
-## What happens if the coordinator goes offline?
+Coordinators will participate in the auction by sending an on-chain transaction to the auction smart contract. Bids are always payed in HEZ
 
-If the coordinator has not done anything in the first part a slot (TBD), then anyone can jump in and replace it by forging blocks (first come first served).
+### Where do I get HEZ?
 
-The information stored on-chain (as part of [calldata](https://ethereum.stackexchange.com/a/52992)) is enough to allow anyone to independently build the full state tree (and become a coordinator themselves).
+HEZ can be easily obtained in [Uniswap](https://app.uniswap.org/)
 
-## How do coordinators make money?
+### How long are Coordinator time slots?
 
-They collect the transaction fees. They can expect a revenue per transaction and each coordinator will select to forge the more profitable transactions from the transaction pool.
+Slots will be 40 Ethereum blocks long (10 minutes). During this time, a Coordinator can forge as many batches as possible.
+
+### What happens if the Coordinator goes offline?
+
+If the Coordinator has not done anything in the first part a slot, then anyone can jump in and replace it by forging blocks (first come first served).
+
+### How do Coordinators make money?
+
+Coordinators set and collect the transaction fees. They can expect a revenue per transaction and each coordinator will select to forge the more profitable transactions from the transaction pool.
 
 They profit from these fees minus the operational costs and the bid price for the slot.
 
-## How bids can be placed in the auction?
+## Running a Coordinator
 
-Coordinators will participate in the auction by sending an on-chain transaction to the auction smart contract.
+### What are the infrastructure requirements to run a Coordinator?
+
+To run a Coordinator you need the following:
+- PostgreSQL database
+- Ethereum Node
+- Coordinator Server running the [hermez-node repository](https://github.com/hermeznetwork/hermez-node). A reasonable server spec is AWS instance c5ad.2xlarge with 8 vCPU and 16GB RAM
+- Proof Server running the [rapidsnark repository](https://github.com/iden3/rapidsnark). A server spec able to run the ~2000 transaction circuit is AWS instance c5ad.24xlarge with 96 vCPU and 192GB RAM. 
+
+### Is there a step by step guide to configure a Coordinator node?
+
+Yes. You can find this guide [here](../developers/coordinator.md).
+
+### How many transactions can be processed per batch?
+ 
+Number of transactions per batch depend on the circuit used. Hermez accepts two different circuit sizes: 344 transactions and 1912 transactions. 
+
+
 
