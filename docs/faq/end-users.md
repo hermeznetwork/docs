@@ -56,7 +56,7 @@ Currently, hardware wallets are not supported on Hermez but should be supported 
 
 ### Can Coordinators take my money?
 
-In short, no.  Coordinators are the Hermez block producer, they are responsible for running the network. In exchange for their work, they collect all transaction fees in the batch. 
+In short, no.  Coordinators are the Hermez batch producer, they are responsible for running the network. In exchange for their work, they collect all transaction fees in the batch. 
 
 ### Can coordinators censor transactions?
 
