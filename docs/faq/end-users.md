@@ -85,7 +85,7 @@ Transaction fees are paid in the same token of the transaction.
 
 ### How much will a new Hermez account cost?
 
-Creating a new Hermez account involves an L1 transaction and an L2 transaction. L1 transactions need to pay for gas, and L2 transactions need to pay the Coordinator fees.
+Creating a new Hermez account involves an L1 transaction or an L2 transaction. L1 transactions need to pay for gas, and L2 transactions need to pay the Coordinator fees.
 
 ### Which tokens can I use on Hermez Network?
 
