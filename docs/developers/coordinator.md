@@ -32,11 +32,10 @@ git clone https://github.com/hermeznetwork/hermez-node.git
 ```
 2. Build `hermez-node` executable
 ```shell
-cd hermez-node/db && packr2 && cd ../cli/node
-go build .
-cd ../../db && packr2 clean && cd -
+cd hermez-node
+make build
 ```
-The executable can be found in `cli/node/node`
+The executable can be found in `bin/node`
 
 
 3. Deploy PostgreSQL database and Geth node containers. For this step we provide a docker-compose file example. Copy contents to file named `docker-compose.sandbox.yaml`
@@ -127,18 +126,18 @@ For more information on the parameters in the configuration file, see [this](htt
 ## Launching the Boot Coordinator
 1. Copy `cfg.buidler.toml` file. The configuration file can be found in `hermez-node/cli/node` folder
 ```shell
-cp cfg.buidler.toml cfg.boot-coordinator.cfg
+cp cli/node/cfg.buidler.toml cli/node/cfg.boot-coordinator.cfg
 ```
 
 2. Import the Coordinator Ethereum private key into the keystore. 
 ```shell
-./node importkey --mode coord --cfg cfg.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
+./bin/node importkey --mode coord --cfg ./cli/node/cfg.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
 ```
 This private key corresponds to the Coordinator node (it has the index 4 of the pre-generated accounts). You only need to import the key once.
  
 3. Start a mock proof server. 
 ```shell
-cd ../../test/proofserver/cli
+cd test/proofserver/cli
 go build .
 ./cli -d 15s -a 0.0.0.0:3000
 ```
@@ -150,12 +149,12 @@ The `hermez-node` repository provides a mock proof server that generates mock pr
 
 Before starting the Coordinator node, you may want to wipe the pre-existing SQL database.
 ```shell
-./node wipesql --mode coord --cfg cfg.boot-coordinator.toml 
+./bin/node wipesql --mode coord --cfg cli/node/cfg.boot-coordinator.toml 
 ```
 
 5. Launch `hermez-node`
 ```shell
-./node run --mode coord --cfg cfg.boot-coordinator.toml
+./bin/node run --mode coord --cfg cli/node/cfg.boot-coordinator.toml
 ```
 
 Once the Hermez node is launched, the API can be queried at `localhost:8086/v1`.
@@ -440,7 +439,7 @@ StaticValue = 0.99
 
 6. Launch `hermez-node` in synchronizer mode
 ```shell
-./node run --mode sync --cfg cfg.sync.toml
+./bin/node run --mode sync --cfg cli/node/cfg.sync.toml
 ```
 
 Once the Hermez node is launched, the API can be queried at `localhost:8086/v1` (as well as at https://api.testnet.hermez.io/v1/ serviced by the Boot Coordinator node).
@@ -552,8 +551,8 @@ Fixed = 900000
 
 7. Import the `forger` and `fee` Ethereum private keys into the keystore. 
 ```shell
-./node importkey --mode coord --cfg cfg.coord.toml --privatekey <FORGER ACCOUNT_PRIVATE KEY>
-./node importkey --mode coord --cfg cfg.coord.toml --privatekey <FEE_ACCOUNT PRIVATE KEY>
+./bin/node importkey --mode coord --cfg cli/node/cfg.coord.toml --privatekey <FORGER ACCOUNT_PRIVATE KEY>
+./bin/node importkey --mode coord --cfg cli/node/cfg.coord.toml --privatekey <FEE_ACCOUNT PRIVATE KEY>
 ```
 This private key corresponds to the new Coordinator node 
 
@@ -564,7 +563,7 @@ You can also use Metamask and generate a `send` transaction from `forger` accoun
 
 9. Launch New Coordinator Node
 ```shell
-./node run --mode coord --cfg cfg.coord.toml
+./bin/node run --mode coord --cfg cli/node/cfg.coord.toml
 ```
 The node will start synchronizing with the Hermez Network in testnet. This may take a while.
 
