@@ -81,6 +81,5 @@ The number of transactions per batch depends on the circuit used. Hermez accepts
 
 ### I am having technical issues running a Coordinator node. Who can I contact for support?
 
-We recommend to go over this FAQ first, and if you still have issues, please send an email to hello@hello@hermez.network, or send a message to our Discord
-
+We recommend to go over this FAQ first, and if you still have issues, please send an email to hello@hello@hermez.network, or send a message to our [Discord](https://bit.ly/hermez-discord).
 
