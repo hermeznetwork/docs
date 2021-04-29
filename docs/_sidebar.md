@@ -22,7 +22,8 @@
     - [Batch Explorer](developers/batch-explorer.md)
     - [Glossary](developers/glossary.md)
 - FAQ
-    - [Coordinators](faq/coordinators.md)
     - [End-Users](faq/end-users.md)
+    - [Integrators](faq/integrators.md)
+    - [Coordinators](faq/coordinators.md)
     - [Proof of Donation](faq/pod.md)
     - [Other](faq/other.md)
