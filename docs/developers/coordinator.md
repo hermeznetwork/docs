@@ -348,6 +348,8 @@ You can use Infura or you can run your own node using Geth.
 
 Sync this node with Rinkeby testnet where all Hermez's smart contracts are deployed. 
 
+> Note that synchronizing with Infura will be too slow, and it may fail beacuse the number of queries is limited. We recommend to deploy your own Ethereum node.
+
 
 4. Get contract addresses
 
