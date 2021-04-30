@@ -124,6 +124,8 @@ ForgerAddress = "0xDcC5dD922fb1D0fd0c450a0636a8cE827521f0eD" # Non-Boot Coordina
 For more information on the parameters in the configuration file, see [this](https://github.com/hermeznetwork/hermez-node/blob/master/config/config.go#L57).
 
 ## Launching the Boot Coordinator
+It is recommended to run the Coordinator node in a server with 8+ cores, 16 GB+ of RAM and 250GB of disk (AWS c5a.2xlarge or equivalent).
+
 1. Copy `cfg.buidler.toml` file. The configuration file can be found in `hermez-node/cli/node` folder
 ```shell
 cp cli/node/cfg.buidler.toml cli/node/cfg.boot-coordinator.cfg
@@ -165,7 +167,7 @@ For more information, check the [README](https://github.com/hermeznetwork/hermez
 
 ## Launching a Proof Server
 We will use [rapidsnark](https://github.com/iden3/rapidsnark) as the Hermez proof server. `rapidsnarks` is a zkSnark proof generator written in C++.
-It is recommended to run the proof server in servers with 32+ cores and 64 GB+ of RAM (AWS c5a.8xlarge or equivalent).
+It is recommended to run the proof server in servers with 48+ cores, 96 GB+ of RAM and 250GB of disk (AWS c5a.12xlarge or equivalent).
 
 > rapidsnark requires a host CPU that supports ADX extensions. 
 
