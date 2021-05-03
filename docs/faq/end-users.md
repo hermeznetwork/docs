@@ -106,10 +106,7 @@ For a list of the current tokens registered in Hermez please visit: https://expl
 
 ## Troubleshooting 
 
-### Where can I submit a bug report?
+### Where can I submit a bug report or contact Hermez for additional help?
 
-Please report bugs to hello@hermez.network 
+First, look over these FAQs to see if your question has been properly addressed already. In addition, you can always report bugs to hello@hermez.network or contact us in [Discord](https://bit.ly/hermez-discord). Another source of information is the [Hermez documentation page](https://docs.hermez.io)
 
-### What can I do if I still need help?
-
-To get support from our Community Support team, please contact us at hello@hermez.network 
