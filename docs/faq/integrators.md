@@ -26,11 +26,11 @@ Yes, it is. The receiver of the transfer needs to have previously authorized the
 
 ### Do I need to run a Coordinator node?
 
-You don't, unless you want to. However, as an integrator offering some service on top of Hermez Network you may want to spin a Hermez node in synchronizer mode to access the Hermez data directly without any intermediary. 
+You don't, unless you want to. However, as an integrator offering some service on top of Hermez Network you may want to spin a Hermez node in synchronizer mode to directly access the Hermez data directly without an intermediary. 
 
 ### How do I check the status of a transaction?
 
-Whenever you send a L2 transaction to Hermez, it will be added to a transaction-pool queue. This transaction will remain there until it has been processed or expires. The possible states of a transaction in the 
+Whenever you send an L2 transaction to Hermez, it will be added to a transaction-pool queue. This transaction will remain there until it has been processed or expires. The possible states of a transaction in the 
 transaction pool include `forged`, `forging`, `pending` and `invalid`.To check the status of a transaction, you can query the API using the returned transaction id by sending a GET /transactions-pool/{transaction-id}. 
 
 ### What happens if a transaction is not processed?
@@ -42,17 +42,17 @@ Coordinators select the transactions to process according to some internal rules
 
 Currently, this timeout is set to 24 hours.
 
-### Why a transaction may not be processed?
+### What are the reasons a transaction may not be processed?
 
 A valid transaction should always be processed within 15 minutes. There are several reasons why a transaction may be invalid and therefore not processed by any Coordinator; insufficient balance in the sender account, nonexistent sender account, destination account hasn't given permission to create account, fees lower than suggested Coordinator fees,... Checking the transaction status will provide some feedback on the reason why the transaction wasn't forged.
 
-### Can I cancel a transction in the pool?
+### Can I cancel a transaction in the pool?
 
 Transactions cannot be cancelled once submitted. 
 
 ### How do I set the fee when sending a transaction?
 
-Coordinators select the recommended fee depending on the different transaction types. These fees can be querired in the `/state` endpoint and are in USD. There are three types of fees:
+Coordinators select the recommended fee depending on the different transaction types. These fees can be queried in the `/state` endpoint and are in USD. There are three types of fees:
 - existingAccount used for transfers to existing Hermez accounts
 - createAccount used for deposits or transfers to nonexistent normal accounts (`transferToEthAddress` transaction)
 - creteAccountInternal used for transfers to nonexistent internal accounts (`transfertoBJJ` transaction)
@@ -67,5 +67,5 @@ Each Hermez transaction includes a nonce value that prevents replay attacks. The
 
 ### Where can I submit a bug report or contact Hermez for additional help?
 
-As always, please report bugs to hello@hermez.network. Also, you can always contact us in [Discord](https://bit.ly/hermez-discord). You can also find more information in the [Hermez documentation page](https://docs.hermez.io)
+As always, please report bugs to hello@hermez.network. Additionally, you can always contact us in [Discord](https://bit.ly/hermez-discord). You can also find more information in the [Hermez documentation page](https://docs.hermez.io)
 
