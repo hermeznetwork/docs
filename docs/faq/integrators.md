@@ -26,7 +26,7 @@ Yes, it is. The receiver of the transfer needs to have previously authorized the
 
 ### Do I need to run a Coordinator node?
 
-You don't, unless you want to. However, as an integrator offering some service on top of Hermez Network you may want to spin a Hermez node in synchronizer mode to directly access the Hermez data directly without an intermediary. 
+You don't unless you want to. However, as an integrator offering some service on top of Hermez Network, you may want to spin a Hermez node in synchronizer mode to directly access the Hermez data directly without an intermediary. 
 
 ### How do I check the status of a transaction?
 
@@ -44,7 +44,7 @@ Currently, this timeout is set to 24 hours.
 
 ### What are the reasons a transaction may not be processed?
 
-A valid transaction should always be processed within 15 minutes. There are several reasons why a transaction may be invalid and therefore not processed by any Coordinator; insufficient balance in the sender account, nonexistent sender account, destination account hasn't given permission to create account, fees lower than suggested Coordinator fees,... Checking the transaction status will provide some feedback on the reason why the transaction wasn't forged.
+A valid transaction should always be processed within 15 minutes. There are several reasons why a transaction may be invalid and therefore not processed by any Coordinator; insufficient balance in the sender account, nonexistent sender account, destination account hasn't given permission to create an account, fees lower than suggested Coordinator fees,... Checking the transaction status will provide some feedback on the reason why the transaction wasn't forged.
 
 ### Can I cancel a transaction in the pool?
 
