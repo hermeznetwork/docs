@@ -210,13 +210,13 @@ For each type of circuit, you will need the following files:
 
 [circuit-400-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64.dat)
 
-[circuit-400-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64_hez3_final.zkey)
+[circuit-400-32-256-64_hez4_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64_hez4_final.zkey)
 
 [circuit-2048-32-256-64.cpp](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64.cpp)
 
 [circuit-2048-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64.dat)
 
-[circuit-2048-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64_hez3_final.zkey)
+[circuit-2048-32-256-64_hez4_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64_hez4_final.zkey)
 
 
 More information on Trusted Setup can be found [here](https://github.com/hermeznetwork/phase2ceremony_4).
@@ -241,7 +241,7 @@ npx task buildProverServer ../circuit-400-32-256-64.cpp
 3. Launch prover
 ```shell
 cd ..
-./rapidsnark/build/proverServer circuit-400-32-256-64.dat circuit-400-32-256-64_hez3_final.zkey
+./rapidsnark/build/proverServer circuit-400-32-256-64.dat circuit-400-32-256-64_hez4_final.zkey
 ```
 Prover is deployed at port 9080.
 
