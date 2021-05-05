@@ -198,28 +198,28 @@ apt install cmake
 Download circuit and auxiliary files. These files are extremely large (20GB+), so make sure you have enough bandwidth.
 
 There are two Hermez circuits that have undergone the Trusted Setup Ceremony. 
-- circuit-1912-32-256-64 with 1912 transactions per batch (~2^27 constraints)
-- circuit-344-32-256-64 with 344 transactions per batch (~2^25 constraints)
+- circuit-2048-32-256-64 with 2048 transactions per batch (~2^27 constraints)
+- circuit-400-32-256-64 with 400 transactions per batch (~2^25 constraints)
 
 For each type of circuit, you will need the following files:
 - C++ source file (extension .cpp)
 - Data file (extension .dat)
 - Verification and Proving Key files (extension .zkey)
 
-[circuit-344-32-256-64.cpp](https://hermez.s3-eu-west-1.amazonaws.com/circuit-344-32-256-64.cpp)
+[circuit-400-32-256-64.cpp](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64.cpp)
 
-[circuit-344-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-344-32-256-64.dat)
+[circuit-400-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64.dat)
 
-[circuit-344-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-344-32-256-64_hez3_final.zkey)
+[circuit-400-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-400-32-256-64_hez3_final.zkey)
 
-[circuit-1912-32-256-64.cpp](https://hermez.s3-eu-west-1.amazonaws.com/circuit-1912-32-256-64.cpp)
+[circuit-2048-32-256-64.cpp](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64.cpp)
 
-[circuit-1912-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-1912-32-256-64.dat)
+[circuit-2048-32-256-64.dat](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64.dat)
 
-[circuit-1912-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-1912-32-256-64_hez3_final.zkey)
+[circuit-2048-32-256-64_hez3_final.zkey](https://hermez.s3-eu-west-1.amazonaws.com/circuit-2048-32-256-64_hez3_final.zkey)
 
 
-More information on Trusted Setup can be found [here](https://github.com/hermeznetwork/phase2ceremony_3).
+More information on Trusted Setup can be found [here](https://github.com/hermeznetwork/phase2ceremony_4).
 
 ### Setup
 1. Clone [rapidsnark](https://github.com/iden3/rapidsnark.git) repository
@@ -228,7 +228,7 @@ git clone  https://github.com/iden3/rapidsnark.git
 ```
 2. Compile the prover.
 
-In this example we are building the 344 transactions prover.
+In this example we are building the 400 transactions prover.
 ```shell
 cd rapidsnark
 npm install
@@ -236,12 +236,12 @@ git submodule init
 git submodule update
 npx task createFieldSources
 npx task buildPistche
-npx task buildProverServer ../circuit-344-32-256-64.cpp
+npx task buildProverServer ../circuit-400-32-256-64.cpp
 ```
 3. Launch prover
 ```shell
 cd ..
-./rapidsnark/build/proverServer circuit-344-32-256-64.dat circuit-344-32-256-64_hez3_final.zkey
+./rapidsnark/build/proverServer circuit-400-32-256-64.dat circuit-400-32-256-64_hez3_final.zkey
 ```
 Prover is deployed at port 9080.
 
@@ -264,20 +264,20 @@ npm install
 cd tools
 ```
 
-In this example we are working with `circuit-344-32-236-64_hez1.zkey`, which corresponds to a circuit with 344 transactions, 32 levels, 256 maxL1Tx and 64 maxFeeTx.
+In this example we are working with `circuit-400-32-236-64_hez1.zkey`, which corresponds to a circuit with 400 transactions, 32 levels, 256 maxL1Tx and 64 maxFeeTx.
 
 3. Generate Input file
 
 To generate a new input file with empty transactions:
 
 ```shell
-node build-circuit.js input 344 32 256 64
+node build-circuit.js input 400 32 256 64
 ```
-This command generates a new input file `rollup-344-32-256-64/input-344-32-256-64.json`
+This command generates a new input file `rollup-400-32-256-64/input-400-32-256-64.json`
 
 To generate a new input file with random transactions
 ```shell
-node generate-input.js 256 88 344 32 256 64
+node generate-input.js 256 144 400 32 256 64
 ``` 
 This will create a new input file called `inputs-256.json` 
 
@@ -289,7 +289,7 @@ curl -X POST -d @inputs-256.json http://localhost:9080/input
 ```
 or
 ```shell
-curl -X POST -d @input-344-32-256-64.json http://localhost:9080/input
+curl -X POST -d @input-400-32-256-64.json http://localhost:9080/input
 ```
 
 You check the status of the prover by querying the `/status` endpoint.
@@ -313,7 +313,7 @@ URL = "http://localhost:9080"
 
 ```
 [Coordinator.Circuit]
-MaxTx = 344
+MaxTx = 400
 NLevels = 32
 ```
 
@@ -543,7 +543,7 @@ URL = "http://0.0.0.0:9080"
 Initialize used circuit
 ```
 [Coordinator.Circuit]
-MaxTx = 344
+MaxTx = 400
 NLevels = 32
 ```
 
