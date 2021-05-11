@@ -46,6 +46,9 @@ Withdrawals take place first on the Hermez L2, where the fee is paid in the same
 
 To remedy this, please make sure you have enough funds in your L1 Ethereum account to cover the gas to complete the withdrawal.
 
+### My withdrawal is stuck in the last step
+The last step of the withdrawal transfers the funds from the smart contract to the user's account. If the gas price suddenly increases, the recommended gas price from metamask will be too low and the transaction will be stuck in Ethereum transaction pool. You can go to metamask and speed up the transaction setting a higher gas price.
+
 ### Why is my Deposit taking so long to process?
 
 Deposits move funds from Ethereum  L1 to L2 (Hermez) and must be forged by the Coordinator.  Depending on where the Coordinator is in the forging process, deposits may be as fast as 45 seconds or could take up to 15 minutes maximum. 
