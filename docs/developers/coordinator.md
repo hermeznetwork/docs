@@ -23,6 +23,7 @@ cd /tmp && go get -u github.com/gobuffalo/packr/v2/packr2 && cd -
 - docker and docker-compose without sudo permission (optional if you want to use the provided PostgreSQL and Geth containers)
    - [docker](https://docs.docker.com/engine/install/ubuntu/)
    - [docker-compose](https://docs.docker.com/compose/install/)
+   - [golangci-lint](https://golangci-lint.run/usage/install/)
 - [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided Geth container)
 
 ### Setup
