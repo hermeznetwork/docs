@@ -2,7 +2,7 @@
 This tutorial describes how to launch a Hermez node. It starts by explaining how to launch a Boot Coordinator in localhost.
 Next, it describes how to initialize a Proof Server and how to connect it to the Boot Coordinator.
 The next section describes how to spin up a second Hermez node in synchronizer mode to track the rollup status independently from the Boot Coordinator. This second node will be launched in Rinkeby testnet.
-The last part of the tutorial includes an explanation on how to add a second Coordinator node to Hermez testnet that bids for the right to forge batches.
+The last part of the tutorial includes an explanation on how to add a second Coordinator node to Hermez testnet Rinkeby that bids for the right to forge batches.
  
 1. [Preparing the Environment](#preparing-the-environment) 
 2. [Launching the Boot Coordinator](#launching-the-boot-coordinator)
@@ -16,14 +16,14 @@ up using docker containers.
 
 ### Dependencies
 - [golang 1.16+](https://golang.org/doc/install) 
-- packr utility to bundle the database migrations. Make sure your `$PATH` contains `$GOPATH/bin`, otherwise the packr utility will not be found.
+   - [golangci-lint](https://golangci-lint.run/usage/install/)
+   - [packr utility](https://github.com/gobuffalo/packr) to bundle the database migrations. Make sure your `$PATH` contains `$GOPATH/bin`, otherwise the packr utility will not be found.
 ```shell
 cd /tmp && go get -u github.com/gobuffalo/packr/v2/packr2 && cd -
 ```
 - docker and docker-compose without sudo permission (optional if you want to use the provided PostgreSQL and Geth containers)
    - [docker](https://docs.docker.com/engine/install/ubuntu/)
    - [docker-compose](https://docs.docker.com/compose/install/)
-   - [golangci-lint](https://golangci-lint.run/usage/install/)
 - [aws cli 2](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) (optional if you want to use the provided Geth container)
 
 ### Setup
@@ -33,53 +33,37 @@ git clone https://github.com/hermeznetwork/hermez-node.git
 ```
 2. Build `hermez-node` executable
 ```shell
+cd hermez-node
 make 
 ```
 The executable can be found in `bin/heznode`
 
 
-3. Deploy PostgreSQL database and Geth node containers. For this step we provide a docker-compose file example. Copy contents to file named `docker-compose.sandbox.yaml`
-```yaml
-version: "3.3"
-services:
-  hermez-db-test:
-    image: postgres
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: "hermez"
-      POSTGRES_PASSWORD: "yourpasswordhere"
-  privatebc:
-    image:  public.ecr.aws/r7d5k1t8/hermez-geth:latest
-    ports:
-      - "8545:8545"
-    environment:
-      - DEV_PERIOD
-    entrypoint: ["geth", "--http", "--http.addr", "0.0.0.0","--http.corsdomain", "*", "--http.vhosts" ,"*", "--ws", 
-    "--ws.origins", "*", "--ws.addr", "0.0.0.0", "--dev", "--datadir", "/geth_data$DEV_PERIOD"]
-```
+3. Deploy PostgreSQL database and Geth node containers. For this step we provide a docker-compose file example. Copy [file](developers/coord-files/docker-compose.sandbox.md) to `docker-compose.sandbox.yaml`.
 
-Login to AWS public ECR to be able to download the Geth docker image:
-
+  Login to AWS public ECR to be able to download the Geth docker image:
 ```shell
 export AWS_REGION=eu-west-3
-aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 811278125247.dkr.ecr.eu-west-3.amazonaws.com
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/r7d5k1t8
 ```
+Ensure that port 5432 is not being used. Otherwise, PostgreSQL docker will fail.
 
-Start database and Geth node:
+  To start start database and Geth node containers:
 ```shell
 DEV_PERIOD=3 docker-compose -f docker-compose.sandbox.yaml up -d
 ```
 This command will start a Geth node mining a block every 3 seconds. 
 Database is available at port 5432. Geth node is available at port 8545.
 
-To stop containers:
+  To stop containers:
 ```shell
 docker-compose -f docker-compose.sandbox.yaml down
 ```
 
-The Geth container comes with pre-deployed Hermez contracts and with 200 funded accounts.
-```
+  The Geth container comes with pre-deployed Hermez contracts and with 200 funded accounts.
+The relevant information about the contract deployment can be found below
+
+```json
  "hermezAuctionProtocolAddress": "0x317113D2593e3efF1FfAE0ba2fF7A61861Df7ae5"
  "hermezAddress": "0x10465b16615ae36F350268eb951d7B0187141D3B"
  "withdrawalDelayeAddress": "0x8EEaea23686c319133a7cC110b840d1591d9AeE0"
@@ -97,82 +81,54 @@ The Geth container comes with pre-deployed Hermez contracts and with 200 funded 
 ```
 
 
-4. Configure `cfg.buidler.toml` file. The configuration file located at `cmd/heznode/cfg.buidler.toml` needs to be customized to be able to deploy the Hermez node using the predeployed contracts.
+4. Customize Hermez Node configuration file. For this example, we can use [this configuration file](developers/coord-files/cfg.sandbox.boot-coordinator.md). Just copy this file to `cmd/heznode/cfg.sandbox.boot.coordinator.toml`
 
-You will need to change the `PriceUpdater` section to limit the frequency of the updates so that the logs are not clogged with price update information, the `SmartContract` section to 
-reflect the location of the deployed contracts, and the address of the Coordinator node. Just substitute the sections below in the `cfg.buidler.toml` file.
-
-
-```
-[PriceUpdater]
-Interval = "1000s"
-```
-
-```
-[SmartContracts]
-Rollup   = "0x10465b16615ae36F350268eb951d7B0187141D3B"
-Auction  = "0x317113D2593e3efF1FfAE0ba2fF7A61861Df7ae5"
-WDelayer = "0x8EEaea23686c319133a7cC110b840d1591d9AeE0"
-TokenHEZ = "0x5E0816F0f8bC560cB2B9e9C87187BeCac8c2021F"
-TokenHEZName = "Hermez Network Token"
-```
-
-```
-[Coordinator]
-ForgerAddress = "0xDcC5dD922fb1D0fd0c450a0636a8cE827521f0eD" # Non-Boot Coordinator
-```
-For more information on the parameters in the configuration file, see [this](https://github.com/hermeznetwork/hermez-node/blob/master/config/config.go#L57).
+  For more information on the parameters in the configuration file, read the [configuration parameters description](https://github.com/hermeznetwork/hermez-node/blob/master/config/config.go#L57).
 
 ## Launching the Boot Coordinator
 It is recommended to run the Coordinator node in a server with 8+ cores, 16 GB+ of RAM and 250GB of disk (AWS c5a.2xlarge or equivalent).
 
-1. Copy `cfg.buidler.toml` file. The configuration file can be found in `hermez-node/cmd/heznode` folder
+1. Import the Coordinator and Fee Ethereum accounts private keys into the keystore. 
 ```shell
-cp cmd/heznode/cfg.buidler.toml cmd/heznode/cfg.boot-coordinator.cfg
+./bin/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
+./bin/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0xfdb75ceb9f3e0a6c1721e98b94ae451ecbcb9e8c09f9fc059938cb5ab8cc8a7c
 ```
-
-2. Import the Coordinator Ethereum private key into the keystore. 
-```shell
-./bin/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
-```
-This private key corresponds to the Coordinator node (it has the index 4 of the pre-generated accounts). You only need to import the key once.
+The Coordinator account is used to pay the gas required to forge batches. The  Fee account is used to collect the fees paid by users submitting transactions to Hermez Network.
+You only need to import these keys once.
  
-3. Start a mock proof server. 
+2. Start a mock proof server. 
 ```shell
-cd test/proofserver/cli
-go build .
-./cli -d 15s -a 0.0.0.0:3000
+cd test/proofserver/cmd
+go build -o proof-server
+./proof-server -d 15s -a 0.0.0.0:3000
 ```
-The `hermez-node` repository provides a mock proof server that generates mock proofs every 15 seconds. The mock prover is launched at http://localhost:3000, and it exports two endpoints:
+The `hermez-node` repository provides a mock proof server that generates proofs every 15 seconds. The mock prover is launched at http://localhost:3000, and it exports two endpoints:
 - GET /api/status: Queries the prover's status.
 - POST /api/input: Starts the generation of a new proof.
 
-4. Wipe SQL database
+3. Wipe SQL database
 
-Before starting the Coordinator node, you may want to wipe the pre-existing SQL database.
+Before starting the Coordinator node, you may want to wipe the pre-existing SQL database. This command will wipe the pre-existing database if it exists, and it will force the Coordinator to resynchronize the full state.
 ```shell
-./bin/heznode wipedbs --mode coord --cfg cmd/heznode/cfg.boot-coordinator.toml 
+./bin/heznode wipedbs --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml 
 ```
 
-5. Launch `hermez-node`
+4. Launch the Hermez Node
+
 ```shell
-./bin/heznode run --mode coord --cfg cmd/heznode/cfg.boot-coordinator.toml
+./bin/heznode run --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml
 ```
 
-Once the Hermez node is launched, the API can be queried at `localhost:8086/v1`.
-
-
-
-For more information, check the [README](https://github.com/hermeznetwork/hermez-node/tree/master/cmd/heznode) file.
+Once the Hermez Node is launched, the API can be queried at `localhost:8086/v1`. You can find more information on the API [here](http://localhost:3000/#/developers/api)
 
 ## Launching a Proof Server
 We will use [rapidsnark](https://github.com/iden3/rapidsnark) as the Hermez proof server. `rapidsnarks` is a zkSnark proof generator written in C++.
 It is recommended to run the proof server in servers with 48+ cores, 96 GB+ of RAM and 250GB of disk (AWS c5a.12xlarge or equivalent).
 
-> rapidsnark requires a host CPU that supports ADX extensions. 
+> rapidsnark requires a host CPU that supports ADX extensions. You can check this with `cat /proc/cpuinfo | grep adx`
 
 ### Dependencies
-- [node v12+](https://nodejs.org/en/download/)
+- [node v14+](https://nodejs.org/en/download/)
 - npm
 ```shell
 apt install npm
@@ -182,20 +138,14 @@ apt install npm
 npm i -g npx
 ```
 
-- Install gcc, libsodium, gmp
+- Install gcc, libsodium, gmp, cmake
 ```
 sudo apt install build-essential
-sudo apt-get install libgmp-dev
-sudo apt-get install libsodium-dev
-sudo apt-get install nasm
-```
-- cmake
-```shell
-apt install cmake
+sudo apt-get install libgmp-dev libsodium-dev nasm cmake
 ```
 
 ### Circuit Files
-Download circuit and auxiliary files. These files are extremely large (20GB+), so make sure you have enough bandwidth.
+Download circuit and auxiliary files. These files are extremely large (20GB+), so make sure you have enough bandwidth and disk space.
 
 There are two Hermez circuits that have undergone the Trusted Setup Ceremony. 
 - circuit-2048-32-256-64 with 2048 transactions per batch (~2^27 constraints)
@@ -228,7 +178,7 @@ git clone  https://github.com/iden3/rapidsnark.git
 ```
 2. Compile the prover.
 
-In this example we are building the 400 transactions prover.
+  In this example we are building the 400 transactions prover.
 ```shell
 cd rapidsnark
 npm install
@@ -303,12 +253,13 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 ```
 
 ### Connect Prover to Coordinator Node
-Once you have verified the prover is working, you can connect it to the Hermez Coordinator by configuring the `cfg.boot-coordinator.toml` configuration file.
+Once you have verified the prover is working, you can connect it to the Hermez Coordinator by configuring the `cfg.sandbox.boot-coordinator.toml` configuration file.
 You need to substitute sections `ServerProofs` with the updated URL where prover is deployed, and the `Circuit` section where the verifier smart contract is specified.
 
 ```
 [[Coordinator.ServerProofs]]
-URL = "http://localhost:9080"
+#TODO: Add Prover URL
+#URL = "http://localhost:9080"
 ```
 
 ```
@@ -317,7 +268,7 @@ MaxTx = 400
 NLevels = 32
 ```
 
-At this point, you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080, and the two endpoints are `/status` and `/input`
+At this point, you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080 (or at the configured URL), and the two endpoints are `/status` and `/input`
 
 
 ## Launching a Synchronizer Node
@@ -327,132 +278,57 @@ For this part of the tutorial, we are going to deploy the syncrhonizer node in t
 
 1. Stop Coordinator node launched in localhost in previous steps.
 
-Stop prover, coordinator node and containers from previous phases as you will be working in testnet with a real Boot Coordinator node.
+  Stop prover, coordinator node and containers from previous phases as you will be working in testnet with a real Boot Coordinator node.
 ```shell
 docker-compose -f docker-compose.sandbox.yaml down
 ```
 
-2. Launch PostgreSQL database
+2. Launch PostgreSQL database.
 
-The Hermez node in synchronizer mode needs to run a separate database
+  The Hermez node in synchronizer mode needs to run on a separate database
 ```shell
 docker run --rm --name hermez-db -p 5432:5432 -e POSTGRES_DB=hermez -e POSTGRES_USER=hermez -e POSTGRES_PASSWORD="yourpasswordhere" -d postgres
 ```
 
 3. Start an Ethereum node in Rinkeby
 
-You can use Infura or you can run your own node using Geth.
+You will need to run your own Ethreum node on Rinkeby. We recommend using Geth.
 - Pre-built binaries for all platforms on our downloads page (https://geth.ethereum.org/downloads/).
 - Ubuntu packages in our Launchpad PPA repository (https://launchpad.net/~ethereum/+archive/ubuntu/ethereum).
 - OSX packages in our Homebrew Tap repository (https://github.com/ethereum/homebrew-ethereum).
 
 Sync this node with Rinkeby testnet where all Hermez's smart contracts are deployed. 
 
-> Note that synchronizing with Infura will be too slow, and it may fail beacuse the number of queries is limited. We recommend to deploy your own Ethereum node.
-
-
 4. Get contract addresses
 
-Query Testnet API for the addresses of the Hermez smart contracts.
+  Query Testnet API for the addresses of the Hermez smart contracts. You can use a web browser or the command below.
 
 ```shell
 curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET api.testnet.hermez.io/v1/config
 ```
-At this moment, the contracts are deployed in these addresses
-```
-"tokenHEZ":"0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2",
-"hermezAuctionContract":"0x0a8a6d65ad9046c2a57a5ca8bab2ae9c3345316d",
-"withdrawDelayerContract":"0xefd96cfbaf1b0dd24d3882b0d6b8d95f85634724"
-"hermezRollup":"0x679b11e0229959c1d3d27c9d20529e4c5df7997c"
-```
-
-5. Update Configuration file. Let's call this new file `cfg.sync.toml`. Make sure you add the correct contract addresses and the Rinkeby Node URL.
+  At this moment, Hermez Network is deployed in this address:
 
 ```
-[API]
-Address = "localhost:8086"
-Explorer = true
-UpdateMetricsInterval = "10s"
-UpdateRecommendedFeeInterval = "10s"
-MaxSQLConnections = 100
-SQLConnectionTimeout = "2s"
-
-[PriceUpdater]
-Interval = "10s"
-URLBitfinexV2 = "https://api-pub.bitfinex.com/v2/"
-URLCoinGeckoV3 = "https://api.coingecko.com/api/v3/"
-# Available update methods:
-# - coingeckoV3 (recommended): get price by SC addr using coingecko API
-# - bitfinexV2: get price by token symbol using bitfinex API
-# - static (recommended for blacklisting tokens): use the given StaticValue to set the price (if not provided 0 will be used)
-# - ignore: don't update the price leave it as it is on the DB
-DefaultUpdateMethod = "coingeckoV3" # Update method used for all the tokens registered on the network, and not listed in [[PriceUpdater.TokensConfig]]
-[[PriceUpdater.TokensConfig]]
-UpdateMethod = "bitfinexV2"
-Symbol = "USDT"
-Addr = "0xdac17f958d2ee523a2206206994597c13d831ec7"
-[[PriceUpdater.TokensConfig]]
-UpdateMethod = "coingeckoV3"
-Symbol = "ETH"
-Addr = "0x0000000000000000000000000000000000000000"
-[[PriceUpdater.TokensConfig]]
-UpdateMethod = "static"
-Symbol = "UNI"
-Addr = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984"
-StaticValue = 30.12
-[[PriceUpdater.TokensConfig]]
-UpdateMethod = "ignore"
-Symbol = "SUSHI"
-Addr = "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
-
-[StateDB]
-Path = "hermez/statedb"
-Keep = 256
-
-[PostgreSQL]
-PortWrite     = 5432
-HostWrite     = "hermez"
-UserWrite     = "hermez"
-PasswordWrite = "yourpasswordhere"
-NameWrite     = "hermez"
-
-[Web3]
-URL = "ADD RINKEBY NODE URL HERE"
-
-[Synchronizer]
-SyncLoopInterval = "1s"
-StatsRefreshPeriod = "1s"
-StatsUpdateBlockNumDiffThreshold = 100
-StatsUpdateFrequencyDivider = 100
-
-[SmartContracts]
-Rollup   = "0x679b11e0229959c1d3d27c9d20529e4c5df7997c"
-Auction  = "0x0a8a6d65ad9046c2a57a5ca8bab2ae9c3345316d"
-WDelayer = "0xefd96cfbaf1b0dd24d3882b0d6b8d95f85634724"
-TokenHEZ = "0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2"
-TokenHEZName = "Hermez Network Token"
-
-[RecommendedFeePolicy]
-# Strategy used to calculate the recommended fee that the API will expose.
-# Available options:
-# - Static: always return the same value (StaticValue) in USD
-# - AvgLastHour: calculate using the average fee of the forged transactions during the last hour
-PolicyType = "Static"
-StaticValue = 0.99
+"Rollup":"0x679b11e0229959c1d3d27c9d20529e4c5df7997c"
 ```
+
+5. Copy configuration [file](developers/coord-files/cfg.testnet.coord.md) to `hermez-node/cmd/heznode/cfg.testnet.sync.toml`. You will need to edit the following sections:
+- **PostgreSQL** Values provided are valid for docker postgreSQL container. You will need to supply the actual values for your database.  
+- **Web3** URL of your Rinkeby Ethereum node
+- **SmartContracts** Double check that the address provided in the configuration file corresponds to the current Hermez Network contract deployed in Rinkeby
 
 6. Launch `hermez-node` in synchronizer mode
 ```shell
-./bin/heznode run --mode sync --cfg cmd/heznode/cfg.sync.toml
+./bin/heznode run --mode sync --cfg cmd/heznode/cfg.testnet.sync.toml
 ```
 
-Once the Hermez node is launched, the API can be queried at `localhost:8086/v1` (as well as at https://api.testnet.hermez.io/v1/ serviced by the Boot Coordinator node).
+Once the Hermez node is launched, the API can be queried at the location specified in the configuration file in `API.Address` section, as well as at https://api.testnet.hermez.io/v1/ serviced by the Boot Coordinator node.
 
 ## Launching a Second Coordinator Node
 In this part of the tutorial we will start a second Coordinator Node in testnet that will bid for the right to forge batches.
 
 ### Dependencies
-- node 12+
+- node 14+
 
 ### Start Coordinator in Testnet
 1. Stop Synchronizer node and PostgreSQL container launched in previous steps.
@@ -463,7 +339,8 @@ In this part of the tutorial we will start a second Coordinator Node in testnet 
 docker run --rm --name hermez-db -p 5432:5432 -e POSTGRES_DB=hermez -e POSTGRES_USER=hermez -e POSTGRES_PASSWORD="yourpasswordhere" -d postgres
 ```
 3. Launch Prover as shown [here](#launching-a-proof-server)
-4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is `forger` account (needs to pay to forge batches), and the second is the `fee` account (receives the fees). The fees are collected in L2.
+
+4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is `forger` account (needs to pay for gas to forge batches in Ethereum and for bids in auction in HEZ), and the second is the `fee` account (receives the HEZ fees). The fees are collected in L2. You can convert from ETH to HEZ in [Uniswap](https://app.uniswap.org/#/swap?use=V2)
 
 5. Create a Wallet with `fee` account Ethereum Private Key. 
 
@@ -489,69 +366,14 @@ This script will generate a similar output:
 ```
 The Baby JubJub address is `publicKeyCompressedHex`. In this case, `0x0c83f81f4fce3e2ccc78530099830e29bf69713fa11c546ad152bf5226cfc774`.
 
-6. Edit Configuration file
-
-Copy original config file.
-```shell
-cp cfg.buidler.toml cfg.coord.cfg
-```
-And substitute the following sections. Make sure to configure your own Rinkeby Ethereum Node URL, the new Coordinator node Ethereum address and the Ethereum address where
-collected fees will be deposited.
-
-Let URL be accessible from outside
-```
-[API]
-Address = "0.0.0.0:8086"
-```
-
-Initialize Ethereum Node URL
-```
-[Web3]
-URL = "ADD RINKEBY NODE URL HERE"
-```
-
-Initialize smart contract addresses. They can be obtained using `api.testnet.hermez.io/v1/config` endpoint
-
-```
-[SmartContracts]
-Rollup   = "0x679b11e0229959c1d3d27c9d20529e4c5df7997c"
-Auction  = "0x0a8a6d65ad9046c2a57a5ca8bab2ae9c3345316d"
-WDelayer = "0xefd96cfbaf1b0dd24d3882b0d6b8d95f85634724"
-TokenHEZ = "0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2"
-TokenHEZName = "Hermez Network Token"
-```
-
-Initialize `forger account` Ethereum address
-```
-[Coordinator]
-ForgerAddress = "ADD COORDINATOR ETH ADDRESS HERE" # Non-Boot Coordinator
-```
-
-Initialize `fee account` Ethereum and Baby JubJub addresses
-```
-[Coordinator.FeeAccount]
-Address = "ADD FEE ETH ADDRESS HERE"
-BJJ = "ADD BJJ ADDRESS HERE"
-```
-
-Initialize proof server address using IP address where Proof Server is deployed.
-```
-[[Coordinator.ServerProofs]]
-URL = "http://0.0.0.0:9080"
-```
-
-Initialize used circuit
-```
-[Coordinator.Circuit]
-MaxTx = 400
-NLevels = 32
-```
-
-Adjust Gas
-```
-[Coordinator.EthClient.ForgeBatchGasCost]
-Fixed = 900000
-```
+6. Copy configuration [file](developers/coord-files/cfg.testnet.coord.md) to `hermez-node/cmd/heznode/cfg.testnet.coord.toml`. You will need to edit the following sections:
+- **PostgreSQL** Values provided are valid for docker postgreSQL container. You will need to supply the actual values for your database.  
+- **Web3** URL of your Rinkeby Ethereum node
+- **SmartContracts** Double check that the address provided in the configuration file corresponds to the current Hermez Network contract deployed in Rinkeby
+- **Coordinator.ForgerAddress** Ethereum account in Ethereum Rinkeby. This account is used to bid during the slots auction and to pay the gas to forge batches in Ethereum
+- **Coordinator.FeeAccount** You need to supply the Fee account in Ethereum Rinkeby and the Baby JubJub address computed in previous step. This account is used to colled the fees paid by transactions.
+- **Coordinator.ServerProofs** Provide a valid URL for the proof server.
+- **Coordinator.Circuit** Ensure the `MaxTx` parameters matches with the circuit size configed in the proof server.
 
 7. Import the `forger` and `fee` Ethereum private keys into the keystore. 
 ```shell
@@ -560,14 +382,9 @@ Fixed = 900000
 ```
 This private key corresponds to the new Coordinator node 
 
-8. Get ETH and HEZ to the `forger` account.
-
-You need to fund the `forger` account with some ETH and some HEZ. 
-You can also use Metamask and generate a `send` transaction from `forger` account to the HEZ token address. This transaction will add 100HEZ to the `forger` account.
-
-9. Launch New Coordinator Node
+8. Launch New Coordinator Node
 ```shell
-./bin/heznode run --mode coord --cfg cmd/heznode/cfg.coord.toml
+./bin/heznode run --mode coord --cfg cmd/heznode/cfg.testnet.coord.toml
 ```
 The node will start synchronizing with the Hermez Network in testnet. This may take a while.
 
@@ -576,55 +393,47 @@ Once the node is synchronized, you can start bidding for the right to forge a ba
 
 1. Install cli-bidding
 
-cli-bidding is a tool that allows to register a Coordinator in Hermez Network and place bids in the auction.
-
+  `cli-bidding` is a tool that allows to register a Coordinator in Hermez Network and place bids in the auction.
 ```shell
 git clone https://github.com/hermeznetwork/cli-bidding.git
 ```
-Once downloaded, follow the installation steps. `PRIVATE_KEY_CLI_BIDDING` corresponds to the `forger` private key.
+Once downloaded, follow the installation steps in the [README](https://github.com/hermeznetwork/cli-bidding/blob/master/readme.md).
+>NOTE that `PRIVATE_KEY_CLI_BIDDING` corresponds to the `forger` private key.
 
-2. Register Forger
+2. Approve HEZ transfers.
 
-Using `cli-bidding`, you need to register the new Coordinator API URL. In our case, we have the Coordinator node running at `http://134.255.190.114:8086`
+  Before the coordinator can start bidding, it needs to approve the use of HEZ tokens. To do this go to [HEZ address in Etherscan](https://rinkeby.etherscan.io/token/0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2), select `Contract` -> `Write Contract` -> `Approve` and set `spender address` to Coordinator address and `value` to quantity you want to approve. Recommendation is to set this quantity value very high.
+
+3. Register Forger
+
+  Using `cli-bidding`, you need to register the new Coordinator API URL. In our case, we have the Coordinator node running at `http://134.255.190.114:8086`
 ```
 node src/biddingCLI.js register --url http://134.255.190.114:8086
 ```
 >NOTE. In order for the wallet-ui to be able to forward transactions to this coordinator, the API needs to be accessible from a https domain.
 
-3. Get Current Slot in Hermez bid
+4. Get Current Slot and Minimum Bid in Hermez bid
 
-Take a look at the current slot being bid in Hermez. When bidding, you need to bid at least 2 slots after the curent slot
+  Take a look at the current slot being bid in Hermez. When bidding, you need to bid at least 2 slots after the curent slot
 ```shell
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8086/v1/state
-```
-In the json returned, there is a field, `network.currentSlot`, with the current Hermez slot. Let's assume this `currentSlot` is 4200
-
-4. Check Minimum bid
-
-Auctions have a minimum bid. You can check the current minimum bid for the upcomming slots
-```shell
-node src/biddingCLI.js slotinfo --startingSlot 4200 --endingSlot 4210
+node src/biddingCLI.js slotinfo
 ```
 
-In our case, minimum bidding is set to 1.1 HEZ.
+  In our case, minimum bidding is set to 11.0 HEZ, and first biddable slot is 4200.
 
-4. Bidding Process
+5. Bidding Process
 
-Send a simple bid of 1.1x10^18 HEZ for slot 4200. Parameter `amount` is the amount to be transferred to the auction smart contract. Parameter `bidAmount` is the actual bid amount. Thus `amount` >= `bidAmount` unless there are some existing funds previously transferred.
+  Send a simple bid of $11 \times 10^{18}$ HEZ for slot 4200. 
 
 ```shell
-node src/biddingCLI.js bid --amount 1.1 --slot 4200 --bidAmount 1.1
+node src/biddingCLI.js bid --amount 11 --slot 4200 --bidAmount 11
 ```
+  Parameter `amount` is the quantity to be transferred to the auction smart contract, and  `bidAmount` is the actual bid amount. 
 
-If the bidding process is successful, an Etherscan URL with the transaction id is returned to verify transaction.
+  If the bidding process is successful, an Etherscan URL with the transaction id is returned to verify transaction.
 
-You can check the allocated nextForgers using 
-```shell
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:8086/v1/state
-```
+  You can check the allocated nextForgers using /v1/state endpoint
 
-When the time to forge the auctioned slots comes, the node you supplied will be the one forging the upcoming batches.
-
-`cli-bidding` provides additional mechanism to bid in multple slots at once. Check the [README file](https://github.com/hermeznetwork/cli-bidding)
+`cli-bidding` provides additional mechanisms to bid in multple slots at once. Check the [README file](https://github.com/hermeznetwork/cli-bidding)
 
 
