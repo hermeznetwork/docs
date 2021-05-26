@@ -1,10 +1,10 @@
-# Hermez Wallet
+# Hermez Wallet Guide
 
-## What is Hermez Wallet?
+### Welcome to the Hermez Wallet
 
-Hermez Wallet provides a simple UI to get started with the Hermez Network. It supports depositing, transferring, and withdrawing ETH and ERC-20 tokens in Hermez. 
+Hermez Wallet provides a simple user interface to get started with the Hermez Network. It supports depositing, transferring, and withdrawing ETH and ERC-20 tokens on Hermez Network. 
 
-## Onboarding
+## Getting Started 
 
 When opening the wallet, there's a button to log in with Metamask. This will automatically derive a Hermez account from the Ethereum account.
 
@@ -61,6 +61,11 @@ Opening a transaction shows information related to that transaction. There's als
 ## Withdrawals
 
 Withdrawals are a two-part process. After completing the first part explained above, a card appears on the Home screen or on the respective account page. When ready, it will show a button to finalize the withdrawal.
+
+
+*Withdrawals require paying a gas fee on L1, insufficient gas in your L1 account will cause the withdrawal to stall. 
+
+*Withdrawals are final and cannot be stopped, reversed, or altered in any way after initiated.  
 
 ![](wallet/hw-withdraw.png)
 

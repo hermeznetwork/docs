@@ -293,6 +293,17 @@ The next circuit aims to check the past and future data transactions to match th
 
 Data to be signed in order to link transactions can be found [here](developers/protocol/hermez-protocol/protocol?id=transaction-fields)
 
+| rqTxOffset |     relativeIndex     |
+|:----------:|:---------------------:|
+|     0      | no linked transaction |
+|     1      |           1           |
+|     2      |           2           |
+|     3      |           3           |
+|     4      |          -4           |
+|     5      |          -3           |
+|     6      |          -2           |
+|     7      |          -1           |
+
 > Note that setting `rqTxOffset` to 0 means that no transaction is linked
 
 - Steps:
