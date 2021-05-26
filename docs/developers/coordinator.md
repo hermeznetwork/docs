@@ -272,7 +272,7 @@ At this point, you can stop the mock server if it is still running, and re-launc
 
 
 ## Launching a Synchronizer Node
-In synchronizer mode, the node is capable of keeping track of the rollup and consensus smart contracts, storing all the history of events and keeping the rollup
+In synchronizer mode, the node is capable of keeping track of the rollup and consensus smart contracts, storing all the history of events, and keeping the rollup
 state updated, handling reorgs when they happen. This mode is intended for entities that want to gather all the rollup data by themselves and not rely on third party APIs.
 For this part of the tutorial, we are going to deploy the syncrhonizer node in testnet on Rinkeby.
 
@@ -297,7 +297,7 @@ You will need to run your own Ethreum node on Rinkeby. We recommend using Geth.
 - Ubuntu packages in our Launchpad PPA repository (https://launchpad.net/~ethereum/+archive/ubuntu/ethereum).
 - OSX packages in our Homebrew Tap repository (https://github.com/ethereum/homebrew-ethereum).
 
-Sync this node with Rinkeby testnet where all Hermez's smart contracts are deployed. 
+Sync this node with Rinkeby testnet where all of Hermez's smart contracts are deployed. 
 
 4. Get contract addresses
 
@@ -340,11 +340,11 @@ docker run --rm --name hermez-db -p 5432:5432 -e POSTGRES_DB=hermez -e POSTGRES_
 ```
 3. Launch Prover as shown [here](#launching-a-proof-server)
 
-4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is `forger` account (needs to pay for gas to forge batches in Ethereum and for bids in auction in HEZ), and the second is the `fee` account (receives the HEZ fees). The fees are collected in L2. You can convert from ETH to HEZ in [Uniswap](https://app.uniswap.org/#/swap?use=V2)
+4. Create two Ethereum accounts in Rinkeby using Metamask wallet. One account is the `forger` account (needs to pay for gas to forge batches in Ethereum and for bids in auction in HEZ), and the second is the `fee` account (receives the HEZ fees). The fees are collected in L2. You can convert from ETH to HEZ in [Uniswap](https://app.uniswap.org/#/swap?use=V2)
 
 5. Create a Wallet with `fee` account Ethereum Private Key. 
 
-This wallet is needed to generate a Baby JubJub address where fees will be collected. There is an example code in the [SDK](https://github.com/hermeznetwork/hermezjs/blob/main/examples/create-wallet.js) that can be used. Simply substitue `EXAMPLES_WEB3_URL` by your Rinkeby Node URL and `EXAMPLES_PRIVATE_KEY1` by `fee` account private key.
+This wallet is needed to generate a Baby JubJub address where fees will be collected. There is an example code in the [SDK](https://github.com/hermeznetwork/hermezjs/blob/main/examples/create-wallet.js) that can be used. Simply substitute `EXAMPLES_WEB3_URL` by your Rinkeby Node URL and `EXAMPLES_PRIVATE_KEY1` by `fee` account private key.
 
 This script will generate a similar output:
 ```json
@@ -402,7 +402,7 @@ Once downloaded, follow the installation steps in the [README](https://github.co
 
 2. Approve HEZ transfers.
 
-  Before the coordinator can start bidding, it needs to approve the use of HEZ tokens. To do this go to [HEZ address in Etherscan](https://rinkeby.etherscan.io/token/0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2), select `Contract` -> `Write Contract` -> `Approve` and set `spender address` to Coordinator address and `value` to quantity you want to approve. Recommendation is to set this quantity value very high.
+  Before the coordinator can start bidding, it needs to approve the use of HEZ tokens. To do this go to [HEZ address in Etherscan](https://rinkeby.etherscan.io/token/0x2521bc90b4f5fb9a8d61278197e5ff5cdbc4fbf2), select `Contract` -> `Write Contract` -> `Approve` and set `spender address` to Coordinator address and `value` to quantity you want to approve. The recommendation is to set this quantity value very high.
 
 3. Register Forger
 

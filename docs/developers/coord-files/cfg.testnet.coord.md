@@ -73,12 +73,12 @@ StatsUpdateFrequencyDivider = 100
 StatsRefreshPeriod = "1s"
 
 [SmartContracts]
-#TODO  - Check Rollup address is matches the one displayed at https://api.testnet.hermez.io/v1/state
+#TODO  - Check that Rollup address matches the one displayed at https://api.testnet.hermez.io/v1/state
 Rollup   = "0x679b11E0229959C1D3D27C9d20529E4C5DF7997c"
 
 
 [Coordinator]
-#TODO - Add you coordinator's Ethereum Address
+#TODO - Add your coordinator's Ethereum Address
 #ForgerAddress = "0xaFd6e65bdB854732f39e2F577c67Ea6e83a4C2c2"  # Coordinator
 MinimumForgeAddressBalance = 0
 ConfirmBlocks = 5
