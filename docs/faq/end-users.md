@@ -24,8 +24,7 @@ From a desktop computer, please visit the <a href="https://hermez.io/wallet/"> H
 
 ### How long do transfers take on Hermez Network from start to finish? 
 
-We expect that transaction time should be between 45 seconds and 15 minutes. Several factors can affect the transaction time, including: coordinator configuration, backlogged transactions, and the transaction type. Deposits and Withdrawals take place on both L2 (Hermez) and L1 (Ethereum), which can cause an increase in transaction time depending on L1 volume.  
-
+We expect that transaction time should be between 45 seconds and 30 minutes. There are several factors that can effect the transaction time, including; coordinator configuration, backlogged transactions and the transaction type. Deposits and Withdrawals take place on both L2 (Hermez) and L1 (Ethereum), which can cause an increase in transaction time depending on L1 volume.  
 
 ### Who can I transact with on Hermez Network? 
 
