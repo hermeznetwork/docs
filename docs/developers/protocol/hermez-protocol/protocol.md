@@ -228,15 +228,39 @@ There are two ways to authorize an account creation (that is, an Ethereum addres
 - Via Ethereum transaction, which has an implicit signature of the Ethereum address.  This requires the owner of the Ethereum address to sign the smart contract transaction call
 - Via an authorization signature (`AccountCreationAuthSig`) that can be used by any party to create accounts on behalf of the user
 
+`AccountCreationAuthSig` specification (follows [ethereum eip712](https://eips.ethereum.org/EIPS/eip-712)):
+
 ```
-[32 bytes] compressed-bjj
-[ 2 bytes] chainId
-[20 bytes] hermezAddress
+domain: {
+  name: "Hermez Network",
+  version: "1",
+  chainId: chainID,
+  verifyingContract: rollupContractAddress
+}
+
+structured typed data: {
+  Authorise: [
+      { name: "Provider", type: "string" },
+      { name: "Authorisation", type: "string" },
+      { name: "BJJKey", type: "bytes32" }
+  ]
+}
+
+structured data: {
+  Provider: "Hermez Network",
+  Authorisation: "Account creation",
+  BJJKey: compressed-bjj
+}
 ```
 
-`AccountCreationAuthMsg = "I authorize this babyjubjub key for hermez rollup account creation" || compressed-bjj || chainId || hermezAddress`
+where:
+- `chainID`: refers to the ethereum chain identifier
+- `rollupContractAddress`: rollup contract ethereum address
+- `compressed-bjj`: babyjubjub public key in its compressed format represented as hexadecimal string
 
-`AccountCreationAuthSig = Sign_ecdsa(AccountCreationAuthMsg)`
+`signature = eth_signTypedData(domain, types, value)`
+
+Further details on `eth_signTypedData` could be found [here](https://eips.ethereum.org/EIPS/eip-712#specification-of-the-eth_signtypeddata-json-rpc)
 
 ### Internal Rollup Account
 
