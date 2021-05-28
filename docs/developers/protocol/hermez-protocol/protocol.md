@@ -260,7 +260,7 @@ where:
 
 `signature = eth_signTypedData(domain, types, value)`
 
-Further details on `eth_signTypedData` could be found [here](https://eips.ethereum.org/EIPS/eip-712#specification-of-the-eth_signtypeddata-json-rpc)
+Further details on `eth_signTypedData` can be found [here](https://eips.ethereum.org/EIPS/eip-712#specification-of-the-eth_signtypeddata-json-rpc)
 
 ### Internal Rollup Account
 
