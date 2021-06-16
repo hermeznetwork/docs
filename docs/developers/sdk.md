@@ -3,10 +3,14 @@ Some Golang and Javascript integration examples are provided as a reference. The
 - [Hermez Golang examples](https://github.com/hermeznetwork/hermez-integration)
 - [Hermez Javascript examples](https://github.com/hermeznetwork/hermezjs/tree/main/examples)
 
-Additionally, a full SDK is provided in Javascript. More information on the SDK [here](#sdk) 
+Additionally, [Hermez Mobile SDK example](https://github.com/hermeznetwork/hermez_flutter_sdk/tree/main/example) provides an example of how to import and use the Mobile SDK.
 
 # SDK
+A full Javascript SDK and a Flutter Plugin for Hermez Mobile SDK are provided as part of the tools for integration with Hermez Network.
+
 HermezJS is an open-source SDK to interact with Hermez Rollup network.  It can be downloaded as an [npm package](https://www.npmjs.com/package/@hermeznetwork/hermezjs), or via [github](https://github.com/hermeznetwork/hermezjs).
+
+[Hermez Flutter SDK](https://github.com/hermeznetwork/hermez_flutter_sdk) is a Flutter Plugin for Hermez Mobile SDK, and provides a cross-platform tool (iOS, Android) to communicate with the Hermez API and network. 
 
 ## SDK How-To
 In this tutorial we will walk through the process of using the SDK to:
@@ -821,7 +825,4 @@ Once the transaction is forged, we can check the account information
 
 ```
 We can verify it is in fact an `internal account` because the associated `hezEthereumAddress` is `hez:0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`.
-
-
-
 
