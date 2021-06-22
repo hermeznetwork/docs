@@ -139,12 +139,14 @@ bit position:
 - `ethAddr`: Ethereum address (160 bits)
 - `tokenID`: token identifier (32 bits)
 - `balance`: balance (192 bits)
+- `exitBalance`: exit accumulated balance (192 bits)
+- `accumulatedHash`: received transactions hash chain (253 bits)
 - `nonce`: nonce (40 bits)
 
 ### Transaction Fields
 All transactions fields are required to build the ZK-SNARK proof but depending on the transaction type not all of them are used.
 Detailed transaction types can be seen in [transaction type section](#Transaction-Types)
-Below is a summary of each transaction field and its explaination:
+Below is a summary of each transaction field and its explanation:
 
 - `signature_constant`: hardcoded transaction constant that indicates that the user is signing a Hermez rollup transaction. Used to avoid transaction replay in case other rollup are deployed (32 bits)
 ```
@@ -193,7 +195,7 @@ Each leaf of the state tree (account) contains the following data:
 - Value: `Hash(state)`
     ```
     **field element notation**
-    State hash = H(e0, e1, e2, e3)
+    State hash = H(e0, e1, e2, e3, e4, e5)
 
     e_0: [ 32 bits  ] tokenID
          [ 40 bits  ] nonce
@@ -201,27 +203,20 @@ Each leaf of the state tree (account) contains the following data:
     e_1: [ 192 bits ] balance
     e_2: [ 253 bits ] ay
     e_3: [ 160 bits ] ethAddr
+    e_4: [ 192 bits ] exitBalance
+    e_5: [ 253 bits ] accumulatedHash
     ```
 
 All data is hashed with Poseidon hash function and inserted into the sparse Merkle tree as a key-value pair.
 
-This approach implies a balanced Merkle tree: path is traversed from the root starting with the least significant bit out of the NLevels bits.
+This approach implies a balanced Merkle tree: path is traversed from the root starting with the least significant bit out of the `NLevels` bits.
 This allows to have as many accounts as the tree levels:
 
 $MAX\_ACCOUNTS$ = $2^{MAX\_NLEVELS}$
 
-### Exit Tree
-Each batch would have an associated exit tree with all the exits performed by the user, either L1 or L2 exit transactions.
-The exit tree has the same leaf structure as the state tree with some particularities:
-- nonce is always set to 0
-- if several exits are done in the same batch for the same account, the balance is just added on top of the account
-
-User will need to prove that it owns a leaf in the exit tree in order to perform its withdraw and get back the tokens from the contract. This verification could be done either by submitting a Merkle tree proof or by submitting a ZK Proof.
-
 ## Account Types
 
 ### Regular Rollup Account
-
 
 Regular accounts contain an Ethereum address and a Baby Jubjub public key.  Accounts are always indexed by Ethereum address in the UX, so it is a requirement that the Ethereum address authorizes the account keys.  Once the account is created, the Ethereum key is used to authorize L1 txs and the Baby Jubjub key is used to authorize L2 txs.
 There are two ways to authorize an account creation (that is, an Ethereum address authorizes the creation of an account containing that same Ethereum address and a Baby Jubjub public key):
@@ -266,6 +261,10 @@ Further details on `eth_signTypedData` can be found [here](https://eips.ethereum
 
 An internal rollup account does not use an Ethereum address, and thus can only operate via L2 txs.  Since no Ethereum address is involved, the account creation does not require an authorization and will only specify the Baby Jubjub public key.  Internally, this account will have the `ethAddr = 0xffff..`.
 
+### Only-exit Rollup Account
+
+An only-exit rollup account does use an specific babyjubjub address, `compressed-bjj = 0x9fff...ffff`.
+This account can only operate on L1 transactions and all the transactions received are exits and thus only `exitBalance` can be increased while the `balance` is kept always 0. This feature allows only-exit rollup accounts to act as migration accounts when migrating among rollups.
 
 ## Transaction Types
 
@@ -363,6 +362,8 @@ All L1 txs that perform a transfer or exit must be approved by the Ethereum addr
         - `tokenID`: `tokenId`
         - `balance`: `loadAmount`
         - `nonce`: 0
+        - `exitBalance`: 0
+        - `accumulatedHash`: 0
 - Requirements:
 
 #### CreateAccountDepositTransfer
@@ -384,6 +385,8 @@ All L1 txs that perform a transfer or exit must be approved by the Ethereum addr
         - `tokenID`: `tokenId`
         - `balance`: `loadAmount`
         - `nonce`: 0
+        - `exitBalance`: 0
+        - `accumulatedHash`: 0
   - subtract `amountFloat40` from sender `auxFromIdx`
   - add `amountFloat40` to recipient `toIdx`
 - Requirements:
@@ -464,10 +467,8 @@ All L1 txs that perform a transfer or exit must be approved by the Ethereum addr
   - `tokenId`: user parameter
   - `toIdx`: 1
 - Actions:
-  - subtract `amountFloat40` from sender `fromIdx`
-  - If it does not exit `fromIdx` account on the exit tree:
-    - new account `fromIdx` inserted into the exit tree
-  - add `amountFloat40` to the exit tree recipient `fromIdx`
+  - subtract `amountFloat40` from `balance` sender `fromIdx`
+  - add `amountFloat40` to its `exitBalance` account field
 - Requirements:
   - sender `fromIdx` must exist
 - Checks NULL:
@@ -499,6 +500,8 @@ Account could be created for a given:
         - `tokenID`: `tokenId`
         - `balance`: 0
         - `nonce`: 0
+        - `exitBalance`: 0
+        - `accumulatedHash`: 0
 - Requirements:
   - coordinator must submit:
     - `ecdsa signature`: R,S,V signature of [AccountCreationAuthMsg](#regular-rollup-account)
@@ -517,10 +520,12 @@ Account could be created for a given:
     - account data:
         - `sign`: `fromBjj-compressed -> sign`
         - `ay`: `fromBjj-compressed -> ay`
-        - `ethAddr`: 0
+        - `ethAddr`: `0xffff..`
         - `tokenID`: `tokenId`
         - `balance`: 0
         - `nonce`: 0
+        - `exitBalance`: 0
+        - `accumulatedHash`: 0
 
 ### L2
 All L2 transactions are sent to the coordinators by the users. The coordinator collects them into a batch in order to forge it.
@@ -588,19 +593,15 @@ It is assumed that this transaction has a recipient `toIdx` > `INITIAL_IDX`
   - sender `fromIdx` has the correct `nonce`
 
 #### Exit
-Transfer tokens from an account to the [exit tree](developers/protocol/hermez-protocol/protocol?id=exit-tree), L2 --> L2
+Transfer tokens from an account to its `exitBalance`, L2 --> L2
 
 - Actions:
-  - subtract `amountFloat40` from sender `fromIdx`
-  - If it does not exit `fromIdx` account on the exit tree:
-    - new account `fromIdx` inserted into the exit tree
-  - add `amountFloat40` to the exit tree recipient `fromIdx`
+  - subtract `amountFloat40` from `balance` sender `fromIdx`
+  - add `amountFloat40` to its `exitBalance` account field
 - Valid transaction:
   - sender `fromIdx` exist on the state tree
-  - `tokenID` match with `fromIdx` token
   - sender `fromIdx` has enough funds
   - sender `fromIdx` has the correct `nonce`
-
 
 #### TransferToEthAddr
 The sender sends the transaction to an Ethereum address recipient in the state tree.
@@ -647,34 +648,37 @@ Hence, coordinator would select the recipient `idx` to add `amountFloat40` (call
   - sender `fromIdx` has the correct `nonce`
 
 ### HermezWithdraw
-Funds are held on Hermez contract once the user has perform an [exit transaction](developers/protocol/hermez-protocol/protocol?id=exit).
-The withdrawal data will contain unique data (nullifier) which identifies the withdrawal. Hence, the smart contract will store that data to avoid performing withdrawals multiple times.
 
-Each withdrawal could be identified uniquely by:
-  - Merkle tree index
-  - number exit root
+Funds are held on Hermez contract once the user has perform [exit transactions](developers/protocol/hermez-protocol/protocol?id=exit).
+`exitBalance` will determine the accumulated exit amount that the user has been done historically. When the user wants to perform a withdrawal it must prove that its account contains a given `exitBalance` for a given batch number. Since `exitBalance` is incremental, user could join multiple exits across multiple batches.
 
+Smart contract will held last `exitBalance` amount withdrawed by the user:
 ```
-// numExitRoot => (idx => true/false)
-mapping(uint64 => mapping(uint48 => bool)) public exitNullifierMap;
+// idx => exitBalance
+mapping(uint48 => uint256) public lastAmountExitMap;
 ```
 
-In order to perform withdraw with a ZK Proof, all pretended public inputs are hashed with `sha256` into one single public input in order to optimize number of public inputs and therefore save gas at the time to do the verification in the smart contract.
+To avoid fraud withdrawals, smart contract must check that the amount to withdraw is greater than the last amount that the user withdrawed:
+```
+require( amountToWithdraw > lastAmountExitMap[idx]);
+```
+
+All pretended public inputs are hashed with `sha256` into one single public input in order to optimize number of public inputs and therefore save gas at the time to do the verification in the smart contract.
 Pretended public inputs are hashed following the next specification:
 
 ```
 **Buffer bytes notation**
-globalInputsData: [ 256 bits ] rootExit
+globalInputsData: [ 256 bits ] stateRoot
                   [ 160 bits ] ethAddr
                   [  32 bits ] tokenID
-                  [ 192 bits ] balance
+                  [ 192 bits ] exitBalance
                   [  48 bits ] idx
 hashGlobalInputs = SHA256(globalInputsData) % rField
 ```
 
 Example:
 ```
-rootExit =  0x1230000000000000000000000000000000000000000000000000000000000456
+stateRoot =  0x1230000000000000000000000000000000000000000000000000000000000456
 ethAddr = 0xAB000000000000000000000000000000000000CD
 tokenID = 0x700000007
 balance = 0xEE00000000000000000000000000000000000000000000EE
@@ -742,8 +746,8 @@ There two types of L1CoordinatorTx:
   - Coordinator should create an account with a Baby Jubjub key equal to the `toAx` and `toAy` in the L2 transaction in order to process the L2 transaction
   - ecdsa signature fields are set to 0
 
-### L1 - L2 Transactions
-All transactions processed in a batch must be posted on L1. This is assured by hashing all data-availability and forces the coordinator to match all his processed transactions with his posted L1 data-availability.
+### L2 Transactions
+All L2 transactions processed in a batch must be posted on L1. This is assured by hashing all data-availability and forces the coordinator to match all his processed transactions with his posted L1 data-availability.
 
 L2 transactions data-availability struct `L2TxData`:
 > `finalToIdx` is equal to `toIdx` except when `toIdx == IDX 0` where it will be equal to `auxToIdx`
@@ -755,10 +759,18 @@ L2TxData: [ NLevels  bits ] fromIdx
           [     8  bits   ] fee
 ```
 > note that `nopTxData` is a `L2TxData` struct where all the fields are set to 0
+> Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 40 + 8 = 112 bits = 14 bytes
+
+`L2TxsData` is the all the L1-L2 transaction data concatenated:
+```
+L2TxsData = L2TxData[0] || L2TxData[1] || ... || L2TxData[len(L2Txs) - 1] || nopTxData[len(Txs)] || ... || nopTxData[MAX_TXS - 1]
+```
+
+### L1 Transactions & AccumulatedHash
+L1 and L2 transactions are implicitly stored on the `accumulatedHash` field into the state tree. Data stored on the `accumulatedHash` would be the `L2TxData` for L2 transactions and the following data for L1 transactions:
 
 L1 transactions data-availability struct `L1TxData`:
-> note that effectiveAmount is the amount that will be transferred on L1 transaction once all the nullifiers are applied
-```
+ ```
 **Buffer bytes notation**
 L1TxData: [ NLevels  bits ] fromIdx
           [ NLevels  bits ] toIdx
@@ -766,11 +778,12 @@ L1TxData: [ NLevels  bits ] fromIdx
           [     8  bits   ] fee = 0
 ```
 
-> Example: considering `NLevels = 32 bits`, each L2Tx data-availability is 32 + 32 + 40 + 8 = 112 bits = 14 bytes
-
-`L1L2TxsData` is the all the L1-L2 transaction data concatenated:
+- computation `accumulatedHash`:
 ```
-L1L2TxsData = L1TxData[0] || L1TxData[1] || ... || L1TxData[len(L1Txs) - 1] || L2TxData[0] || L2TxData[1] || ... || L2TxData[len(L2Txs) - 1] || nopTxData[len(Txs)] || ... || nopTxData[MAX_TXS - 1]
+**field element notation**
+accumulatedHash = H(e0, e1)
+e_0: [        253 bits       ] previousAccumulatedHash
+e_1: [ (2*NLevels + 48) bits ] L1TxData or L2TxData
 ```
 
 ### Fee Tx
@@ -799,9 +812,8 @@ Contract will compute the hash of all pretended public inputs of the circuit in 
   - `newLastIdx`: new last merkle tree index created
   - `oldStateRoot`: ols state root
   - `newStateRoot`: new state root
-  - `newExitRoot`: new exit root
   - `L1TxsFullData`: bits  L2 full data
-  - `L1L2TxsData`: bits L1-L2 transaction data-availability
+  - `L2TxsData`: bits L2 transaction data-availability
   - `feeTxsData`: all index accounts to receive accumulated fees
   - `chainId`: global chain identifier
   - `currentNumBatch`: current batch number processed
@@ -813,9 +825,8 @@ hashGlobalData: [            MAX_NLEVELS bits          ] oldLastIdx
                 [            MAX_NLEVELS bits          ] newLastIdx
                 [                256 bits              ] oldStRoot
                 [                256 bits              ] newStRoot
-                [                256 bits              ] newExitRoot
                 [ MAX_L1_TX*(2*MAX_NLEVELS + 528) bits ] L1TxsFullData
-                [     MAX_TX*(2*NLevels + 48) bits     ] L1L2TxsData
+                [     MAX_TX*(2*NLevels + 48) bits     ] L2TxsData
                 [       NLevels * MAX_TOKENS_FEE       ] feeTxsData
                 [                 16 bits              ] chainID
                 [                 32 bits              ] currentNumBatch
