@@ -36,7 +36,7 @@ git clone https://github.com/hermeznetwork/hermez-node.git
 cd hermez-node
 make 
 ```
-The executable can be found in `bin/heznode`
+The executable can be found in `dist/heznode`
 
 
 3. Deploy PostgreSQL database and Geth node containers. For this step we provide a docker-compose file example. Copy [file](developers/coord-files/docker-compose.sandbox.md) to `docker-compose.sandbox.yaml`.
@@ -90,8 +90,8 @@ It is recommended to run the Coordinator node in a server with 8+ cores, 16 GB+ 
 
 1. Import the Coordinator and Fee Ethereum accounts private keys into the keystore. 
 ```shell
-./bin/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
-./bin/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0xfdb75ceb9f3e0a6c1721e98b94ae451ecbcb9e8c09f9fc059938cb5ab8cc8a7c
+./dist/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0x705df2ae707e25fa37ca84461ac6eb83eb4921b653e98fdc594b60bea1bb4e52
+./dist/heznode importkey --mode coord --cfg ./cmd/heznode/cfg.sandbox.boot-coordinator.toml --privatekey 0xfdb75ceb9f3e0a6c1721e98b94ae451ecbcb9e8c09f9fc059938cb5ab8cc8a7c
 ```
 The Coordinator account is used to pay the gas required to forge batches. The  Fee account is used to collect the fees paid by users submitting transactions to Hermez Network.
 You only need to import these keys once.
@@ -110,13 +110,13 @@ The `hermez-node` repository provides a mock proof server that generates proofs 
 
 Before starting the Coordinator node, you may want to wipe the pre-existing SQL database. This command will wipe the pre-existing database if it exists, and it will force the Coordinator to resynchronize the full state.
 ```shell
-./bin/heznode wipedbs --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml 
+./dist/heznode wipedbs --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml 
 ```
 
 4. Launch the Hermez Node
 
 ```shell
-./bin/heznode run --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml
+./dist/heznode run --mode coord --cfg cmd/heznode/cfg.sandbox.boot-coordinator.toml
 ```
 
 Once the Hermez Node is launched, the API can be queried at `localhost:8086/v1`. You can find more information on the API [here](http://localhost:3000/#/developers/api)
