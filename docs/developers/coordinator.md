@@ -319,7 +319,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 6. Launch `hermez-node` in synchronizer mode
 ```shell
-./bin/heznode run --mode sync --cfg cmd/heznode/cfg.testnet.sync.toml
+./dist/heznode run --mode sync --cfg cmd/heznode/cfg.testnet.sync.toml
 ```
 
 Once the Hermez node is launched, the API can be queried at the location specified in the configuration file in `API.Address` section, as well as at https://api.testnet.hermez.io/v1/ serviced by the Boot Coordinator node.
@@ -377,14 +377,14 @@ The Baby JubJub address is `publicKeyCompressedHex`. In this case, `0x0c83f81f4f
 
 7. Import the `forger` and `fee` Ethereum private keys into the keystore. 
 ```shell
-./bin/heznode importkey --mode coord --cfg cmd/heznode/cfg.coord.toml --privatekey <FORGER ACCOUNT_PRIVATE KEY>
-./bin/heznode importkey --mode coord --cfg cmd/heznode/cfg.coord.toml --privatekey <FEE_ACCOUNT PRIVATE KEY>
+./dist/heznode importkey --mode coord --cfg cmd/heznode/cfg.coord.toml --privatekey <FORGER ACCOUNT_PRIVATE KEY>
+./dist/heznode importkey --mode coord --cfg cmd/heznode/cfg.coord.toml --privatekey <FEE_ACCOUNT PRIVATE KEY>
 ```
 This private key corresponds to the new Coordinator node 
 
 8. Launch New Coordinator Node
 ```shell
-./bin/heznode run --mode coord --cfg cmd/heznode/cfg.testnet.coord.toml
+./dist/heznode run --mode coord --cfg cmd/heznode/cfg.testnet.coord.toml
 ```
 The node will start synchronizing with the Hermez Network in testnet. This may take a while.
 
