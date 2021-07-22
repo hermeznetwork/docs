@@ -60,7 +60,7 @@ L1 transactions can be divided in two groups depending the originator of the tra
 - **L1 Coordinator Transactions**: originate from the coordinator.
 
 #### L1 User Transactions
-L1 user transactions (L1UserTxs) are received by the smart contract. These transactions are concatenated and added in queues to [`force the coordinator`](../developers/dev-guide?id=L1L2-Batches) to process them as part of the batch. The queue that will be forged in the next L1L2-batch it's always frozen, and the L1 Transactions will be added in the following queues. In case a transaction is invalid (e.g. try to send more amount than the account has) will be processed by the circuit but will be nullified.
+L1 user transactions (L1UserTxs) are received by the smart contract. These transactions are concatenated and added in queues to [`force the coordinator`](../developers/dev-guide?id=L1L2-Batches) to process them as part of the batch. The queue that will be forged in the next L1L2-batch is always frozen, and the L1 Transactions will be added in the following queues. In case a transaction is invalid (e.g. attempts to send an amount greater than the account balance) it will be processed by the circuit but will be nullified.
 
 This system allows the L1 transactions to be uncensorable
 
@@ -69,7 +69,7 @@ Examples of L1 User transactions include `CreateAccountDeposit`, `Deposit`, `Dep
 L1 Coordinator Transactions (L1CoordinatorTxs) allow the coordinator to create regular or internal [`accounts`](../developers/dev-guide?id=accounts) when forging a batch so that a user can transfer funds to another user that doesn't own an account yet.
 
 ### L2 Transactions
-L2 transactions (L2Txs) are executed exclusively on L2. Examples of L2 transactions include `Transfer` of funds between rollup accounts or `Exit` to transfer funds to the exit tree. All L2 transactions are initiated by the user, who sends the transactions directly to the coordinator via a [`REST API`](../developers/api?id=api). Depending on the UI capabilities, the user may be able to select among different number of coordinators (the one currently forging, the ones that already have won the right to forge in upcoming slots,...).
+L2 transactions (L2Txs) are executed exclusively on L2. Examples of L2 transactions include `Transfer` of funds between rollup accounts or `Exit` to transfer funds to the exit tree. All L2 transactions are initiated by the user, who sends the transactions directly to the coordinator via a [`REST API`](../developers/api?id=api). Depending on the UI capabilities, the user may be able to select among a number of coordinators (the one currently forging, the ones that have already won the right to forge in upcoming slots,...).
 
 Fees are payed on L2 transactions in the same token used in the transaction. The coordinator collects these fees from up to 64 different tokens per batch. If more than 64 tokens are used in the same batch, no fees will be collected for the excess number of tokens. 
 
