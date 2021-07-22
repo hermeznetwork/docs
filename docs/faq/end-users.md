@@ -16,6 +16,8 @@ Hermez is a Layer 2 solution to scale payments on top of Ethereum.  It works by 
 From a desktop computer, please visit the <a href="https://hermez.io/wallet/"> Hermez Wallet </a> landing page and follow the instructions for setup. 
 ![](img/how-to-tx.png)
 
+>Note : To withdraw funds, first select the token you want to withdraw from, and the next screen will show a Withdraw button.
+
 &nbsp;
 &nbsp;
 
