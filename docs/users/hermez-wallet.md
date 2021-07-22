@@ -60,14 +60,17 @@ Opening a transaction shows information related to that transaction. There's als
 
 ## Withdrawals
 
-Withdrawals are a two-part process. After completing the first part explained above, a card appears on the Home screen or on the respective account page. When ready, it will show a button to finalize the withdrawal.
+Withdrawals are a two-part process. The first part requires you to select the Token account you want to withdraw from (for example HEZ) and on the next screen click on the `Withdraw` button, enter the amount to withdraw, and click on `Continue`.
 
+After completing the first part explained above, a card with the withdrawal details appears on the Home screen or on the respective account page. When ready, it will show a button to finalize the withdrawal.
 
-*Withdrawals require paying a gas fee on L1, insufficient gas in your L1 account will cause the withdrawal to stall. 
+*Withdrawals require paying an Ether gas fee on L1, insufficient gas in your L1 account will cause the withdrawal to stall. 
 
 *Withdrawals are final and cannot be stopped, reversed, or altered in any way after initiated.  
 
 ![](wallet/hw-withdraw.png)
+
+Alternatively, you can transfer your funds to a different account in Hermez and perform the withdrawal from that account. This may be helpful in situations where you don't have enough Ether in the original L1 account but do in a different account.
 
 ## My Account
 
