@@ -1,6 +1,6 @@
 # Examples
 Some Golang and Javascript integration examples are provided as a reference. They can be found at:
-- [Hermez Golang examples](https://github.com/hermeznetwork/hermez-integration)
+- [Hermez Golang examples](https://github.com/hermeznetwork/hermez-go-sdk/tree/main/examples)
 - [Hermez Javascript examples](https://github.com/hermeznetwork/hermezjs/tree/main/examples)
 
 Additionally, [Hermez Mobile SDK example](https://github.com/hermeznetwork/hermez_flutter_sdk/tree/main/example) provides an example of how to import and use the Mobile SDK.
@@ -12,7 +12,9 @@ HermezJS is an open-source SDK to interact with Hermez Rollup network.  It can b
 
 [Hermez Flutter SDK](https://github.com/hermeznetwork/hermez_flutter_sdk) is a Flutter Plugin for Hermez Mobile SDK, and provides a cross-platform tool (iOS, Android) to communicate with the Hermez API and network. 
 
-## SDK How-To
+There is an additional [Golang SDK](https://github.com/hermeznetwork/hermez-go-sdk)
+
+## SDK How-To (Javascript)
 In this tutorial we will walk through the process of using the SDK to:
 1. [Installing Hermezjs](#install-hermezjs)
 2. [Initializing Hermezjs](#initialization)
