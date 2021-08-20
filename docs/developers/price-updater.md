@@ -56,7 +56,12 @@ $ ./priceupdater update-config --provider bitfinex --configFile assests/mainnet/
 $ ./priceupdater update-config --provider coingecko --configFile assests/mainnet/coingecko.json 
 $ ./priceupdater update-config --provider uniswap --configFile assests/mainnet/uniswap.json 
 ```
-4. Run server
+
+4. Set up an apiKey to accept incoming requests
+```
+$ ./priceupdater setup-apikey --apiKey "pr1c3upd4t3rw --apiKey "pr1c3upd4t3r"
+```
+5. Start server
 ```
 $ ./priceupdater server
 ```
