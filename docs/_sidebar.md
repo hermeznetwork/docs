@@ -20,6 +20,7 @@
     - [API](developers/api.md)
     - [Batch Explorer](developers/batch-explorer.md)
     - [Hermez Node](developers/coordinator.md)
+    - [Price Updater](developers/price-updater.md)
     - [Glossary](developers/glossary.md)
 - FAQ
     - [End-Users](faq/end-users.md)
