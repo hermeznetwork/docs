@@ -1,5 +1,5 @@
 # Price Updater
-[Price Updater](https://github.com/hermeznetwork/price-updater-service/) is a web service to consult and update token and fiat currency used by Hermez Node.
+[Price Updater](https://github.com/hermeznetwork/price-updater-service/) is a web service used to consult and update the tokens and fiat currency used by Hermez Node.
 
 ## Installation
 ```
@@ -9,12 +9,12 @@ $ go build -o priceupdater # or other name that you want
 ```
 
 ## Pre-requirements
-1. It is necessary to have write access to a Hermez node data base. Price updater will update the prices and write to the database.
-2. You need a API Key from `https://exchangeratesapi.io/` 
+1. It is necessary to have write access to a Hermez node database. The Price updater will update the prices and write them to the database.
+2. You need an API Key from `https://exchangeratesapi.io/` 
 
 
 ## Usage
-1. Configure `.env` file in `price-updater` main folder. Below there is an example of and `.env` file.
+1. Configure `.env` file in the `price-updater` main folder. Below there is an example of and `.env` file.
 
 ```
 HTTP_HOST="0.0.0.0"
@@ -59,7 +59,7 @@ $ ./priceupdater update-config --provider uniswap --configFile assests/mainnet/u
 
 4. Set up an apiKey to accept incoming requests
 ```
-$ ./priceupdater setup-apikey --apiKey "pr1c3upd4t3rw --apiKey "pr1c3upd4t3r"
+$ ./priceupdater setup-apikey --apiKey "pr1c3upd4t3rw 
 ```
 5. Start server
 ```
