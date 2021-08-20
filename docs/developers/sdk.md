@@ -12,7 +12,7 @@ HermezJS is an open-source SDK to interact with Hermez Rollup network.  It can b
 
 [Hermez Flutter SDK](https://github.com/hermeznetwork/hermez_flutter_sdk) is a Flutter Plugin for Hermez Mobile SDK, and provides a cross-platform tool (iOS, Android) to communicate with the Hermez API and network. 
 
-There is an additional [Golang SDK](https://github.com/hermeznetwork/hermez-go-sdk)
+There is an additional [Golang SDK](https://github.com/hermeznetwork/hermez-go-sdk) to interact with Hermez using Golang.
 
 ## SDK How-To (Javascript)
 In this tutorial we will walk through the process of using the SDK to:
