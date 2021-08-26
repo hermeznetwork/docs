@@ -7,8 +7,9 @@ The last part of the tutorial includes an explanation on how to add a second Coo
 1. [Preparing the Environment](#preparing-the-environment) 
 2. [Launching the Boot Coordinator](#launching-the-boot-coordinator)
 3. [Launching a Proof Server](#launching-a-proof-server)
-4. [Launching a Synchronizer Node](#launching-a-synchronizer-node)
-5. [Launching a Second Coordinator](#launching-a-second-coordinator-node)
+4. [Launching a Price Updater](#launching-a-price-updater)
+5. [Launching a Synchronizer Node](#launching-a-synchronizer-node)
+6. [Launching a Second Coordinator](#launching-a-second-coordinator-node)
 
 ## Preparing the Environment
 Hermez node requires a PostgreSQL database and connectivity to an Ethereum node. In this part, we describe how you can set this environment
@@ -85,6 +86,12 @@ The relevant information about the contract deployment can be found below
 
   For more information on the parameters in the configuration file, read the [configuration parameters description](https://github.com/hermeznetwork/hermez-node/blob/master/config/config.go#L57).
 
+5. Ensure correct permissions are granted to /var/hermez folder
+```sh
+sudo mkdir -p /var/hermez
+sudo chown $USER:$USER /var/hermez
+```
+
 ## Launching the Boot Coordinator
 It is recommended to run the Coordinator node in a server with 8+ cores, 16 GB+ of RAM and 250GB of disk (AWS c5a.2xlarge or equivalent).
 
@@ -128,7 +135,7 @@ It is recommended to run the proof server in servers with 48+ cores, 96 GB+ of R
 > rapidsnark requires a host CPU that supports ADX extensions. You can check this with `cat /proc/cpuinfo | grep adx`
 
 ### Dependencies
-- [node v14+](https://nodejs.org/en/download/)
+- [node v16+](https://nodejs.org/en/download/)
 - npm
 ```shell
 apt install npm
@@ -254,12 +261,12 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 ### Connect Prover to Coordinator Node
 Once you have verified the prover is working, you can connect it to the Hermez Coordinator by configuring the `cfg.sandbox.boot-coordinator.toml` configuration file.
-You need to substitute sections `ServerProofs` with the updated URL where prover is deployed, and the `Circuit` section where the verifier smart contract is specified.
+You need to substitute sections `ServerProofs` with the updated URLs where prover is deployed, and the `Circuit` section where the verifier smart contract is specified.
 
 ```
-[[Coordinator.ServerProofs]]
+[Coordinator.ServerProofs]
 #TODO: Add Prover URL
-#URL = "http://localhost:9080"
+#URLs = ["http://localhost:9080"]
 ```
 
 ```
@@ -270,6 +277,9 @@ NLevels = 32
 
 At this point, you can stop the mock server if it is still running, and re-launch the coordinator as we saw in the previous section. The new prover will be running at http://localhost:9080 (or at the configured URL), and the two endpoints are `/status` and `/input`
 
+
+## Launching a Price Updater
+Price Updater service is used to consult and updater the tokens and fiat currency used by Hermez Node. Once Hermez Node has been deployed, the Price Updater service can be deployed. Follow [instructions](../developers/price-updater.md) to set up the Price Updater service.
 
 ## Launching a Synchronizer Node
 In synchronizer mode, the node is capable of keeping track of the rollup and consensus smart contracts, storing all the history of events, and keeping the rollup
@@ -321,6 +331,8 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 ```shell
 ./dist/heznode run --mode sync --cfg cmd/heznode/cfg.testnet.sync.toml
 ```
+7. Kill and relaunch Price Updater service in testnet
+Follow [instructions](../developers/price-updater.md) to set up the Price Updater service.
 
 Once the Hermez node is launched, the API can be queried at the location specified in the configuration file in `API.Address` section, as well as at https://api.testnet.hermez.io/v1/ serviced by the Boot Coordinator node.
 
@@ -387,6 +399,9 @@ This private key corresponds to the new Coordinator node
 ./dist/heznode run --mode coord --cfg cmd/heznode/cfg.testnet.coord.toml
 ```
 The node will start synchronizing with the Hermez Network in testnet. This may take a while.
+
+9. Launch new Price Updater service and connect it to the newly launched Hermez node
+Follow [instructions](../developers/price-updater.md) to set up the Price Updater service.
 
 ### Bidding Process
 Once the node is synchronized, you can start bidding for the right to forge a batch.

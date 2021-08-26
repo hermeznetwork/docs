@@ -46,27 +46,32 @@ MAIN_TIME_TO_UPDATE_PRICES=1m
 `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST` and `POSTGRES_PORT` can be extracted from the Hermez node configuration file
 
 2. Configure provider priority. Providers are selected in order. 
+
 ```
-$ ./priceupdater change-priority --priority "bitfinex,coingecko,uniswap"
+./priceupdater change-priority --priority "bitfinex,coingecko,uniswap"
 ```
-Price Updater provides configurations files to use Bitfinex, Coingecko and Uniswap as providers.
+Price Updater provides configurations files to use Bitfinex, Coingecko and Uniswap as providers depending on the network.
 3. Update provided configuration
+
 ```
-$ ./priceupdater update-config --provider bitfinex --configFile assests/mainnet/bitfinex.json
-$ ./priceupdater update-config --provider coingecko --configFile assests/mainnet/coingecko.json 
-$ ./priceupdater update-config --provider uniswap --configFile assests/mainnet/uniswap.json 
+./priceupdater update-config --provider bitfinex --configFile assets/testnet/bitfinex.json
+./priceupdater update-config --provider coingecko --configFile assets/testnet/coingecko.json 
+./priceupdater update-config --provider uniswap --configFile assets/testnet/uniswap.json 
 ```
 
 4. Set up an apiKey to accept incoming requests
+
 ```
-$ ./priceupdater setup-apikey --apiKey "pr1c3upd4t3rw 
+./priceupdater setup-apikey --apiKey "pr1c3upd4t3rw 
 ```
 5. Start server
+
 ```
-$ ./priceupdater server
+./priceupdater server
 ```
 
 If everything went well, you should see the following output:
+
 ```
 
 2021-08-16T14:41:32Z    INFO    cli/server.go:33        connection established with postgresql server
