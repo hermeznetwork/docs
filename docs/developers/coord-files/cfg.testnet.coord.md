@@ -41,12 +41,12 @@ PasswordWrite = "yourpasswordhere"
 NameWrite     = "hermez"
 
 [Web3]
-## Url of the web3 ethereum-node RPC server. Only geth is officially supported
+## Url of the web3 Ethereum-node RPC server. Only geth is officially supported
 # TODO  - Add you Ethereum node URL here
 #URL = "http://10.48.1.224:8545"
 
 #[Synchronizer]
-### Interval between attempts to synchronize a new block from an ethereum node
+### Interval between attempts to synchronize a new block from an Ethereum node
 #SyncLoopInterval = "1s"
 ### Threshold of a number of Ethereum blocks left to synchronize, such that if there are more blocks to sync than the defined value synchronizer can aggressively skip calling UpdateEth to save network bandwidth and time. After reaching the threshold UpdateEth is called on each block. This value only affects the reported % of synchronization of blocks and batches, nothing else.
 #StatsUpdateBlockNumDiffThreshold = 100
@@ -60,20 +60,20 @@ Rollup   = "0x679b11E0229959C1D3D27C9d20529E4C5DF7997c"
 
 
 [Coordinator]
-## Ethereum address that the coordinator is using to forge batches
-#TODO - Add your coordinator's Ethereum Address
+## Ethereum address that the Coordinator is using to forge batches
+#TODO - Add your Coordinator's Ethereum Address
 #ForgerAddress = "0xaFd6e65bdB854732f39e2F577c67Ea6e83a4C2c2"  # Coordinator
-### Minimum balance the forger address needs to start the coordinator in wei. If It is set to 0, the coordinator will not check the balance
+### Minimum balance the forger address needs to start the Coordinator in Wei. If It is set to 0, the Coordinator will not check the balance
 #MinimumForgeAddressBalance = "0"
 ### Number of confirmation blocks to be sure that the tx has been mined correctly
 #ConfirmBlocks = 5
 ### Portion of the range before the L1Batch timeout that will trigger a schedule to forge an L1Batch
 #L1BatchTimeoutPerc = 0.00001
-### Number of delay blocks to wait before starting the pipeline when a slot in which the coordinator can forge is reached
+### Number of delay blocks to wait before starting the pipeline when a slot in which the Coordinator can forge is reached
 #StartSlotBlocksDelay = 0
 ### Number of blocks ahead used to decide when to stop scheduling new batches
 #ScheduleBatchBlocksAheadCheck = 0
-### Number of marging blocks used to decide when to stop sending batches to the smart contract
+### Number of margin blocks used to decide when to stop sending batches to the smart contract
 #SendBatchBlocksMarginCheck = 0
 ### Interval between calls to the ProofServer to check the status
 #ProofServerPollInterval = "1s"
@@ -81,17 +81,17 @@ Rollup   = "0x679b11E0229959C1D3D27C9d20529E4C5DF7997c"
 #ForgeRetryInterval = "10s"
 ### Interval between calls to the main handler of a synced block after an error
 #SyncRetryInterval = "1s"
-#Delay after which a batch is forged if the slot is already committed.  If It is set to "0s", the coordinator will continuously forge at the maximum rate
+#Delay after which a batch is forged if the slot is already committed.  If It is set to "0s", the Coordinator will continuously forge at the maximum rate
 ForgeDelay = "0s"
-### Delay after a forged batch if there are no txs to forge. If It is set to 0s, the coordinator will continuously forge even if the batches are empty
+### Delay after a forged batch if there are no txs to forge. If It is set to 0s, the Coordinator will continuously forge even if the batches are empty
 ForgeNoTxsDelay = "1s"
 ### Interval between calls to the PurgeByExternalDelete function of the l2db which deletes pending txs externally marked by the column `external_delete`
 #PurgeByExtDelInterval = "1m"
-### Enables the coordinator to forge in slots if the empty slots reach the slot deadline
+### Enables the Coordinator to forge in slots if the empty slots reach the slot deadline
 #MustForgeAtSlotDeadline = true
-### It will make the coordinator forge at most one batch per slot, only if there are included txs in that batch, or pending l1UserTxs in the smart contract.  Setting this parameter overrides `ForgeDelay`, `ForgeNoTxsDelay`, `MustForgeAtSlotDeadline` and `IgnoreSlotCommitment`.
+### It will make the Coordinator forge at most one batch per slot, only if there are included txs in that batch, or pending l1UserTxs in the smart contract.  Setting this parameter overrides `ForgeDelay`, `ForgeNoTxsDelay`, `MustForgeAtSlotDeadline` and `IgnoreSlotCommitment`.
 #IgnoreSlotCommitment = true
-### This parameter will make the coordinator forge at most one batch per slot, only if there are included txs in that batch, or pending l1UserTxs in the smart contract.  Setting this parameter overrides `ForgeDelay`, `ForgeNoTxsDelay`, `MustForgeAtSlotDeadline` and `IgnoreSlotCommitment`.
+### This parameter will make the Coordinator forge at most one batch per slot, only if there are included txs in that batch, or pending l1UserTxs in the smart contract.  Setting this parameter overrides `ForgeDelay`, `ForgeNoTxsDelay`, `MustForgeAtSlotDeadline` and `IgnoreSlotCommitment`.
 #ForgeOncePerSlotIfTxs = false
 
 [Coordinator.FeeAccount]
@@ -141,21 +141,21 @@ MaxTx = 2048
 NLevels = 32
 
 #[Coordinator.EthClient]
-### Interval between receipt checks of ethereum transactions in the TxManager
+### Interval between receipt checks of Ethereum transactions in the TxManager
 #CheckLoopInterval = "500ms"
-### Number of attempts to do an eth client RPC call before giving up
+### Number of attempts to do an Eth client RPC call before giving up
 #Attempts = 4
-### Delay between attempts do do an eth client RPC call
+### Delay between attempts do do an Eth client RPC call
 #AttemptsDelay = "500ms"
-### Timeout after which a non-mined ethereum transaction will be resent (reusing the nonce) with a newly calculated gas price
+### Timeout after which a non-mined Ethereum transaction will be resent (reusing the nonce) with a newly calculated gas price
 #TxResendTimeout = "2m"
 ### Disables reusing nonces of pending transactions for new replacement transactions
 #NoReuseNonce = false
-### Maximum gas price allowed for ethereum transactions in gwei
+### Maximum gas price allowed for Ethereum transactions in Gwei
 #MaxGasPrice = 500
-### Minimum gas price allowed for ethereum transactions in gwei
+### Minimum gas price allowed for Ethereum transactions in Gwei
 #MinGasPrice = 5
-### Percentage increased of gas price set in an ethereum transaction from the suggested gas price by the ethereum node
+### Percentage increased of gas price set in an Ethereum transaction from the suggested gas price by the Ethereum node
 #GasPriceIncPerc = 5
 
 [Coordinator.EthClient.Keystore]
@@ -169,27 +169,27 @@ Password = "yourpasswordhere"
 #Fixed = 900000
 ### Gas needed per L1 tx
 #L1UserTx = 15000
-### Gas needed for a coordinator L1 tx
+### Gas needed for a Coordinator L1 tx
 #L1CoordTx = 7000
 ### Gas needed for an L2 tx
 #L2Tx = 600
 
 #[Coordinator.API]
-### Enables coordinator API endpoints
+### Enables Coordinator API endpoints
 #Coordinator = true
 
 [Coordinator.Debug]
 ## If this parameter is set, specifies the path where batchInfo is stored in JSON in every step/update of the pipeline
 BatchPath = "/tmp/hermez/batchesdebug"
-## If lightScrypt is set, uses light parameters for the ethereum keystore encryption algorithm
+## If lightScrypt is set, uses light parameters for the Ethereum keystore encryption algorithm
 LightScrypt = false
 ## RollupVerifierIndex is the index of the verifier to use in the Rollup smart contract. The verifier chosen by index must match with the Circuit parameters. Only for debug purposes. It can't be used as env variable
 #RollupVerifierIndex = 0
 
 [Coordinator.Etherscan]
-## If this parameter is set, specifies the etherscan endpoint to get the gas estimations for that momment
+## If this parameter is set, specifies the Etherscan endpoint to get the gas estimations for that momment
 URL = "https://api.etherscan.io"
-## APIKey parameter allows access to etherscan services
+## APIKey parameter allows access to Etherscan services
 # TODO - Set true API Key
 APIKey = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
 

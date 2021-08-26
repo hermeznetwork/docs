@@ -279,7 +279,7 @@ At this point, you can stop the mock server if it is still running, and re-launc
 
 
 ## Launching a Price Updater
-Price Updater service is used to consult and updater the tokens and fiat currency used by Hermez Node. Once Hermez Node has been deployed, the Price Updater service can be deployed. Follow [instructions](../developers/price-updater.md) to set up the Price Updater service.
+Price Updater service is used to consult and updater the tokens and fiat currency used by Hermez Node. Once Hermez Node has been deployed, the Price Updater service can be deployed. Follow these [instructions](../developers/price-updater.md#price-updater) to set up the Price Updater service.
 
 ## Launching a Synchronizer Node
 In synchronizer mode, the node is capable of keeping track of the rollup and consensus smart contracts, storing all the history of events, and keeping the rollup
