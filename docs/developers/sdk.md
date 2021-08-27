@@ -16,17 +16,27 @@ There is an additional [Golang SDK](https://github.com/hermeznetwork/hermez-go-s
 
 ## SDK How-To (Javascript)
 In this tutorial we will walk through the process of using the SDK to:
-1. [Installing Hermezjs](#install-hermezjs)
-2. [Initializing Hermezjs](#initialization)
-3. [Check registered tokens](#check-token-exists-in-hermez-network)
-4. [Creating a wallet](#create-a-wallet)
-5. [Making a deposit from Ethereum into the Hermez Network](#deposit-tokens-from-ethereum-into-hermez-network)
-6. [Verifying the balance in a Hermez account](#verify-balance)
-7. [Withdrawing funds back to Ethereum network](#withdrawing)
-8. [Making transfers](#transfers)
-9. [Verifying transaction status](#verifying-transaction-status)
-10. [Authorizing the creation of Hermez accounts](#create-account-authorization)
-11. [Internal accounts](#create-internal-accounts)
+- [Examples](#examples)
+- [SDK](#sdk)
+  - [SDK How-To (Javascript)](#sdk-how-to-javascript)
+  - [Install Hermezjs](#install-hermezjs)
+  - [Import modules](#import-modules)
+  - [Initialization](#initialization)
+    - [Create Transaction Pool](#create-transaction-pool)
+    - [Configure Hermez Environment](#configure-hermez-environment)
+  - [Check token exists in Hermez Network](#check-token-exists-in-hermez-network)
+  - [Create a Wallet](#create-a-wallet)
+    - [Derive private babyjubjub from ethereum account](#derive-private-babyjubjub-from-ethereum-account)
+  - [Deposit Tokens from Ethereum into Hermez Network](#deposit-tokens-from-ethereum-into-hermez-network)
+  - [Verify Balance](#verify-balance)
+  - [Withdrawing](#withdrawing)
+    - [Exit](#exit)
+    - [Withdrawing Funds from Hermez](#withdrawing-funds-from-hermez)
+    - [Force Exit](#force-exit)
+  - [Transfers](#transfers)
+  - [Verifying Transaction Status](#verifying-transaction-status)
+  - [Create Account Authorization](#create-account-authorization)
+  - [Create Internal Accounts](#create-internal-accounts)
 
 
 ## Install Hermezjs
@@ -137,7 +147,13 @@ We can create a new Hermez wallet by providing the Ethereum private key of an Et
   const hermezEthereumAddress2 = wallet2.hermezEthereumAddress
 
 ```
-
+### Derive private babyjubjub from ethereum account
+The specification to derive private babyjubjub from ethereum account is the following:
+- Message to be signed: `Hermez Network account access.\n\nSign this message if you are in a trusted application only.`
+- Sign message with your ethereum private key: `signature = eth_sign(MESSAGE)`
+  - message string is parsed to bytes using utf8 conversion. Further details can be found [here](http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array) and [here](https://github.com/ethers-io/ethers.js/blob/ce8f1e4015c0f27bf178238770b1325136e3351a/packages/strings/src.ts/utf8.ts#L202)
+  - please note that the json RPC method used is `eth_sign`. Further details can be found [here](`https://eth.wiki/json-rpc/API#eth_sign`)
+- The computed `signature` is then hashed using keccak256 hash to finally derive the babyjubjub private key: `privateKeyBabyjubjub = keccak256(signature)`
 
 ## Deposit Tokens from Ethereum into Hermez Network
 Creating a Hermez account and depositing tokens is done simultaneously as an L1 transaction.  In this example we are going to deposit 1 `ETH` tokens into the newly created Hermez accounts. 
