@@ -38,8 +38,6 @@ In the case of a `Transfer`, there will also be a **receiver** input. This input
 
 If everything is valid, the next step is the confirmation with a look at all of the transaction parameters. With a `Deposit`, as it is a Layer 1 transaction, it will require signing with your Ethereum Wallet (e.g. Metamask).
 
-![](wallet/hw-deposit-overview.png)
-
 This leads to the confirmation screen if everything went well:
 
 ![](wallet/hw-deposit-confirm)
