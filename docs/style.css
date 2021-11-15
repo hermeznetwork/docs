@@ -12,6 +12,9 @@ pre {
    background: #2c3133!important;
    color: #ff62e9!important;
 }
+content {
+   padding-top: 0!important;
+}
 code {
    padding: 0!important;
    margin: 0!important;
@@ -90,10 +93,10 @@ h1, h2, h3, h4, h5, h6 {
    transition: all 0.3s ease-in 0s;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label {
-   background-color: #e75a2b;
+   background-color: #8248e5;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label, .onoffswitch-checkbox:checked + .onoffswitch-label:before {
-   border-color: #e75a2b;
+   border-color: #8248e5;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label:before {
    right: 0px;
