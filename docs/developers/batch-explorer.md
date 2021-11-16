@@ -55,8 +55,6 @@ By navigating through a corresponding link, users land on the slot details page.
 If a given slot auction is closed, the following information will be shown as well:
 * list of batches included in that slot (with some details about each batch)
 
-![](be-slot.png)
-
 ## Coordinator
 By searching for the Ethereum address of an existing coordinator, or by navigating through the app the user lands on the page listing details of that coordinator. Those details include:
 * forger and withdrawal addresses
