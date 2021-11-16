@@ -64,7 +64,7 @@ In short, no.  Coordinators are the Hermez batch producer, they are responsible 
 
 ### Can coordinators censor transactions?
 
-Coordinators can decide which transactions they select to include in the batch to forge. In the case that a Coordinator censures a transaction, users have the option to force Coordinators to include their transaction.
+Coordinators can decide which transactions they select to include in the batch to forge. In the case that a Coordinator censors a transaction, users have the option to force Coordinators to include their transaction.
 
 &nbsp;
 &nbsp;
